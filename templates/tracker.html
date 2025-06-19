@@ -1,0 +1,230 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Tracking page | IITP Companion+{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static '/css/tracker.css' %}">
+</head>
+<body>
+    <section class="tracker">
+    <div class="Main-card">
+        <div class="header-card">
+<!--            <img style="width:650px;" src="\static\images\picture5.png">-->
+             <h1>BUSES</h1>
+
+             <a href="{% url 'search' %}">
+
+                 <img src="{% static '/tracking/search-svgrepo-com.svg' %}" alt="Searchsearch.html icon">
+                </a>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="left">
+                <h3>Campus Shuttle A</h3>
+                <div class="location"><h3>Main Gate ↔ hostel </h3></div>
+                <div class="status"><h3><span>Arriving</span> </h3></div>
+            </div>
+
+            <div class="right">
+                <div class="live">
+                    <div class="dot"></div><h3>Live </h3>
+                </div>
+                <div class="time">2mins</div>
+            </div>
+        </div>
+
+        
+        <div class="card">
+
+            <div class="left">
+                <h3>Campus Shuttle B</h3>
+                <div class="location"><h3>Admin Block↔Patna </h3></div>
+                <div class="status"><h3><span>On Route</span> </h3></div>
+            </div>
+
+            <div class="right">
+                <div class="live">
+                    <div class="dot"></div><h3>Live </h3>
+                </div>
+                <div class="time">6mins</div>
+            </div>
+        </div>
+
+
+        
+        <div class="card">
+
+            <div class="left">
+                <h3>City Express</h3>
+                <div class="location"><h3>patna↔bihata </h3></div>
+                <div class="status"><h3><span>Delayed</span> </h3></div>
+            </div>
+
+            <div class="right">
+                <div class="live">
+                    <div class="dot"></div><h3>Live </h3>
+                </div>
+                <div class="time">12mins</div>
+            </div>
+        </div>
+
+
+        
+        <div class="card">
+
+            <div class="left">
+                <h3>Hostel Connector</h3>
+                <div class="location"><h3>bihata↔patna </h3></div>
+                <div class="status"><h3><span>On Time</span> </h3></div>
+            </div>
+
+            <div class="right">
+                <div class="live">
+                    <div class="dot"></div><h3>Live </h3>
+                </div>
+                <div class="time">2mins</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="train">
+        <div class="header-card">
+<!--            <img style="width:650px;" src="\static\images\picture6.png">-->
+
+            <h2>Trains</h2>
+            <a href="{% url 'search' %}">
+                <img src="{% static '/tracking/search-svgrepo-com.svg' %}" alt="Searchsearch.html icon">
+            </a>
+        </div>
+        
+        <div class="card">
+
+            <div class="left">
+                <h3>Rajdhani Express</h3>
+                <div class="location"><h3>Platform 1 </h3></div>
+                <div class="status"><h3><span>On time</span> </h3></div>
+            </div>
+
+            <div class="right">
+                <div class="live">
+                    <div class="dot"></div><h3>Live </h3>
+                </div>
+                <div class="time">32mins</div>
+            </div>
+        </div>
+
+
+        
+        <div class="card">
+
+            <div class="left">
+                <h3>Jan Shatabdi</h3>
+                <div class="location"><h3>Platform 2 </h3></div>
+                <div class="status"><h3><span>Delayed</span> </h3></div>
+            </div>
+
+            <div class="right">
+                <div class="live">
+                    <div class="dot"></div><h3>Live </h3>
+                </div>
+                <div class="time">62mins</div>
+            </div>
+        </div>
+        
+        <div class="card">
+
+            <div class="left">
+                <h3>Patna Express</h3>
+                <div class="location"><h3>Platform 3 </h3></div>
+                <div class="status"><h3><span>Arriving</span> </h3></div>
+            </div>
+
+            <div class="right">
+                <div class="live">
+                    <div class="dot"></div><h3>Live </h3>
+                </div>
+                <div class="time">13mins</div>
+            </div>
+        </div>
+    </div>
+    </section>
+
+
+
+    <a href="{% url 'maps' %}" class="head-link">
+        <div class="head">
+            <svg class="map-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 105.93 122.88">
+                <path d="M56.92,73.14a1.62,1.62,0,0,1-1.86.06A65.25,65.25,0,0,1,38.92,58.8,51.29,51.29,0,0,1,28.06,35.37C26.77,27.38,28,19.7,32,13.45a27,27,0,0,1,6-6.66A29.23,29.23,0,0,1,56.36,0,26,26,0,0,1,73.82,7.12a26,26,0,0,1,4.66,5.68c4.27,7,5.19,16,3.31,25.12A55.29,55.29,0,0,1,56.92,73.14Zm-19,.74V101.7l30.15,13V78.87a65.17,65.17,0,0,0,6.45-5.63v41.18l25-12.59v-56l-9.61,3.7a61.61,61.61,0,0,0,2.38-7.81l9.3-3.59A3.22,3.22,0,0,1,105.7,40a3.18,3.18,0,0,1,.22,1.16v62.7a3.23,3.23,0,0,1-2,3L72.72,122.53a3.23,3.23,0,0,1-2.92,0l-35-15.17L4.68,122.53a3.22,3.22,0,0,1-4.33-1.42A3.28,3.28,0,0,1,0,119.66V53.24a3.23,3.23,0,0,1,2.32-3.1L18.7,43.82a58.63,58.63,0,0,0,2.16,6.07L6.46,55.44v59l25-12.59V67.09a76.28,76.28,0,0,0,6.46,6.79ZM55.15,14.21A13.72,13.72,0,1,1,41.43,27.93,13.72,13.72,0,0,1,55.15,14.21Z"/>
+            </svg>
+            <h2>Maps</h2>
+        </div>
+    </a>
+
+    <section class="Map">
+        <div class="bus-map">
+            <img src="{% static '/images/routemap.jpg' %}" alt="">
+        </div>
+
+        <div class="train-map">
+            <img src="{% static '/images/iitp-map.jpg' %}" alt="">
+        </div>
+    </section>
+
+
+    <section class="schedule">
+        
+        <div class="head">
+            <svg width="100%" height="100%" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M21 10H3M16 2V6M8 2V6M7.8 22H16.2C17.8802 22 18.7202 22 19.362 21.673C19.9265 21.3854 20.3854 20.9265 20.673 20.362C21 19.7202 21 18.8802 21 17.2V8.8C21 7.11984 21 6.27976 20.673 5.63803C20.3854 5.07354 19.9265 4.6146 19.362 4.32698C18.7202 4 17.8802 4 16.2 4H7.8C6.11984 4 5.27976 4 4.63803 4.32698C4.07354 4.6146 3.6146 5.07354 3.32698 5.63803C3 6.27976 3 7.11984 3 8.8V17.2C3 18.8802 3 19.7202 3.32698 20.362C3.6146 20.9265 4.07354 21.3854 4.63803 21.673C5.27976 22 6.11984 22 7.8 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h2>BUSES</h2>
+        </div>
+        <div class="schedule-body">
+
+            <div class="Schedule-index">
+                <h3>Route</h3>
+                <h3>Departure</h3>
+                <h3>Arrival</h3>
+                <h3>Frequency</h3>
+            </div>
+            <div class="schedule-bus">
+
+                <div class="bus-names gap">
+                    <h3>Campus Shuttle-1</h3>
+                    <h3>Campus Shuttle-2</h3>
+                    <h3>City  Connector</h3>
+                    <h3>City Connector</h3>
+                </div>
+                
+                <div class="bus-time gap">
+                    <h3>7:00 Am </h3>
+                    <h3>8:30 Am </h3>
+                    <h3>12:00 Pm </h3>
+                    <h3>6:00 Pm </h3>
+                </div>
+                
+                <div class="bus-time2 gap">
+                    <h3>7:30 Am </h3>
+                    <h3>9:00 Am </h3>
+                    <h3>12:30 Pm </h3>
+                    <h3>6:30 Pm </h3>
+                </div>
+                
+                <div class="Frequency gap">
+                    <h3>Every 15 min</h3>
+                    <h3>Every 20 min</h3>
+                    <h3>Every 10 min </h3>
+                    <h3>Every 32min </h3>
+                </div>
+                
+            </div>
+
+        </div>
+    </section>
+</body>
+{% endblock %}

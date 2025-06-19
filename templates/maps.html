@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Campus Maps | IITP Companion+{% endblock %}
+
+{% block content %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/maps.css' %}">
+</head>
+
+<section class="maps-hero">
+  <h1>Explore IIT Patna Campus Maps</h1>
+  <p>Navigate the campus with detailed visual maps of key areas.</p>
+</section>
+
+<section class="map-column">
+  {% for map in maps %}
+    <div class="map-card">
+      <h2>{{ map.title }}</h2>
+      <img src="{{ map.image.url }}" alt="{{ map.title }}">
+      <p>{{ map.description }}</p>
+    </div>
+  {% endfor %}
+</section>
+{% endblock %}

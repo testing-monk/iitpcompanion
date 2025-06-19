@@ -1,0 +1,312 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+    background-color: #ffffff;
+}
+
+/* Navbar Container */
+.navbar {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1000;
+}
+
+/* Left Section */
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    width: 85px;
+}
+
+.logo-text {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #000;
+}
+
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+}
+
+/* Center Nav Links */
+.nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links li a {
+    color: #0c0b0b;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.nav-links li a:hover {
+    text-decoration: underline;
+}
+
+/* Right Side: Icons and User */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.icon-box {
+    display: flex;
+    gap: 12px;
+}
+
+.nav-icon {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* User Avatar & Dropdown */
+.user-account {
+    position: relative;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    transition: transform 0.2s ease;
+}
+
+.arrow-down {
+    font-size: 12px;
+    margin-left: 6px;
+    color: #333;
+}
+
+/* Account Dropdown */
+.account-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #fff;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    display: none;
+    min-width: 200px;
+    z-index: 1001;
+    overflow: hidden;
+}
+
+.user-account.active .account-dropdown {
+    display: block;
+}
+
+.account-dropdown li {
+    padding: 12px 24px;
+    transition: background-color 0.25s ease;
+    text-align: left;
+}
+
+.account-dropdown li:hover {
+    background-color: #f4f4f4;
+}
+
+.account-dropdown li a,
+.account-dropdown li strong {
+    color: #212121;
+    text-decoration: none;
+    display: block;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.account-dropdown li.username-item strong {
+    color: #000;
+}
+
+.account-dropdown li.username-item::after {
+    content: "";
+    display: block;
+    margin: 12px -24px 0;
+    border-top: 1px solid #e0e0e0;
+}
+
+/* Login Button */
+.login-button {
+    color: #333;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background-color: #f5f5f5;
+    transition: background-color 0.3s ease;
+}
+
+.login-button:hover {
+    background-color: #e0e0e0;
+}
+
+/* Hamburger Menu */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.bar {
+    height: 3px;
+    width: 22px;
+    background-color: #333;
+    border-radius: 3px;
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background-color: #ffffff;
+        display: none;
+        padding: 10px 0;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        z-index: 999;
+    }
+
+    .nav-links.active {
+        display: flex;
+    }
+
+    .nav-links li {
+        text-align: center;
+        padding: 10px 0;
+    }
+
+    .logo-text {
+        display: none;
+    }
+
+    .navbar {
+        justify-content: space-between;
+    }
+
+    .user-account {
+        margin-top: 10px;
+    }
+
+    .account-dropdown {
+        right: 10px;
+    }
+}
+
+/* Hamburger Animation */
+#mobile-menu {
+    cursor: pointer;
+    width: 30px;
+    height: 24px;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+#mobile-menu span {
+    position: absolute;
+    height: 3px;
+    width: 100%;
+    background: #333;
+    left: 0;
+    transition: 0.4s;
+}
+
+#mobile-menu span:nth-child(1) {
+    top: 0;
+}
+
+#mobile-menu span:nth-child(2) {
+    top: 10px;
+}
+
+#mobile-menu span:nth-child(3) {
+    top: 20px;
+}
+
+#mobile-menu.open span:nth-child(1) {
+    transform: rotate(45deg);
+    top: 10px;
+}
+
+#mobile-menu.open span:nth-child(2) {
+    opacity: 0;
+}
+
+#mobile-menu.open span:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 10px;
+}
+
+/* Notifications */
+.notification-wrapper {
+    position: relative;
+}
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    background-color: #fff;
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    overflow: hidden;
+    font-family: "Poppins", sans-serif;
+}
+
+.notification-wrapper.active .notification-dropdown {
+    display: block;
+}
+
+.notification-header {
+    padding: 12px 16px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: #fafafa;
+}
+
+.notification-body {
+    padding: 20px;
+    text-align: center;
+    color: #333;
+    font-size: 14px;
+}

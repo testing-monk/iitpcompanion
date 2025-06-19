@@ -1,0 +1,149 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+* h1, h2, h3 {
+    font-family: "Playfair Display", serif;
+     font-optical-sizing: auto;
+}
+body {
+     font-family: "Poppins", sans-serif;
+     font-weight: 500;
+    font-style: normal;
+}
+header svg {
+    width: 30px;
+    padding: 10px;
+}
+
+header img {
+    width: 100px;
+    padding: 10px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.search-box{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px;
+    background-color: transparent;
+    
+
+}
+.search-box h1 {
+    border-bottom: 2px solid goldenrod;
+    display: inline-block;
+    font-size: 28px;
+    font-weight: 500;
+
+}
+.search-box input{
+    padding: 20px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 30px;
+    border: 2px solid black;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); 
+    border: 1.5px solid #d4af37;
+    margin-top: 25px;
+}
+
+.search-box input::placeholder {
+    color: #999;
+    font-weight: 500;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    margin-bottom: 8px ;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.filter-group select {
+    padding: 10px 16px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #fff;
+    font-size: 15px;
+}
+
+
+
+.result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    margin-bottom: 100px;
+}
+.result-cards {
+    display: flex;
+    gap: 100px;
+    text-align: center;
+    justify-content: center;
+}
+
+
+.result h1 {
+    text-align: center;
+    font-size: 48px;
+    font-weight: 500;
+    /* font-family: 'Playfair-Display', sans-serif; */
+    font-family: "Playfair Display", serif;
+    border-bottom: 2px solid goldenrod;
+}
+
+.card {
+     background-color: white;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    width: 300px;
+    height: auto;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+
+}
+
+.bus {
+    border-left: 2px solid #2196f3;
+}
+
+.train{
+    border-left: 2px solid #ff9800; 
+
+}
+
+.card h3 {
+    font-size: 20px ;
+    margin-bottom: 12px;
+}
+
+.card p{
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 6px;
+}

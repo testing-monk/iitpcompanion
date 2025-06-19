@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Contact Us{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/contacts.css' %}">
+
+<section class="contact-section">
+  <div class="contact-container">
+    <h1>Contact Us</h1>
+    <p>We’d love to hear from you. Please fill out the form below.</p>
+
+<!--    {% if messages %}-->
+<!--      {% for message in messages %}-->
+<!--        <div class="success-message">{{ message }}</div>-->
+<!--      {% endfor %}-->
+<!--    {% endif %}-->
+
+    <form method="POST">
+      {% csrf_token %}
+      <input type="text" name="name" placeholder="Your Name" required>
+      <input type="email" name="email" placeholder="Your Email" required>
+      <input type="text" name="subject" placeholder="Subject" required>
+      <textarea name="message" rows="6" placeholder="Your Message..." required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

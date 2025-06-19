@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}IITP Companion+{% endblock %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" href="{% static '/css/style.css' %}">
+</head>
+     <section class="hero-carousel">
+      <div class="carousel-track">
+        <img src="/static/images/hero2.jpg" class="carousel-slide active" />
+        <img src="/static/images/hero9.png" class="carousel-slide" />
+        <img src="/static/images/hero1.jpg" class="carousel-slide" />
+<!--        <img src="/static/images/hero8.png" class="carousel-slide" />-->
+      </div>
+
+      <button class="carousel-btn prev">&#10094;</button>
+      <button class="carousel-btn next">&#10095;</button>
+
+      <div class="carousel-dots"></div>
+    </section>
+
+    <section  class="hero">
+        <div class="hero-left">
+            <h1>Simplifying campus life for IIT students</h1>
+        </div>
+        <div class="hero-right">
+            <p> IITP Companion+ is your all-in-one platform designed to enhance your
+                campus experience at IIT Patna. From convenient canteen ordering to real
+                time tracking of transport and event alerts, we make student life easier and
+                more connected</p>
+            <div class="hero-buttons">
+                <a href="{% url 'home' %}">
+                    <button  class="black">Learn More</button>
+                </a>
+                <a href="{% url 'progress' %}">
+                    <button  class="white">Sign Up</button>
+                </a>
+            </div>
+        </div>
+    </section>
+    <!-- now = Convenience part  -->
+    <section class=" feature feature-convenience">
+        <div class="feature-left">
+            <div class="feature-text">
+                <h4>Convenience</h4>
+                <h2>Order your favorite food with ease</h2>
+
+                <img src="/static/images/deliver-food.jpg" alt="canteen order Preview" width="500px">
+
+                <p>Experience hassle-free dining with our canteen ordering feature. Choose from a variety of delicious
+                    meals and
+                    have them delivered right to you.</p>
+                <div class="feature-highlights">
+                    <div>
+                        <h3>50% </h3>
+                        <p>Quick and easy meal selection at your fingertips. </p>
+                    </div>
+                </div>
+                <div class="feature-buttons">
+                    <a href="{% url 'order' %}">
+                        <button class="black">Order</button>
+                    </a>
+                    <a href="{% url 'progress' %}">
+                        <button class="white">Learn More</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="feature-right">
+            <div class="feature-image">
+                <img src="/static/images/deliver-food.jpg" alt="canteen order Preview" width="500px">
+            </div>
+        </div>
+    </section>
+
+    <!-- Track section  -->
+    <section class="feature feature-track">
+        <div class="feature-left">
+            <div class="feature-image">
+                <img src="/static/images/track_bus.jpg" alt="Real time tracking preview" width="500px">
+            </div>
+        </div>
+        <div class="feature-right">
+            <div class="feature-text">
+                <h4>Track</h4>
+                <h2>Stay on time with Real-time tracking </h2>
+                <img src="/static/images/track_bus.jpg" alt="Real time tracking preview" width="500px">
+                <p> Never miss your bus or train again! Our real-time tracking feature keeps you updated on schedules
+                    and delays.</p>
+                <div class="feature-highlights">
+                    <div>
+                        <h3>Instant Updates</h3>
+                        <p>Get live updates on bus and train arrivals right at your fingertips.</p>
+                    </div>
+                    <div>
+                        <h3>Easy navigation</h3>
+                        <p>Navigate campus and city transport effortlessly with our intuitive interface.</p>
+                    </div>
+                </div>
+                <div class="feature-buttons">
+                    <a href="{% url 'tracker' %}">
+                        <button class="white" >Learn More</button>
+                    </a>
+                    <a href="{% url 'progress' %}">
+                        <button class="black" >Sign Up</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- ALERTS -->
+
+    <section class="Alert">
+        <div class="Alert-Left Alert-text">
+            <h2>Enhance Your Campus Experience
+                with Our Innovative Feedback and
+                Alert System</h2>
+        </div>
+        <div class="Alert-Right Alert-text">
+            <p>
+                Our feedback system empowers students to share their thoughts on clubs
+                and services, ensuring their voices are heard. Stay updated with real-time
+                alerts for events and assignments, so you never miss an important moment.
+                Engage more deeply with campus life and make the most of your time at IIT
+                Patna.
+            </p>
+            <a href="{% url 'Assignment' %}">
+                <button class="abtn">Your Assignments</button>
+            </a>
+
+        </div>
+    </section>
+
+    <section class="feedbackimg">
+
+        <div class="feedbackimg1">
+            <img src="/static/images/1.jpg" alt="balnk image" width="400px">
+            <h2>Streamlined Feedback for Clubs and Timely Alerts for Events and Assignments </h2>
+            <p>
+                Your input shapes our community, and timely alerts keep you informed.
+            </p>
+        </div>
+        <div cassets/images/placeholder.png">
+            <img src="/static/images/assignments.jpg" alt="balnk image" width="400px">
+            <h2>Stay Informed with Real-Time Alerts
+                for Campus Events and Assignments</h2>
+            <p>
+                Receive instant notifications about upcoming events and
+                important deadlines.
+            </p>
+        </div>
+        <div class="feedbackimg3">
+            <img src="/static/images/feedback.jpg" alt="black image" width="400px">
+            <h2>
+                Join the Conversation: Share Your
+                Feedback on Clubs and Services
+            </h2>
+            <p>
+                Your feedback is crucial in enhancing our campus
+                services and activities.
+            </p>
+        </div>
+    </section>
+
+    <!-- student feed back   -->
+    <section class="studentfeedback">
+        <div class="studentfeedbackhead">
+            <h2>
+                Student Feedback
+            </h2>
+        </div>
+        <div class="studentfeedbackpara">
+        </div>
+    </section>
+
+
+<section class="feedback-crafto-style">
+
+  <div class="review-card">
+    <div class="user-info">
+      <img src="/static/images/femaleimg.png" alt="female" class="avatar">
+      <div>
+        <h4 class="username">Niharika</h4>
+        <span class="rating">★ 5</span>
+      </div>
+    </div>
+    <p class="review-text">
+      "This platform has made managing my schedule so easy! The content is peaceful and organized — really brightens up my day."
+    </p>
+  </div>
+
+  <div class="review-card">
+    <div class="user-info">
+      <img src="/static/images/male.jpeg" alt="male" class="avatar">
+      <div>
+        <h4 class="username">why_SO.SID</h4>
+        <span class="rating">★ 5</span>
+      </div>
+    </div>
+    <p class="review-text">
+      "I love the convenience of ordering food online! Their collections match every kind of vibe — amazing experience."
+    </p>
+  </div>
+
+  <div class="review-card">
+    <div class="user-info">
+      <img src="/static/images/sillycat.jpeg" alt="cat" class="avatar">
+      <div>
+        <h4 class="username">Always_Arohi</h4>
+        <span class="rating">★ 5</span>
+      </div>
+    </div>
+    <p class="review-text">
+      "Real-time tracking has saved me so much time. From visuals to features, it's just perfect!"
+    </p>
+  </div>
+
+</section>
+
+
+
+    <!-- connect -->
+
+    <section class="connect">
+
+        <div class="connect-left">
+
+
+            <span>
+
+                <h4>
+                    Connect
+                </h4>
+            </span>
+
+            <span>
+                <h1>Get in touch</h1>
+            </span>
+
+
+            <span>
+                <h2>We'd love to hear from you!</h2>
+            </span>
+
+
+        </div>
+
+
+        <div class="none-img">
+            <img width="832px" src="/static/images/map-placeholder.png" alt="">
+        </div>
+
+
+
+        <div class="connectflex">
+
+            <div class="connect-para">
+
+
+                <div class="connect-contacts">
+                    <div class="connect-mail">
+                        <img src="/static/icons/mail_32.svg" alt="">
+                        <div>
+
+                            <h3>Email</h3>
+                            <p>Contact us anytime</p>
+                        </div>
+                        <a href="">info@Companion.com</a>
+                    </div>
+
+
+                    <div class="connect-mail">
+                        <img src="/static/icons/call_32.svg" alt="">
+                        <div>
+
+                            <h3>phone</h3>
+                            <p>Reach us at</p>
+                        </div>
+                        <a href="#">+91-1234567890</a>
+                    </div>
+
+
+
+
+                    <div class="connect-mail">
+                        <img src="/static/icons/location_on_32.svg" alt="">
+
+                        <div class="Office-address">
+
+                            <h3>Office</h3>
+                            <p> IIT Patna Campus, Patna, Bihar, India</p>
+                        </div>
+
+                        <div class="connect-office">
+
+                            <span><a
+                                    href="https://www.google.com/maps/dir//IIT,+Bihta+Kanpa+Rd,+Patna,+Dayalpur+Daulatpur,+Bihar+801106/@25.5356218,84.7688951,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x39ed577f6954a4ab:0x6ce8f1b9fc2aa02a!2m2!1d84.8512966!2d25.5356448?entry=ttu&g_ep=EgoyMDI1MDYwMi4wIKXMDSoASAFQAw%3D%3D">Find
+                                    us</a></span>
+                            <img src="/static/icons/chevron_right_32.svg" alt="">
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+
+
+            <div class="connect-imagemain">
+                <div id="map-container"></div>
+<!--                <img width="832px" src="/static/images/map-placeholder.png" alt="">-->
+            </div>
+        </div>
+    </section>
+
+   <script src="{% static 'js/index.js' %}"></script>
+
+
+{% endblock %}

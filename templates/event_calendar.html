@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Event Calendar{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/event-calendar.css' %}">
+
+<section class="calendar-container">
+  <div class="container">
+    <h1>Campus Event Calendar</h1>
+    <p>Stay up to date with all upcoming seminars, cultural events, club activities, and more!</p>
+  </div>
+
+  <!-- Month Navigation -->
+  <div class="calendar-header">
+    <button id="prevMonthBtn" title="Previous Month">‹</button>
+    <h2 id="monthYear">Loading...</h2>
+    <button id="nextMonthBtn" title="Next Month">›</button>
+  </div>
+
+
+  <!-- Grid Days -->
+  <div class="calendar-grid" id="calendarGrid">
+    <!-- Calendar days will be rendered by JavaScript -->
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <div><span class="legend-box website-event"></span> College Events</div>
+    <div><span class="legend-box user-event"></span> Your Events</div>
+  </div>
+</section>
+
+<!-- Add Event Modal -->
+<div class="modal" id="eventModal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h3>Add Event</h3>
+    <p id="eventDateText"></p>
+    <input type="text" id="eventInput" placeholder="Type your event or meeting...">
+    <button id="saveEventBtn">Save</button>
+  </div>
+</div>
+
+<script src="{% static 'js/calendar.js' %}"></script>
+
+{% endblock %}

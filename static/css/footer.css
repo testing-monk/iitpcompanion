@@ -1,0 +1,164 @@
+footer {
+    margin-top: 200px;
+    margin-left: 100px;
+
+}
+
+footer .footer-logo img {
+    width: 100px;
+    height: auto;
+    /* max-height: 50px; */
+
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr;
+    width: 100%;
+    gap: 40px;
+
+}
+
+.footer-text {
+    width: 100%;
+    min-width: 0;
+
+}
+
+
+footer .footer-text p {
+    padding-top: 10px;
+    max-width: 100%;
+
+}
+
+.foot-input {
+    display: flex;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.footer-text input {
+    color: black;
+    padding: 12px 12px;
+    /* width: 405px; */
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border: 2px solid black;
+    color: black;
+    font-size: larger;
+    cursor: pointer;
+}
+
+.foot-input button {
+    width: 90px;
+    height: 50px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.foot-input button a {
+    color: black;
+    text-decoration: none;
+    font-size: larger;
+}
+
+.foot-input button:hover {
+    transform: scale(0.9);
+}
+
+.foot-input input:hover {
+    transform: translateY(-2px);
+}
+
+
+
+.follow {
+    display: flex;
+    flex-direction: column;
+}
+
+.follow svg {
+    width: 24px;
+    height: 24px;
+}
+
+.quicklinks {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    margin: 0px;
+    padding-left: 100px;
+    gap: 30px;
+}
+
+
+
+.quicklinks a {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    text-align: start;
+}
+
+.quicklinks a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+
+
+.follow div {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    margin: 10px 10px 10px 0px;
+}
+
+.follow div:hover {
+
+    transform: scale(1.02);
+}
+
+.Rights-reserved {
+    text-align: center;
+    padding: 20px 10px;
+    border-top: 2px solid #000;
+    font-size: 15px;
+    color: #444;
+    width: 100%;
+    margin-bottom: 50px;
+
+
+}
+
+@media (max-width: 768px) {
+    footer {
+        padding: 0;
+        margin: 2rem;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 0;
+        margin: 0;
+    }
+
+    .quicklinks {
+        padding: 0;
+
+    }
+
+    .foot-input {
+        flex-direction: column;
+    }
+
+    .foot-input input,
+    .foot-input button {
+        width: 100%;
+        max-width: 100%;
+    }
+}

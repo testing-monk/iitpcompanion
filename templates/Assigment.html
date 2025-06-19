@@ -1,0 +1,193 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Your Assigments | IITP Companion+{% endblock %}
+
+{% block content %}
+<head>
+  <link rel="stylesheet" href="{% static '/css/Assigment.css' %}">
+</head>
+<body>
+  <section class="status">
+    <div class="card">
+      <div class="total">
+        <p>total</p>
+        <p class="boldno">4</p>
+      </div>
+      <div class="icon">
+        <svg xmlns="" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-book-open h-8 w-8 text-primary"
+          data-lov-id="src/components/AssignmentTracker.tsx:156:14" data-lov-name="BookOpen"
+          data-component-path="src/components/AssignmentTracker.tsx" data-component-line="156"
+          data-component-file="AssignmentTracker.tsx" data-component-name="BookOpen"
+          data-component-content="%7B%22className%22%3A%22h-8%20w-8%20text-primary%22%7D">
+          <path d="M12 7v14"></path>
+          <path
+            d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z">
+          </path>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="total">
+        <p>Completed</p>
+        <p class="boldt boldno">1</p>
+      </div>
+      <div class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-check h-8 w-8 text-green-600" data-lov-id="src/components/AssignmentTracker.tsx:166:14"
+          data-lov-name="Check" data-component-path="src/components/AssignmentTracker.tsx" data-component-line="166"
+          data-component-file="AssignmentTracker.tsx" data-component-name="Check"
+          data-component-content="%7B%22className%22%3A%22h-8%20w-8%20text-green-600%22%7D">
+          <path d="M20 6 9 17l-5-5"></path>
+        </svg>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="total">
+        <p>Pending</p>
+        <p class="boldp boldno">3</p>
+      </div>
+      <div class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          class="lucide lucide-calendar h-8 w-8 text-red-600" data-lov-id="src/components/AssignmentTracker.tsx:176:14"
+          data-lov-name="Calendar" data-component-path="src/components/AssignmentTracker.tsx" data-component-line="176"
+          data-component-file="AssignmentTracker.tsx" data-component-name="Calendar"
+          data-component-content="%7B%22className%22%3A%22h-8%20w-8%20text-red-600%22%7D">
+          <path d="M8 2v4"></path>
+          <path d="M16 2v4"></path>
+          <rect width="18" height="18" x="3" y="4" rx="2"></rect>
+          <path d="M3 10h18"></path>
+        </svg>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="main">
+    <div class="main-h">
+      <h2>Your Assignments</h2>
+    </div>
+
+
+    <div class="main-cards">
+
+
+      <div class="main-card">
+        <div class="mainc-head">
+          <div>
+
+            <button>
+
+            </button>
+          </div>
+          <div>
+
+            <h2>
+              104-Assigment
+            </h2>
+          </div>
+        </div>
+        <div class="main-data">
+
+          <div class="main-date">
+            <p>Due: 16jun-20jun</p>
+          </div>
+
+          <div class="priority">
+            <p class=".boldno boldp">High Priority</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="main-card">
+        <div class="mainc-head">
+          <div>
+
+            <button>
+
+            </button>
+          </div>
+          <div>
+
+            <h2>
+              106-Assigment
+            </h2>
+          </div>
+        </div>
+        <div class="main-data">
+
+          <div class="main-date">
+            <p>Due: 16jun-20jun</p>
+          </div>
+
+          <div class="priority">
+            <p class=".boldno boldy"> Medium Priority</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="main-card">
+        <div class="mainc-head">
+          <div>
+
+            <button>
+
+            </button>
+          </div>
+          <div>
+
+            <h2>
+              108-Assigment
+            </h2>
+          </div>
+        </div>
+        <div class="main-data">
+
+          <div class="main-date">
+            <p>Due: 16jun-20jun</p>
+          </div>
+
+          <div class="priority">
+            <p class=".boldno boldp">High Priority</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="main-card">
+        <div class="mainc-head">
+          <div>
+
+            <button>
+            </button>
+          </div>
+          <div>
+
+            <h2>
+              102-Assigment
+            </h2>
+          </div>
+        </div>
+        <div class="main-data">
+
+          <div class="main-date">
+            <p>Due: 16jun-20jun</p>
+          </div>
+
+          <div class="priority">
+            <p class=".boldno boldt">low Priority</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+</body>
+{% endblock %}

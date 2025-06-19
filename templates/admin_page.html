@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/admin-dashboard.css' %}">
+
+<div class="admin-dashboard">
+  <h1>Welcome, Admin</h1>
+
+  <div class="dashboard-cards">
+    <div class="card">
+      <h2>Total Contacts</h2>
+      <p>{{ total_contacts }}</p>
+    </div>
+    <div class="card">
+      <h2>Total Clubs</h2>
+      <p>{{ total_clubs }}</p>
+    </div>
+    <div class="card">
+      <h2>Total Events</h2>
+      <p>{{ total_events }}</p>
+    </div>
+  </div>
+
+  <div class="dashboard-section">
+    <h2>Recent Contact Messages</h2>
+    <table>
+      <tr><th>Name</th><th>Email</th><th>Subject</th><th>Submitted At</th></tr>
+      {% for msg in recent_contacts %}
+      <tr>
+        <td>{{ msg.name }}</td>
+        <td>{{ msg.email }}</td>
+        <td>{{ msg.subject }}</td>
+        <td>{{ msg.submitted_at|date:"M d, Y H:i" }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+
+  <div class="dashboard-section">
+    <h2>Upcoming Events</h2>
+    <table>
+      <tr><th>Title</th><th>Date</th><th>Type</th></tr>
+      {% for e in upcoming_events %}
+      <tr>
+        <td>{{ e.title }}</td>
+        <td>{{ e.date }}</td>
+        <td>{{ e.event_type }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

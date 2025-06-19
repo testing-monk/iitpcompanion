@@ -1,0 +1,270 @@
+db.cars.find({$and:[{fuel_type:"Diesel"},{"engine.type":"Turbocharged"}]})
+db.cars.find({$or:[{fuel_type:"Diesel"},{"engine.type":"Turbocharged"}]})
+db.cars.find({$nor:[{fuel_type:"Diesel"},{"engine.type":"Turbocharged"}]})
+db.cars.find({fuel_type:{$exists:true}})
+db.cars.updateOne({model:"Nexon"},{$set:{color:"red"}})
+db.cars.find({color:{$exists:true}})
+db.cars.find({model:{$type:"string"}})
+db.cars.find({model:{$type:"null"}})
+db.cars.find({features:{$size:3}})
+db.cars.find({features:{$all:['Bluetooth','Sunroof']}})
+db.cars.find({features:{$all:['']}})
+db.cars.find().skip(2)
+db.cars.find().limit(2)
+db.cars.find().count()
+db.cars.find({fuel_type:"Petrol"}).count()
+db.cars.find({},{_id:0,model:1,maker:1}).sort({maker:1})
+ 
+ 
+// AGGREGATE Framework in MongoDB
+db.Cars.aggregate([{$group:{_id:"$maker"}}])
+db.Cars.aggregate([{$group:{_id:"$maker",TotalCars: {$sum:1}}}])
+db.Cars.aggregate([{$group:{_id:"$maker",AvgPrice: {$avg:"$price"}}}])
+db.Cars.aggregate([{$group:{_id:"$fuel_type",TotalCars: {$sum:1}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai", "engine.cc":{$gt:1000}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$count:"Total_cars"}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$sort:{model:1}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$group:{_id:"$fuel_type",Totalcars:{$sum:1}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$sort:{model:-1}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$limit:3}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$skip:1}])
+db.Cars.aggregate({$sortByCount:"$maker"})
+db.Cars.aggregate([{$unwind:"$owners"}])
+ 
+ 
+ 
+db.Cars.aggregate([{$match:{}},{$group:{_id:"$fuel_type",Totalcars:{$sum:1}}}])
+ 
+db.Cars.aggregate([{$match:{}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$sort:{model:1}}])
+ 
+db.Cars.aggregate([{$match:{}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$limit:5}])
+ 
+ 
+// aggregate with String Operator
+ 
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,CarName:{$concat:["$maker"," ","$model"]}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,model:{$toUpper:"$model"}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,maker:{$toLower:"$maker"}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,Car_Name:{$concat:["$maker"," ","$model","it own by","$owners":"name"]}}}])
+ 
+ 
+db.Cars.aggregate([{$match: { maker: "Hyundai" }},{$unwind: "$owners"},{$project: { _id: 0,Car_Detail: {$concat: [ "$maker", " ","$model"," it is owned by ","$owners.name"," on ","$owners.purchase_date","."]}}}])
+db.Cars.aggregate([{$match: { maker: "Hyundai" }},{$unwind: "$owners"},{$project: { _id: 0,Car_Detail: {$concat: [ "$maker", " ","$model"," it is owned by ","$owners.name"," on ","$owners.purchase_date","."]}}}])
+ 
+db.Cars.aggregate([{$project:{model:1,_id:0,is_diesel:{$regexMatch:{input:"$fuel_type",regex:"Die"}}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,CarName:{$concat:["$maker","","$model"]}}},{$out:"hyundai_cars"}])
+ 
+ 
+ 
+// Airthmetic Operators
+// $add , $substract , $divide ,$multiply , $round , $ads, $ceil
+ 
+db.Cars.aggregate([{$project:{sum:{$add:[2,3,6,9,0,8,7,6,5,4]}}}])
+db.Cars.aggregate({$project:{model:1,_id:0,price:{$add:["$price",50000]}}})
+db.Cars.aggregate({$project:{model:1,_id:0,price:{$subtract:["$price",50000]}}})
+db.Cars.aggregate([{$project:{model:1,_id:0,price:1}},{$addFields:{price_in_lakhs:{$divide:["$price",100000]}}}])
+db.Cars.aggregate([{$project:{model:1,_id:0,price:1}},{$set:{price_in_lakhs:{$divide:["$price",100000]}}}])
+db.Cars.aggregate([{$project:{model:1,_id:0,price:1}},{$set:{price_in_lakhs:{$abs:{$divide:["$price",90000]}}}}])
+db.Cars.aggregate([{$project:{model:1,_id:0,price:1}},{$set:{price_in_lakhs:{$round:[{$divide:["$price",90000]},1]}}}])
+ 
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$set:{total_service_cost:{$sum: "$service_history.cost"}}},{$project:{maker:1,model:1,total_service_cost:1,_id:0}}])
+ 
+//conditional Operators
+// $cond , $ifnull ,$switch
+ 
+db.Cars.aggregate([{$project:{_id:0,maker:1,model:1,fuelCategory:{$cond:{if:{$eq:["$fuel_type","Petrol"]},then:"Petrol Car",else:"Non-Petrol Car"}}}}])
+ 
+ 
+db.cars.aggregate([{$project:{_id: 0, maker: 1, model: 1,priceCategory:{$switch:{ branches: [ { case: { $lt: ["$price", 500000] }, then: "Budget" },{ case: { $and: [{ $gte: ["$price", 500000] }, { $lt: ["$price", 1000000] }] }, then: "Midrange" }, { case: { $gte: ["$price", 1000000] }, then: "Premium" } ],default: "Unknown" }}}}]);
+ 
+ 
+// Date Operators
+// $dateAdd , $dateDiff ,$month , $year,$hour,$dateOfMonth ,$dayOfYear
+ 
+db.Cars.aggregate([{$project:{newDate:{$dateAdd:{startDate:new Date("2024-08-29"),unit:"day",amount:7}}}}])
+ 
+// system generated VARIABLES
+// $$NOW
+db.Cars.aggregate({$project:{_id:0,model:1,date:"$$NOW"}})
+ 
+// user define VARIABLES
+my_price=1500000
+db.Cars.find({price:my_price})
+ 
+Object.keys(this)
+ 
+// type of relationship
+// * One to One , * One to Many , *Many to Many
+ 
+ 
+// Data Modeling in Mongodb
+db.user.insertMany([{"_id": "order1","user_id": "user1","product": "Laptop","amount": 50000,"order_date": "2024-08-01"},{"_id": "order2","user_id": "user2", "product": "Mobile Phone","amount": 15000,"order_date": "2024-08-05"},{ "_id": "order3","user_id": "user1","product": "Headphones","amount": 2000,"order_date": "2024-08-10" },{"_id": "order4", "user_id": "user3","product": "Tablet","amount": 25000,"order_date": "2024-08-12"},{ "_id": "order5", "user_id": "user4", "product": "Smart Watch", "amount": 8000, "order_date": "2024-08-15" }])
+ 
+db.users.insertMany([{"_id": "user1","name": "Amit Sharma","email": "amit.sharma@example.com","phone": "+91-987654210","address": "MG Road, Mumbai, Maharashtra"},{"_id": "user2","name": "Priya Verma","email": "priya.verma@example.com","phone": "+91-987654211", "address": "Nehru Place, New Delhi, Delhi" },{ "_id": "user3","name": "Rahul Singh","email": "rahul.singh@example.com","phone": "+91-987654212", "address": "Sector 18, Noida, Uttar Pradesh"},{ "_id": "user4","name": "Anjali Nair","email": "anjali.nair@example.com","phone": "+91-987654213","address": "Marine Drive, Kochi, Kerala"}, {"_id": "user5","name": "Vikram Desai","email": "vikram.desai@example.com","phone": "+91-987654214","address": "Park Street, Kolkata, West Bengal"}])
+ 
+JOIN with $lookup
+ 
+ 
+db.users.aggregate([
+ 
+    {
+ 
+        "$lookup": {
+ 
+            "from": "order",                         // The target collection to join with
+ 
+            "localField": "_id",                     // The field from the 'users' collection
+ 
+            "foreignField": "user_id",      // The field from the 'orders' collection
+ 
+            "as": "orders"                            // The name of the new array field to add to the 'users'
+ 
+        }
+ 
+    }
+ 
+])
+ 
+ 
+db.users.aggregate([{ "$lookup": { "from": "order", "localField": "_id","foreignField": "user_id","as": "orders"}}])
+ 
+// Schema Validation in Mongodb
+db.createCollection("users0",{validator:{$jsonSchema:{bsonType:"object",required:["name","phone"],properties:{name:{bsonType:"string",description:"must be a string and is required"},phone:{bsonType: "int",minimum:18,description:"must be an integer and is required"}}}},validationLevel:"strict",validationAction:"error"})
+ 
+ 
+db.users0.insertOne({name:6767,age:16})db.cars.find({$and:[{fuel_type:"Diesel"},{"engine.type":"Turbocharged"}]})
+db.cars.find({$or:[{fuel_type:"Diesel"},{"engine.type":"Turbocharged"}]})
+db.cars.find({$nor:[{fuel_type:"Diesel"},{"engine.type":"Turbocharged"}]})
+db.cars.find({fuel_type:{$exists:true}})
+db.cars.updateOne({model:"Nexon"},{$set:{color:"red"}})
+db.cars.find({color:{$exists:true}})
+db.cars.find({model:{$type:"string"}})
+db.cars.find({model:{$type:"null"}})
+db.cars.find({features:{$size:3}})
+db.cars.find({features:{$all:['Bluetooth','Sunroof']}})
+db.cars.find({features:{$all:['']}})
+db.cars.find().skip(2)
+db.cars.find().limit(2)
+db.cars.find().count()
+db.cars.find({fuel_type:"Petrol"}).count()
+db.cars.find({},{_id:0,model:1,maker:1}).sort({maker:1})
+ 
+ 
+// AGGREGATE Framework in MongoDB
+db.Cars.aggregate([{$group:{_id:"$maker"}}])
+db.Cars.aggregate([{$group:{_id:"$maker",TotalCars: {$sum:1}}}])
+db.Cars.aggregate([{$group:{_id:"$maker",AvgPrice: {$avg:"$price"}}}])
+db.Cars.aggregate([{$group:{_id:"$fuel_type",TotalCars: {$sum:1}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai", "engine.cc":{$gt:1000}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$count:"Total_cars"}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$sort:{model:1}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$group:{_id:"$fuel_type",Totalcars:{$sum:1}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$sort:{model:-1}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$limit:3}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$skip:1}])
+db.Cars.aggregate({$sortByCount:"$maker"})
+db.Cars.aggregate([{$unwind:"$owners"}])
+ 
+ 
+ 
+db.Cars.aggregate([{$match:{}},{$group:{_id:"$fuel_type",Totalcars:{$sum:1}}}])
+ 
+db.Cars.aggregate([{$match:{}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$sort:{model:1}}])
+ 
+db.Cars.aggregate([{$match:{}},{$project:{maker:1,model:1,fuel_type:1,_id:0}},{$limit:5}])
+ 
+ 
+// aggregate with String Operator
+ 
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,CarName:{$concat:["$maker"," ","$model"]}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,model:{$toUpper:"$model"}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,maker:{$toLower:"$maker"}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,Car_Name:{$concat:["$maker"," ","$model","it own by","$owners":"name"]}}}])
+ 
+ 
+db.Cars.aggregate([{$match: { maker: "Hyundai" }},{$unwind: "$owners"},{$project: { _id: 0,Car_Detail: {$concat: [ "$maker", " ","$model"," it is owned by ","$owners.name"," on ","$owners.purchase_date","."]}}}])
+db.Cars.aggregate([{$match: { maker: "Hyundai" }},{$unwind: "$owners"},{$project: { _id: 0,Car_Detail: {$concat: [ "$maker", " ","$model"," it is owned by ","$owners.name"," on ","$owners.purchase_date","."]}}}])
+ 
+db.Cars.aggregate([{$project:{model:1,_id:0,is_diesel:{$regexMatch:{input:"$fuel_type",regex:"Die"}}}}])
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$project:{_id:0,CarName:{$concat:["$maker","","$model"]}}},{$out:"hyundai_cars"}])
+ 
+ 
+ 
+// Airthmetic Operators
+// $add , $substract , $divide ,$multiply , $round , $ads, $ceil
+ 
+db.Cars.aggregate([{$project:{sum:{$add:[2,3,6,9,0,8,7,6,5,4]}}}])
+db.Cars.aggregate({$project:{model:1,_id:0,price:{$add:["$price",50000]}}})
+db.Cars.aggregate({$project:{model:1,_id:0,price:{$subtract:["$price",50000]}}})
+db.Cars.aggregate([{$project:{model:1,_id:0,price:1}},{$addFields:{price_in_lakhs:{$divide:["$price",100000]}}}])
+db.Cars.aggregate([{$project:{model:1,_id:0,price:1}},{$set:{price_in_lakhs:{$divide:["$price",100000]}}}])
+db.Cars.aggregate([{$project:{model:1,_id:0,price:1}},{$set:{price_in_lakhs:{$abs:{$divide:["$price",90000]}}}}])
+db.Cars.aggregate([{$project:{model:1,_id:0,price:1}},{$set:{price_in_lakhs:{$round:[{$divide:["$price",90000]},1]}}}])
+ 
+db.Cars.aggregate([{$match:{maker:"Hyundai"}},{$set:{total_service_cost:{$sum: "$service_history.cost"}}},{$project:{maker:1,model:1,total_service_cost:1,_id:0}}])
+ 
+//conditional Operators
+// $cond , $ifnull ,$switch
+ 
+db.Cars.aggregate([{$project:{_id:0,maker:1,model:1,fuelCategory:{$cond:{if:{$eq:["$fuel_type","Petrol"]},then:"Petrol Car",else:"Non-Petrol Car"}}}}])
+ 
+ 
+db.cars.aggregate([{$project:{_id: 0, maker: 1, model: 1,priceCategory:{$switch:{ branches: [ { case: { $lt: ["$price", 500000] }, then: "Budget" },{ case: { $and: [{ $gte: ["$price", 500000] }, { $lt: ["$price", 1000000] }] }, then: "Midrange" }, { case: { $gte: ["$price", 1000000] }, then: "Premium" } ],default: "Unknown" }}}}]);
+ 
+ 
+// Date Operators
+// $dateAdd , $dateDiff ,$month , $year,$hour,$dateOfMonth ,$dayOfYear
+ 
+db.Cars.aggregate([{$project:{newDate:{$dateAdd:{startDate:new Date("2024-08-29"),unit:"day",amount:7}}}}])
+ 
+// system generated VARIABLES
+// $$NOW
+db.Cars.aggregate({$project:{_id:0,model:1,date:"$$NOW"}})
+ 
+// user define VARIABLES
+my_price=1500000
+db.Cars.find({price:my_price})
+ 
+Object.keys(this)
+ 
+// type of relationship
+// * One to One , * One to Many , *Many to Many
+ 
+ 
+// Data Modeling in Mongodb
+db.user.insertMany([{"_id": "order1","user_id": "user1","product": "Laptop","amount": 50000,"order_date": "2024-08-01"},{"_id": "order2","user_id": "user2", "product": "Mobile Phone","amount": 15000,"order_date": "2024-08-05"},{ "_id": "order3","user_id": "user1","product": "Headphones","amount": 2000,"order_date": "2024-08-10" },{"_id": "order4", "user_id": "user3","product": "Tablet","amount": 25000,"order_date": "2024-08-12"},{ "_id": "order5", "user_id": "user4", "product": "Smart Watch", "amount": 8000, "order_date": "2024-08-15" }])
+ 
+db.users.insertMany([{"_id": "user1","name": "Amit Sharma","email": "amit.sharma@example.com","phone": "+91-987654210","address": "MG Road, Mumbai, Maharashtra"},{"_id": "user2","name": "Priya Verma","email": "priya.verma@example.com","phone": "+91-987654211", "address": "Nehru Place, New Delhi, Delhi" },{ "_id": "user3","name": "Rahul Singh","email": "rahul.singh@example.com","phone": "+91-987654212", "address": "Sector 18, Noida, Uttar Pradesh"},{ "_id": "user4","name": "Anjali Nair","email": "anjali.nair@example.com","phone": "+91-987654213","address": "Marine Drive, Kochi, Kerala"}, {"_id": "user5","name": "Vikram Desai","email": "vikram.desai@example.com","phone": "+91-987654214","address": "Park Street, Kolkata, West Bengal"}])
+ 
+JOIN with $lookup
+ 
+ 
+db.users.aggregate([
+ 
+    {
+ 
+        "$lookup": {
+ 
+            "from": "order",                         // The target collection to join with
+ 
+            "localField": "_id",                     // The field from the 'users' collection
+ 
+            "foreignField": "user_id",      // The field from the 'orders' collection
+ 
+            "as": "orders"                            // The name of the new array field to add to the 'users'
+ 
+        }
+ 
+    }
+ 
+])
+ 
+ 
+db.users.aggregate([{ "$lookup": { "from": "order", "localField": "_id","foreignField": "user_id","as": "orders"}}])
+ 
+// Schema Validation in Mongodb
+db.createCollection("users0",{validator:{$jsonSchema:{bsonType:"object",required:["name","phone"],properties:{name:{bsonType:"string",description:"must be a string and is required"},phone:{bsonType: "int",minimum:18,description:"must be an integer and is required"}}}},validationLevel:"strict",validationAction:"error"})
+ 
+ 
+db.users0.insertOne({name:6767,age:16})
+ 

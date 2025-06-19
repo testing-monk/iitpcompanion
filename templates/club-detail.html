@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ club.name }} | Student Club{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/club-detail.css' %}">
+
+<div class="club-detail-container">
+  <!-- Club Banner -->
+  <div class="club-banner">
+    <img src="{{ club.banner_image.url }}" alt="{{ club.name }} Banner">
+  </div>
+
+  <!-- Club Content -->
+  <div class="club-content">
+    <h1>{{ club.name }}</h1>
+    <p class="club-tagline">{{ club.tagline }}</p>
+
+    <div class="club-meta">
+      <span>Founded: {{ club.founded }}</span> |
+      <span>President: {{ club.president }}</span> |
+      <span>Members: {{ club.member_count }}</span>
+    </div>
+
+    <hr>
+
+    <!-- Description -->
+    <div class="club-description">
+      {{ club.description|safe }}
+    </div>
+
+    <!-- Gallery -->
+    {% if club.gallery_images.all %}
+    <div class="club-gallery">
+      <h2>Event Highlights</h2>
+      <div class="gallery-grid">
+        {% for image in club.gallery_images.all %}
+          <img src="{{ image.image.url }}" alt="Event image {{ forloop.counter }}">
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Contact -->
+    <div class="club-contact">
+      <h3>Contact & Socials</h3>
+      {% if club.email %}
+        <p>Email: <a href="mailto:{{ club.email }}">{{ club.email }}</a></p>
+      {% endif %}
+      {% if club.instagram %}
+        <p>Instagram: <a href="{{ club.instagram }}" target="_blank">{{ club.instagram }}</a></p>
+      {% endif %}
+      {% if club.linkedin %}
+        <p>LinkedIn: <a href="{{ club.linkedin }}" target="_blank">{{ club.linkedin }}</a></p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

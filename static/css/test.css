@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-color: #f9fafb;
+  color: #1f2937;
+  line-height: 1.6;
+  width: 100%;
+  overflow-x: hidden;
+  padding: 0 1rem;
+}
+
+.status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-wrap: wrap;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card svg {
+  width: 30px;
+  height: 30px;
+  color: #3b82f6;
+}
+
+.boldno {
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+
+.total span {
+  font-size: 0.95rem;
+  color: #6b7280;
+}
+
+.main-cards {
+  margin-top: 3rem;
+}
+
+.main-h h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-family: "Playfair Display", serif;
+}
+
+.main-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1.5rem auto;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+.main-data {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.main-card button {
+  background: transparent;
+  border: 2px solid #3b82f6;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 500;
+  color: #3b82f6;
+}
+
+.main-card button:hover {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.boldt {
+  color: #10b981;
+}
+
+.boldy {
+  color: #facc15;
+}
+
+.boldp {
+  color: #ef4444;
+}
+
+@media (max-width: 768px) {
+  body {
+    padding: 0 0.75rem;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .main-data {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .main-card button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .main-card {
+    padding: 1rem;
+  }
+
+  .status {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

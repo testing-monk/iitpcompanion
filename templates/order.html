@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Campus Food Pickup | IITP Companion+{% endblock %}
+
+{% block content %}
+<head>
+  <link rel="stylesheet" href="/css/style.css"/>
+  <style>
+    * {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f9f9f9;
+  color: #333;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+
+.canteen-select {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto 3rem;
+}
+
+.menu-item {
+  background: #fff;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  text-align: center;
+}
+
+.menu-item button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #ccc;
+  color: #fff;
+  border-radius: 8px;
+  cursor: not-allowed;
+}
+
+.cart {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.cart h2 {
+  margin-top: 0;
+}
+
+.cart button {
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #999;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+}
+
+  </style>
+</head>
+<body>
+  <header style="text-align: center;">
+    <h1>Order Your Campus Meal</h1>
+    <p>Select a canteen and place your pickup order</p>
+  </header>
+
+  <section class="canteen-select">
+    <label for="canteen">Choose a Canteen:</label>
+    <select id="canteen">
+      <option>-- Select --</option>
+      <option>Main Canteen</option>
+      <option>Café Mocha</option>
+      <option>South Block Food Court</option>
+    </select>
+  </section>
+
+  <main class="menu-grid">
+    <article class="menu-item">
+      <h3>Veg Sandwich</h3>
+      <p>₹40</p>
+      <button disabled>Add to Cart</button>
+    </article>
+    <article class="menu-item">
+      <h3>Maggie</h3>
+      <p>₹35</p>
+      <button disabled>Add to Cart</button>
+    </article>
+    <article class="menu-item">
+      <h3>Cold Coffee</h3>
+      <p>₹50</p>
+      <button disabled>Add to Cart</button>
+    </article>
+    <!-- Add more items similarly -->
+  </main>
+
+  <aside class="cart">
+    <h2>Your Order</h2>
+    <ul>
+      <li>Veg Sandwich × 1 – ₹40</li>
+    </ul>
+    <label>Pickup Time: <input type="time" disabled></label>
+    <button disabled>Proceed to Confirm</button>
+  </aside>
+</body>
+{% endblock %}

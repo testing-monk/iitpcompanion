@@ -1,0 +1,138 @@
+.club-detail-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+
+.club-banner img {
+  height: auto;
+  max-height: 350px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+.club-content h1 {
+  font-size: 2.2rem;
+  margin: 20px 0 10px;
+  color: #222;
+  line-height: 1.2;
+}
+
+.club-tagline {
+  font-size: 1.15rem;
+  color: #555;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+
+.club-meta {
+  font-size: 0.95rem;
+  color: #888;
+  margin-bottom: 20px;
+}
+
+.club-description {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+.club-gallery {
+  margin-bottom: 40px;
+}
+
+.club-gallery h2 {
+  margin-bottom: 16px;
+  font-size: 1.6rem;
+  color: #222;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.gallery-grid img {
+  width: 100%;
+  border-radius: 10px;
+  object-fit: cover;
+  height: 180px;
+  display: block;
+}
+
+.club-contact h3 {
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  color: #222;
+}
+
+.club-contact p {
+  margin: 4px 0;
+}
+
+.club-contact a {
+  color: #0077cc;
+  text-decoration: none;
+  word-break: break-word;
+}
+
+.club-contact a:hover {
+  text-decoration: underline;
+}
+
+/* ======================== Responsive Design ========================= */
+@media (max-width: 768px) {
+  .club-detail-container {
+    padding: 16px;
+    margin: 20px 12px;
+  }
+
+  .club-banner img {
+    max-height: 250px;
+  }
+
+  .club-content h1 {
+    font-size: 1.6rem;
+  }
+
+  .club-tagline {
+    font-size: 1rem;
+  }
+
+  .club-meta {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .club-description {
+    font-size: 0.95rem;
+  }
+
+  .club-gallery h2 {
+    font-size: 1.2rem;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .gallery-grid img {
+    height: auto;
+  }
+
+  .club-contact h3 {
+    font-size: 1.1rem;
+  }
+
+  .club-contact p,
+  .club-contact a {
+    font-size: 0.95rem;
+  }
+}

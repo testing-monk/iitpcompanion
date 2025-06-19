@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seach | IITP Companion+</title>
+    <link rel="stylesheet" href="{% static '/css/search.css' %}">
+</head>
+<body>
+    <header class="top-bar">
+        <div class="back-arrow">
+            <a href="{% url 'tracker' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 404.43"><path fill-rule="nonzero" d="m68.69 184.48 443.31.55v34.98l-438.96-.54 173.67 159.15-23.6 25.79L0 199.94 218.6.02l23.6 25.79z"/></svg>
+            </a>
+        </div> <a href="{% url 'home' %}">
+            <img class="logo" src="{% static 'images/iitp_logo.png' %}" alt="Home logo ">
+        </a> 
+
+    </header>
+
+    <section class="search-box">
+        <h1>Search Transport</h1>
+        <input type="text" placeholder="Search by name, location...">
+    </section>
+
+    <section class="filters">
+        <div class="filter-group">
+            <label for="">Type</label>
+            <select>
+                <option>ALL</option>
+                <option>Bus</option>
+                <option>Train</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="">Status</label>
+            <select name="" id="">
+                <option value="">ALL</option>
+                <option value="">On Time </option>
+                <option value="">Arriving</option>
+                <option value="">Delayed</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="">Departure in</label>
+            <select name="" id="">
+                <option value="">Any Time</option>
+                <option value="">15 mins</option>
+                <option value="">30 mins</option>
+                <option value="">1 hour</option>
+            </select>
+
+        </div>
+    </section>
+
+    <section class="result">
+        <h1>Result</h1>
+        <div class="result-cards">
+            <div class="bus card">
+                <h3>Campus shuttle A </h3>
+                <p><strong>Type:</strong> Bus</p>
+                <p><strong>
+                    Status:
+                </strong>Arriving</p>
+                <p><strong>
+                    Departure:
+                </strong>2min</p>
+            </div>
+            <div class="train card">
+                <h3>Rajdhani Express</h3>
+                <p><strong>
+                    Type:
+                </strong>Train</p>
+                <p><strong>
+                    Status:
+                </strong>On Time</p>
+                <p><strong>
+                    Departure:
+                </strong>32 mins</p>
+            </div>
+
+            <div class="bus card">
+                <h3>
+                    Patna Express
+                </h3>
+                <p><strong>
+                    Type:
+                </strong>Bus</p>
+                <p><strong>
+                    Status:
+                </strong>Delayed</p>
+                <p><strong>
+                    Departure:
+                </strong>12 mins</p>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

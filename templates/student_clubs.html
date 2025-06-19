@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Student Clubs | IIT Companion{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/student-clubs.css' %}">
+
+<section class="clubs-container">
+  <div class="clubs-hero">
+    <h1>Explore Student Clubs</h1>
+    <p>Join a community that shares your interests — whether it's coding, music, drama, sports, or innovation!</p>
+  </div>
+
+  <div class="clubs-grid">
+    {% for club in clubs %}
+      <a href="{% url 'club_detail' club.slug %}" class="club-card">
+        {% if club.banner_image %}
+          <img src="{{ club.banner_image.url }}" alt="{{ club.name }}">
+        {% else %}
+          <img src="{% static 'images/clubs/default.png' %}" alt="{{ club.name }}">
+        {% endif %}
+        <h3>{{ club.name }}</h3>
+        <p>{{ club.tagline|truncatechars:100 }}</p>
+      </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

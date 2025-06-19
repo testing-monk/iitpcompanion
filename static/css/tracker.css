@@ -1,0 +1,286 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+  font-weight: 500;
+  font-style: normal;
+}
+
+
+.tracker{
+  padding: 60px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 100px;
+
+}
+
+@media (max-width: 768px) {
+  .tracker {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+
+.header-card {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.header-card h1 {
+  padding-left: 15px;
+}
+
+.header-card h2 {
+  padding-left: 10px;
+}
+
+.header-card img{
+  width: 30px;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.header-card img:hover {
+  transform: scale(1.08);
+}
+
+.card{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 13px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e5e5e5;
+  /* margin: 20px;
+  padding: 20px; */
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+}
+
+
+
+.left{
+  margin: 0px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 200px;
+
+  /* width: 100%; */
+  /* height: 100%; */
+}
+
+.left h3{
+  font-size:  1.2rem;
+  color: #222;
+}
+
+.left p{
+  font-size: 1rem;
+  color: #666;
+}
+
+.right {
+ display: flex;
+ gap: 50px;
+ justify-content: space-between;
+ align-items: flex-end;
+ flex-direction: column;
+ padding: 15px;
+ margin: 15px;
+ width: 370px;
+}
+
+.right .dot {
+  height: 8px;
+  width: 8px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+
+.live {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 15px;
+}
+
+.time{
+  color: #5555ff;
+  font-size: 15px;
+}
+
+
+
+.Map{
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  padding: 60px;
+
+}
+
+
+
+.bus-map,
+.train-map{
+  margin: auto;
+  width: 70vw;
+  border-radius: 15px;
+  box-sizing: border-box;
+   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  padding: 24px;
+
+}
+
+@media (max-width: 768px) {
+  .Map {
+    /* Remove flex to stack elements vertically */
+    display: block;
+    padding: 30px;
+  }
+
+  .bus-map,
+  .train-map {
+    width: 85vw;
+    margin: auto;
+    margin-bottom: 30px;
+    padding: 16px;
+  }
+}
+
+
+.card:hover{
+  transform: scale(1.02);
+  transition: 0.3s ease-in-out;
+}
+
+
+
+@media (max-width: 768px) {
+
+  .bus-map,.train-map{
+    padding: 16px;
+  }
+
+}
+
+.bus-map img,
+.train-map img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.Schedule{
+  margin-top: 100px;
+  padding: 60px;
+  margin: 100px 60px;
+}
+
+.head{
+  padding: 30px;
+}
+.schedule svg{
+  width: 40px;
+  /* padding-left: 60px; */
+
+
+}
+
+.head{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+}
+
+.schedule-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+
+
+.Schedule-index,
+.schedule-bus{
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  text-align: center;
+  padding: 50px 30px;
+}
+
+
+
+.Schedule-index{border-bottom: 2px solid #E5E4E2;margin: 0px 10px;padding: 20px;}
+
+
+.gap{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.head-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+    width: 100%;
+}
+.head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* SVG Icon Styling */
+.map-icon {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+}
+
+/* Heading Styling */
+.head h2 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+}
+
+@media (max-width: 600px) {
+    .head {
+        padding: 0px 55px;
+        gap: 8px;
+    }
+
+    .map-icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    .head h2 {
+        font-size: 18px;
+    }
+}

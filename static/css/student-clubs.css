@@ -1,0 +1,79 @@
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #f9f9f9;
+}
+
+.clubs-container {
+  max-width: 1200px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.clubs-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.clubs-hero h1 {
+  font-size: 2.5rem;
+  color: #222;
+}
+
+.clubs-hero p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-top: 10px;
+}
+
+.clubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.club-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease;
+  text-decoration: none;
+}
+
+.club-card:hover {
+  transform: translateY(-6px);
+}
+
+.club-card img {
+  width: 200px;
+  height: 200px;
+  margin-bottom: 16px;
+}
+
+.club-card h3 {
+  font-size: 1.3rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.club-card p {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .clubs-hero h1 {
+    font-size: 2rem;
+  }
+
+  .clubs-hero p {
+    font-size: 1rem;
+  }
+
+  .club-card img {
+    width: 150px;
+    height: 150px;
+  }
+}

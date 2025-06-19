@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IITP Companion+ Header</title>
+  <link rel="stylesheet" href="{% static 'css/header.css' %}">
+  <link rel="icon" href="{% static 'images/iitp_logo.png' %}">
+</head>
+<body>
+  <header>
+    <nav class="navbar">
+      <div class="nav-left">
+        <div class="menu-toggle" id="mobile-menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+        <a href="{% url 'home' %}" class="logo-link">
+          <img src="{% static 'images/iitp_logo.png' %}" alt="IIT Patna Logo" class="logo-img">
+          <span class="logo-text">IITP Companion+</span>
+        </a>
+      </div>
+
+      <ul class="nav-links" id="nav-links">
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'order' %}">Order Food</a></li>
+        <li><a href="{% url 'tracker' %}">Tracker</a></li>
+        <li><a href="{% url 'Assignment' %}">Assignments</a></li>
+        <li><a href="{% url 'events' %}">Events Calender</a></li>
+      </ul>
+
+      <div class="user-account" id="user-account">
+        {% if webuser %}
+          <div class="notification-wrapper" id="notificationWrapper">
+            <div class="icon-box" id="notificationIcon">
+              <img style="margin-right:10px;" src="{% static 'images/bell.png' %}" alt="Notifications" class="nav-icon">
+            </div>
+            <div class="notification-dropdown" id="notificationDropdown">
+              <div class="notification-header">
+                <span><strong>Notifications</strong></span>
+                <span class="notification-actions">
+                  <a href="{% url 'mark_notifications_read' %}" title="Mark all as read">✔️</a>
+                </span>
+              </div>
+              <div class="notification-body">
+                {% if notifications %}
+                  {% for note in notifications %}
+                    <div class="notification-item {% if not note.is_read %}unread{% endif %}">
+                      <p>{{ note.message }}</p>
+                      <small>{{ note.created_at|date:"M d, H:i" }}</small>
+                    </div>
+                  {% endfor %}
+                {% else %}
+                  <p>🎉 You have no notifications</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <img src="{% static 'images/default.png' %}" alt="User Avatar" class="user-avatar">
+          <span class="arrow-down">
+            <img style="height:15px; width:15px;" src="{% static 'images/down.png' %}" alt="Arrow Down">
+          </span>
+
+          <ul class="account-dropdown" id="account-dropdown">
+            <li class="username-item"><strong>{{ webuser.username }}</strong></li>
+            <li><a href="{% url 'home' %}">Profile</a></li>
+            <li><a href="{% url 'Assignment' %}">Assignments</a></li>
+            <li><a href="{% url 'maps' %}">Campus Map</a></li>
+            <li><a href="{% url 'contact' %}">Feedback</a></li>
+            <li><a href="{% url 'login' %}">Switch Account</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+          </ul>
+        {% else %}
+          <a href="{% url 'login' %}" class="login-button">Login</a>
+        {% endif %}
+      </div>
+    </nav>
+  </header>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const menuToggle = document.getElementById('mobile-menu');
+      const navLinks = document.getElementById('nav-links');
+      const userAccount = document.getElementById('user-account');
+      const notificationIcon = document.getElementById('notificationIcon');
+      const notificationWrapper = document.getElementById('notificationWrapper');
+
+      // Toggle mobile menu
+      if (menuToggle && navLinks) {
+        menuToggle.addEventListener('click', (event) => {
+          event.stopPropagation();
+          navLinks.classList.toggle('active');
+          menuToggle.classList.toggle('open');
+        });
+      }
+
+      // Toggle user dropdown
+      if (userAccount) {
+        userAccount.addEventListener('click', function (event) {
+          event.stopPropagation();
+          this.classList.toggle('active');
+        });
+      }
+
+      // Toggle notifications
+      if (notificationIcon && notificationWrapper) {
+        notificationIcon.addEventListener('click', function (event) {
+          event.stopPropagation();
+          notificationWrapper.classList.toggle('active');
+        });
+      }
+
+      // Close dropdowns if clicked outside
+      document.addEventListener('click', function (e) {
+        if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
+          navLinks.classList.remove('active');
+          menuToggle.classList.remove('open');
+        }
+        if (!userAccount.contains(e.target)) {
+          userAccount.classList.remove('active');
+        }
+        if (!notificationWrapper.contains(e.target)) {
+          notificationWrapper.classList.remove('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
