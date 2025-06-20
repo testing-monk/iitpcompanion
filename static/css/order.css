@@ -122,7 +122,8 @@ h2 {
 
 @media (max-width: 768px) {
     .order {
-        margin: 1.5rem 1rem;
+        margin: 1.5rem 0.5rem;
+        padding: 0 0.5rem;
     }
 
     .order h1 {
@@ -131,22 +132,17 @@ h2 {
     }
 
     .order-head p {
-        font-size: 1.1rem;
-        padding: 0 1rem;
-    }
-
-    .order img {
-        height: auto;
+        font-size: 1.05rem;
+        padding: 0 0.5rem;
     }
 
     .restaurants-cards {
         grid-template-columns: 1fr;
         gap: 1rem;
-        padding: 0.5rem;
     }
 
     .main-card h2 {
-        font-size: 1.3rem;
+        font-size: 1.25rem;
     }
 
     .main-card p,
@@ -156,7 +152,6 @@ h2 {
 
     .info {
         flex-direction: column;
-        gap: 0.5rem;
         align-items: flex-start;
     }
 
