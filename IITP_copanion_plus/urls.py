@@ -8,7 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('assignment/', views.Assignment, name='Assignment'),
-    path('order/', views.order, name='order'),
+    path('order/', views.canteen, name='order'),
     path('search/', views.search, name='search'),
     path('tracker/', views.tracker, name='tracker'),
     path('contact-us/', views.contact_view, name='contact'),
@@ -27,7 +27,7 @@ urlpatterns = [
     path('admin-dashboard/', views.admin_dashboard, name='admin_dashboard'),
     path('notifications/mark-read/', views.mark_notifications_read, name='mark_notifications_read'),
     path('events/delete/<int:event_id>/', views.delete_event, name='delete_event'),
-
+    path('order/<slug>/', views.menu_page, name='menu_page'),
 ]
 
 # Static and media files (for development)

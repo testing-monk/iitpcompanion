@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: iitpcompanion
+    env: python
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: gunicorn IITP_copanion_plus.wsgi:application
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: IITP_copanion_plus.settings
+      - key: SECRET_KEY
+        value: django-insecure-v0!twna&w!=k(4y7^&bt5wn(x#lc4o$p4tcjqfs$@j75iby)7)
+      - key: DEBUG
+        value: "True"

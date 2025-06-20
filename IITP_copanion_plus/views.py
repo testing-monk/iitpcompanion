@@ -16,6 +16,9 @@ from datetime import date
 from notifications.models import Notification
 from django.views.decorators.csrf import csrf_exempt
 from Maps.models import Map
+from Orderfood.models import Canteen, MenuItem
+
+from collections import defaultdict
 
 def home(request):
     return render(request, 'index.html')
@@ -218,4 +221,24 @@ def delete_event(request, event_id):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
+
+
+def canteen(request):
+    canteens = Canteen.objects.all()
+    return render(request, 'order.html', {'canteens': canteens})
+
+
+def menu_page(request, slug):
+    canteen = get_object_or_404(Canteen, slug=slug)
+    items = MenuItem.objects.filter(canteen=canteen)
+
+    categorized_items = {}
+    for item in items:
+        category = item.category or "Others"
+        categorized_items.setdefault(category, []).append(item)
+
+    return render(request, 'menu.html', {
+        "canteen": canteen,
+        "categorized_items": categorized_items
+    })
 

@@ -1,0 +1,5 @@
+Django
+django-autoslug
+gunicorn
+psycopg2-binary
+whitenoise

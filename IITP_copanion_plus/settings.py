@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'contacts',
     'notifications',
     'Maps',
+    'Orderfood',
 
 ]
 

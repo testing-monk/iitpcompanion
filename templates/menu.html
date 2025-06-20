@@ -1,0 +1,131 @@
+{% extends "base2.html" %}
+{% load static %}
+
+{% block title %}{{ canteen.name }} | Menu{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+
+<!-- Header with Cart -->
+<header>
+  <nav>
+    <div class="back">
+      <a href="{% url 'order' %}">
+        <button>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-arrow-left">
+            <path d="m12 19-7-7 7-7"></path>
+            <path d="M19 12H5"></path>
+          </svg>
+        </button>
+      </a>
+      <p class="hide-mobile">Back to Cafes</p>
+    </div>
+
+    <div class="text-center">
+      <h2>{{ canteen.name|default:"Cafe Name" }}</h2>
+    </div>
+
+    <div class="nav-logo">
+      <div class="cart-icon" id="cart-icon">
+        <!-- Cart SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 -960 960 960"
+          width="34px" fill="grey">
+          <path
+            d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z" />
+        </svg>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section class="menu">
+  <h1>MENU</h1>
+
+  {% for category, items in categorized_items.items %}
+    <div class="cards">
+      <div class="cards-head">
+        <h2>{{ category }}</h2>
+      </div>
+      <div class="cards-grid">
+        {% for item in items %}
+        <div class="card">
+          <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-img">
+          <div class="dish-info">
+            <h2>{{ item.name }}</h2>
+            <div class="details-row">
+              <span class="price">₹{{ item.price }}</span>
+              <span class="delivery">15 min</span>
+            </div>
+            <button class="add-btn">Add</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  {% empty %}
+    <p>No menu items available.</p>
+  {% endfor %}
+</section>
+
+<!-- Backdrop -->
+<div class="cart-backdrop" id="cart-backdrop"></div>
+
+<!-- Cart Section -->
+<aside class="cart" id="cart">
+  <div class="cart-head">
+    <h2>Your Order</h2>
+    <span class="close-cart" id="close-cart">✕</span>
+  </div>
+
+  <div class="item-head">
+    <p>Item</p>
+    <p>Price</p>
+  </div>
+
+  <ul class="cart-items">
+    <li>
+      <div class="item-name">Coffee 1</div>
+      <div class="item-price">30 x 1</div>
+    </li>
+    <li>
+      <div class="item-name">Coffee 2</div>
+      <div class="item-price">40 x 2</div>
+    </li>
+  </ul>
+
+  <div class="cart-total">
+    <strong>Total</strong>
+    <span>₹110</span>
+  </div>
+
+  <button class="cart-order">Place Order</button>
+</aside>
+
+<footer>
+    <div class="Rights-reserved" style="padding: 0; margin: 0;">
+        <p>&copy; 2025 IITP Companion+. All rights reserved.</p>
+    </div>
+</footer>
+<!-- Cart Toggle Script -->
+<script>
+  const cart = document.getElementById("cart");
+  const backdrop = document.getElementById("cart-backdrop");
+  const openCartBtn = document.getElementById("cart-icon");
+  const closeCartBtn = document.getElementById("close-cart");
+
+  openCartBtn.addEventListener("click", () => {
+    cart.classList.add("open");
+    backdrop.classList.add("show");
+  });
+
+  function closeCart() {
+    cart.classList.remove("open");
+    backdrop.classList.remove("show");
+  }
+
+  closeCartBtn.addEventListener("click", closeCart);
+  backdrop.addEventListener("click", closeCart);
+</script>
+{% endblock %}

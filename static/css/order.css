@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+p,
+a {
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+h1 {
+     font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal
+
+}
+h2 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+}
+.order{
+    margin: 2rem 3rem;
+}
+
+.order h1{
+    font-weight: 300;
+    text-align: center;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
+}
+
+.order-head p {
+    font-weight: 300;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    color: #64748b;
+    max-width: 42rem;
+    margin: 10px auto;
+    text-align: center;
+    width: 100%;
+}
+
+.order img {
+    max-width: 600px;
+    width: 100%;
+    height: 375px;
+    object-fit: cover;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.restaurants-cards{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0px, 1fr));
+
+}
+.card {
+    width: 100%;
+    max-width: 600px;
+    margin: 2rem auto;
+    background-color: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+ .card:hover {
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+
+ }
+
+.main-card h2{
+    text-align: center;
+    margin: 20px auto;
+    font-size: 1.5rem;
+    line-height: 1.75rem;
+    font-weight: 300;
+}
+
+
+
+.main-card p {
+    font-size: 1rem;
+    line-height: 1.75rem;
+    font-weight: 500;
+
+}
+
+
+.main-card .p-card{
+    font-size: 0.975rem;
+    font-weight: 300;
+    line-height: 1.75rem;
+    color: #64748b;
+}
+
+.info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.dilevery-time {
+    background-color: #f1f5f9;
+    color: #64748b;
+    padding: 0.25rem 0.5rem;
+    border-radius: 20px;
+}
+
+@media (max-width: 768px) {
+    .order {
+        margin: 1.5rem 1rem;
+    }
+
+    .order h1 {
+        font-size: 2rem;
+        line-height: 2.25rem;
+    }
+
+    .order-head p {
+        font-size: 1.1rem;
+        padding: 0 1rem;
+    }
+
+    .order img {
+        height: auto;
+    }
+
+    .restaurants-cards {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    .main-card h2 {
+        font-size: 1.3rem;
+    }
+
+    .main-card p,
+    .main-card .p-card {
+        font-size: 0.95rem;
+    }
+
+    .info {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+    }
+
+    .dilevery-time {
+        font-size: 0.8rem;
+    }
+}
