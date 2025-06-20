@@ -28,7 +28,7 @@
     </div>
 
     <div class="nav-logo">
-      <div class="cart-icon" id="cart-icon">
+      <div style="cursor: pointer;" class="cart-icon" id="cart-icon">
         <!-- Cart SVG -->
         <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 -960 960 960"
           width="34px" fill="grey">
@@ -58,7 +58,9 @@
               <span class="price">₹{{ item.price }}</span>
               <span class="delivery">15 min</span>
             </div>
-            <button class="add-btn">Add</button>
+             <button style="cursor: pointer;" class="add-btn" onclick="add_to_cart({{ item.id }})">
+              Add
+            </button>
           </div>
         </div>
         {% endfor %}
@@ -69,63 +71,107 @@
   {% endfor %}
 </section>
 
-<!-- Backdrop -->
+
 <div class="cart-backdrop" id="cart-backdrop"></div>
 
-<!-- Cart Section -->
 <aside class="cart" id="cart">
   <div class="cart-head">
     <h2>Your Order</h2>
-    <span class="close-cart" id="close-cart">✕</span>
+    <span style="cursor: pointer;" class="close-cart" id="close-cart">✕</span>
   </div>
 
-  <div class="item-head">
-    <p>Item</p>
-    <p>Price</p>
-  </div>
+
 
   <ul class="cart-items">
-    <li>
-      <div class="item-name">Coffee 1</div>
-      <div class="item-price">30 x 1</div>
-    </li>
-    <li>
-      <div class="item-name">Coffee 2</div>
-      <div class="item-price">40 x 2</div>
-    </li>
+    {% for item in cart %}
+      <li>
+        <div class="item-name">{{ item.item_title }}</div>
+        <div class="item-price">₹{{ item.item_price }} x {{ item.item_quantity }}</div>
+        <button class="remove-btn" onclick="remove_from_cart('{{ item.id }}')">✕</button>
+      </li>
+    {% endfor %}
   </ul>
-
+  <div class="total-items">
+    <strong>Items</strong>
+    <span>{{ total_item }}</span>
+  </div>
   <div class="cart-total">
     <strong>Total</strong>
-    <span>₹110</span>
+    <span>₹{{ total_price }}</span>
   </div>
 
   <button class="cart-order">Place Order</button>
 </aside>
+<div id="toast-container" class="toast-container"></div>
 
 <footer>
     <div class="Rights-reserved" style="padding: 0; margin: 0;">
         <p>&copy; 2025 IITP Companion+. All rights reserved.</p>
     </div>
 </footer>
-<!-- Cart Toggle Script -->
-<script>
-  const cart = document.getElementById("cart");
-  const backdrop = document.getElementById("cart-backdrop");
-  const openCartBtn = document.getElementById("cart-icon");
-  const closeCartBtn = document.getElementById("close-cart");
 
-  openCartBtn.addEventListener("click", () => {
-    cart.classList.add("open");
-    backdrop.classList.add("show");
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cart = document.getElementById("cart");
+    const backdrop = document.getElementById("cart-backdrop");
+    const openCartBtn = document.getElementById("cart-icon");
+    const closeCartBtn = document.getElementById("close-cart");
+
+    if (!cart || !openCartBtn || !backdrop || !closeCartBtn) {
+      console.error("Cart elements not found in DOM.");
+      return;
+    }
+
+    openCartBtn.addEventListener("click", () => {
+      cart.classList.add("open");
+      backdrop.classList.add("show");
+    });
+
+    function closeCart() {
+      cart.classList.remove("open");
+      backdrop.classList.remove("show");
+    }
+
+    closeCartBtn.addEventListener("click", closeCart);
+    backdrop.addEventListener("click", closeCart);
   });
 
-  function closeCart() {
-    cart.classList.remove("open");
-    backdrop.classList.remove("show");
+  function showToast(message, type = 'success') {
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerText = message;
+
+    const container = document.getElementById("toast-container");
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 2500);
   }
 
-  closeCartBtn.addEventListener("click", closeCart);
-  backdrop.addEventListener("click", closeCart);
-</script>
+  function add_to_cart(itemId) {
+    fetch(`/order/{{ canteen.slug }}/add-to-cart/${itemId}/`)
+      .then(response => response.json())
+      .then(data => {
+        showToast(data.message, 'success');
+        setTimeout(() => location.reload(), 1500);
+      })
+      .catch(() => {
+        showToast("please login first", 'error');
+      });
+  }
+
+  function remove_from_cart(itemId) {
+    fetch(`/order/{{ canteen.slug }}/remove-from-cart/${itemId}/`)
+      .then(response => response.json())
+      .then(data => {
+        showToast(data.message, 'success');
+        setTimeout(() => location.reload(), 1500);
+      })
+      .catch(() => {
+        showToast("Failed to remove item.", 'error');
+      });
+  }
+  </script>
+
 {% endblock %}

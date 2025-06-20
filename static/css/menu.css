@@ -229,6 +229,7 @@ nav h2 {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 20px;
 }
 
 .cart-items {
@@ -255,6 +256,13 @@ nav h2 {
 }
 
 .cart-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.total-items {
   display: flex;
   justify-content: space-between;
   font-weight: bold;
@@ -311,4 +319,65 @@ nav h2 {
     margin-bottom: 50px;
 
 
+}
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.toast {
+  background-color: #1e293b;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-size: 0.9rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  animation: slideIn 0.3s ease;
+  border-left: 6px solid;
+}
+
+.toast.success {
+  border-color: #22c55e; /* Tailwind emerald-500 */
+  background-color: #e6f9ed;
+  color: #166534;
+}
+
+.toast.error {
+  border-color: #f87171; /* Tailwind red-400 */
+  background-color: #fef2f2;
+  color: #991b1b;
+}
+
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0%);
+    opacity: 1;
+  }
+}
+
+.remove-btn {
+  background-color: #f1f5f9;
+  color: #334155;
+  border: none;
+  margin-left: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.remove-btn:hover {
+  background-color: #e2e8f0;
+  color: #1e293b;
 }

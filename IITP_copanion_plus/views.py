@@ -16,9 +16,20 @@ from datetime import date
 from notifications.models import Notification
 from django.views.decorators.csrf import csrf_exempt
 from Maps.models import Map
-from Orderfood.models import Canteen, MenuItem
+from Orderfood.models import Canteen, MenuItem, Cart
 
+from functools import wraps
+from django.views.decorators.http import require_POST
 from collections import defaultdict
+
+def require_login(view_func):
+    @wraps(view_func)
+    def _wrapped_view(request, *args, **kwargs):
+        user_id = request.session.get('user_id')
+        if not user_id:
+            return redirect('login')
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
 
 def home(request):
     return render(request, 'index.html')
@@ -65,8 +76,6 @@ def logout(request):
 def Assignment(request):
     return render(request, 'Assigment.html')
 
-def order(request):
-    return render(request, 'order.html')
 
 def search(request):
     return render(request, 'search.html')
@@ -81,6 +90,7 @@ def progress(request):
 def test(request):
     return render(request, 'test.html')
 
+@require_login
 def feedback(request):
     return render(request, 'feedback.html')
 
@@ -99,7 +109,7 @@ def club_detail(request, slug):
     club = get_object_or_404(Club, slug=slug)
     return render(request, 'club-detail.html', {'club': club})
 
-
+@require_login
 @csrf_exempt  # Only if CSRF token is an issue in testing (not recommended in production)
 def save_event(request):
     if request.method == "POST":
@@ -138,7 +148,6 @@ def save_event(request):
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
 
 
-
 def get_events(request):
     user_id = request.session.get('user_id')
 
@@ -166,7 +175,7 @@ def get_events(request):
 
     return JsonResponse(events_data, safe=False)
 
-
+@require_login
 def contact_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -187,7 +196,7 @@ def contact_view(request):
     return render(request, 'contacts.html')
 
 
-@login_required
+@require_login
 def admin_dashboard(request):
     from Webusers.models import Users
     from notifications.models import Notification
@@ -200,6 +209,7 @@ def admin_dashboard(request):
         'notifications': notifications,
     })
 
+@require_login
 def mark_notifications_read(request):
     user_id = request.session.get('user_id')
     if user_id:
@@ -207,6 +217,7 @@ def mark_notifications_read(request):
         Notification.objects.filter(user=user, is_read=False).update(is_read=True)
     return redirect('home')
 
+@require_login
 @csrf_exempt
 def delete_event(request, event_id):
     if request.method == "DELETE":
@@ -227,18 +238,82 @@ def canteen(request):
     canteens = Canteen.objects.all()
     return render(request, 'order.html', {'canteens': canteens})
 
-
 def menu_page(request, slug):
+    user_id = request.session.get('user_id')
     canteen = get_object_or_404(Canteen, slug=slug)
     items = MenuItem.objects.filter(canteen=canteen)
+
+    cart = []
+    total_price = 0
+    total_item = 0
+    all_items = []
+
+    if user_id:
+        try:
+            user = Users.objects.get(id=user_id)
+            cart = Cart.objects.filter(cart_user=user)
+
+            total_price = sum(item.item_price * item.item_quantity for item in cart)
+            total_item = sum(item.item_quantity for item in cart)
+            all_items = [item.item_title for item in cart]
+
+        except Users.DoesNotExist:
+            user = None
+        except Exception as e:
+            print(f"Cart fetch error: {e}")
+
 
     categorized_items = {}
     for item in items:
         category = item.category or "Others"
         categorized_items.setdefault(category, []).append(item)
 
-    return render(request, 'menu.html', {
-        "canteen": canteen,
-        "categorized_items": categorized_items
-    })
+    context = {
+        'cart': cart,
+        'all_items': all_items,
+        'total_price': total_price,
+        'total_item': total_item,
+        'canteen': canteen,
+        'categorized_items': categorized_items
+    }
 
+    return render(request, 'menu.html', context)
+
+def addtocart(request, slug, item_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+
+    user = get_object_or_404(Users, id=user_id)
+    food = get_object_or_404(MenuItem, id=item_id)
+
+    cart_item = Cart.objects.filter(cart_user=user, item_slug=food.slug).first()
+
+    if cart_item:
+        cart_item.item_quantity += 1
+        cart_item.save()
+        return JsonResponse({'message': f'One more {food.name} added to your plate!'})
+    else:
+        Cart.objects.create(
+            cart_user=user,
+            item_title=food.name,
+            item_price=food.price,
+            item_slug=food.slug,
+            item_quantity=1
+        )
+        return JsonResponse({'message': f'{food.name} added to your plate!'})
+
+@require_login
+def remove_from_cart(request, slug, item_id):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return JsonResponse({'error': 'User not logged in'}, status=403)
+
+    user = get_object_or_404(Users, id=user_id)
+    cart_item = get_object_or_404(Cart, id=item_id, cart_user=user)
+
+    cart_item.delete()
+    return JsonResponse({'message': f"{cart_item.item_title} removed from your plate."})
+
+def about_us(request):
+    return render(request,'about_us.html')

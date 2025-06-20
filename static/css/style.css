@@ -799,3 +799,15 @@ section {
   z-index: 1;
   background: white;
 }
+
+.Rights-reserved {
+    text-align: center;
+    padding: 20px 10px;
+    border-top: 2px solid #000;
+    font-size: 15px;
+    color: #444;
+    width: 100%;
+    margin-bottom: 50px;
+
+
+}

@@ -30,12 +30,18 @@
                 time tracking of transport and event alerts, we make student life easier and
                 more connected</p>
             <div class="hero-buttons">
-                <a href="{% url 'home' %}">
+        {% if webuser %}
+                <a href="{% url 'about' %}">
                     <button  class="black">Learn More</button>
                 </a>
-                <a href="{% url 'progress' %}">
+        {% else %}
+                <a href="{% url 'about' %}">
+                    <button  class="black">Learn More</button>
+                </a>
+                <a href="{% url 'register' %}">
                     <button  class="white">Sign Up</button>
                 </a>
+        {% endif %}
             </div>
         </div>
     </section>
@@ -58,12 +64,21 @@
                     </div>
                 </div>
                 <div class="feature-buttons">
-                    <a href="{% url 'order' %}">
-                        <button class="black">Order</button>
-                    </a>
-                    <a href="{% url 'progress' %}">
-                        <button class="white">Learn More</button>
-                    </a>
+                    {% if webuser %}
+                        <a href="{% url 'order' %}">
+                            <button class="black">Order</button>
+                        </a>
+                        <a href="{% url 'about' %}">
+                            <button class="white">Learn More</button>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}">
+                            <button class="black">Order</button>
+                        </a>
+                        <a href="{% url 'about' %}">
+                            <button class="white">Learn More</button>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -99,12 +114,21 @@
                     </div>
                 </div>
                 <div class="feature-buttons">
-                    <a href="{% url 'tracker' %}">
-                        <button class="white" >Learn More</button>
-                    </a>
-                    <a href="{% url 'progress' %}">
-                        <button class="black" >Sign Up</button>
-                    </a>
+                    {% if webuser %}
+                        <a href="{% url 'about' %}">
+                            <button class="white" >Learn More</button>
+                        </a>
+                        <a href="{% url 'tracker' %}">
+                            <button class="black" >Track</button>
+                        </a>
+                    {% else %}
+                        <a href="{% url 'about' %}">
+                            <button class="white" >Learn More</button>
+                        </a>
+                        <a href="{% url 'login' %}">
+                            <button class="black" >Track</button>
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -127,9 +151,15 @@
                 Engage more deeply with campus life and make the most of your time at IIT
                 Patna.
             </p>
-            <a href="{% url 'Assignment' %}">
-                <button class="abtn">Your Assignments</button>
-            </a>
+            {% if webuser %}
+                <a href="{% url 'Assignment' %}">
+                    <button class="abtn">Your Assignments</button>
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}">
+                    <button class="abtn">Your Assignments</button>
+                </a>
+            {% endif %}
 
         </div>
     </section>
@@ -137,14 +167,14 @@
     <section class="feedbackimg">
 
         <div class="feedbackimg1">
-            <img src="/static/images/1.jpg" alt="balnk image" width="400px">
+            <img src="{% static 'images/1.jpg' %}" alt="balnk image" width="400px">
             <h2>Streamlined Feedback for Clubs and Timely Alerts for Events and Assignments </h2>
             <p>
                 Your input shapes our community, and timely alerts keep you informed.
             </p>
         </div>
-        <div cassets/images/placeholder.png">
-            <img src="/static/images/assignments.jpg" alt="balnk image" width="400px">
+        <div>
+            <img src="{% static 'images/assignments.jpg' %}" alt="balnk image" width="400px">
             <h2>Stay Informed with Real-Time Alerts
                 for Campus Events and Assignments</h2>
             <p>
@@ -153,7 +183,7 @@
             </p>
         </div>
         <div class="feedbackimg3">
-            <img src="/static/images/feedback.jpg" alt="black image" width="400px">
+            <img src="{% static 'images/feedback.jpg' %}" alt="black image" width="400px">
             <h2>
                 Join the Conversation: Share Your
                 Feedback on Clubs and Services
@@ -181,7 +211,7 @@
 
   <div class="review-card">
     <div class="user-info">
-      <img src="/static/images/femaleimg.png" alt="female" class="avatar">
+      <img src="{% static 'images/femaleimg.png' %}" alt="female" class="avatar">
       <div>
         <h4 class="username">Niharika</h4>
         <span class="rating">★ 5</span>
@@ -194,7 +224,7 @@
 
   <div class="review-card">
     <div class="user-info">
-      <img src="/static/images/male.jpeg" alt="male" class="avatar">
+      <img src="{% static 'images/male.jpeg' %}" alt="male" class="avatar">
       <div>
         <h4 class="username">why_SO.SID</h4>
         <span class="rating">★ 5</span>
@@ -207,7 +237,7 @@
 
   <div class="review-card">
     <div class="user-info">
-      <img src="/static/images/sillycat.jpeg" alt="cat" class="avatar">
+      <img src="{% static 'images/sillycat.jpeg' %}" alt="cat" class="avatar">
       <div>
         <h4 class="username">Always_Arohi</h4>
         <span class="rating">★ 5</span>
@@ -250,7 +280,7 @@
 
 
         <div class="none-img">
-            <img width="832px" src="/static/images/map-placeholder.png" alt="">
+            <img width="832px" src="{% static 'images/map-placeholder.png' %}" alt="">
         </div>
 
 
@@ -262,18 +292,18 @@
 
                 <div class="connect-contacts">
                     <div class="connect-mail">
-                        <img src="/static/icons/mail_32.svg" alt="">
+                        <img src="{% static 'icons/mail_32.svg' %}" alt="">
                         <div>
 
                             <h3>Email</h3>
                             <p>Contact us anytime</p>
                         </div>
-                        <a href="">info@Companion.com</a>
+                        <a href="{% url 'contact' %}">info@Companion.com</a>
                     </div>
 
 
                     <div class="connect-mail">
-                        <img src="/static/icons/call_32.svg" alt="">
+                        <img src="{% static 'icons/call_32.svg' %}" alt="">
                         <div>
 
                             <h3>phone</h3>
@@ -286,7 +316,7 @@
 
 
                     <div class="connect-mail">
-                        <img src="/static/icons/location_on_32.svg" alt="">
+                        <img src="{% static 'icons/location_on_32.svg' %}" alt="">
 
                         <div class="Office-address">
 
@@ -299,7 +329,7 @@
                             <span><a
                                     href="https://www.google.com/maps/dir//IIT,+Bihta+Kanpa+Rd,+Patna,+Dayalpur+Daulatpur,+Bihar+801106/@25.5356218,84.7688951,12z/data=!4m8!4m7!1m0!1m5!1m1!1s0x39ed577f6954a4ab:0x6ce8f1b9fc2aa02a!2m2!1d84.8512966!2d25.5356448?entry=ttu&g_ep=EgoyMDI1MDYwMi4wIKXMDSoASAFQAw%3D%3D">Find
                                     us</a></span>
-                            <img src="/static/icons/chevron_right_32.svg" alt="">
+                            <img src="{% static 'icons/chevron_right_32.svg' %}" alt="">
                         </div>
                     </div>
 
@@ -310,7 +340,7 @@
 
             <div class="connect-imagemain">
                 <div id="map-container"></div>
-<!--                <img width="832px" src="/static/images/map-placeholder.png" alt="">-->
+<!--                <img width="832px" src="{% static 'images/map-placeholder.png' %}" alt="">-->
             </div>
         </div>
     </section>

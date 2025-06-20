@@ -28,6 +28,11 @@ urlpatterns = [
     path('notifications/mark-read/', views.mark_notifications_read, name='mark_notifications_read'),
     path('events/delete/<int:event_id>/', views.delete_event, name='delete_event'),
     path('order/<slug>/', views.menu_page, name='menu_page'),
+    path('order/<slug:slug>/add-to-cart/<int:item_id>/', views.addtocart, name='add_to_cart'),
+    path('order/<slug:slug>/remove-from-cart/<int:item_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('about/', views.about_us, name='about'),
+
+
 ]
 
 # Static and media files (for development)

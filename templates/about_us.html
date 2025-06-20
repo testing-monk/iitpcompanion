@@ -1,0 +1,270 @@
+{% extends "base2.html" %}
+{% load static %}
+
+{% block title %}About Us | IITP Companion+{% endblock %}
+
+{% block content %}
+{% include 'header.html' %}
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<section class="hero about-hero">
+  <div class="hero-left">
+    <h1>About IITP Companion+</h1>
+  </div>
+  <div class="hero-right">
+    <p>
+      IITP Companion+ is an all-in-one platform created to simplify and enhance campus life for students at IIT Patna.
+      From canteen ordering and real-time transport tracking to event alerts and student feedback — we bring everything
+      to one unified platform to make your experience seamless.
+    </p>
+  </div>
+</section>
+
+<!-- Food Ordering -->
+<section class="feature feature-convenience">
+  <div class="feature-left">
+    <div class="feature-image">
+      <img src="{% static 'images/deliver-food.jpg' %}" alt="Canteen ordering system" width="500px">
+    </div>
+  </div>
+  <div class="feature-right">
+    <div class="feature-text">
+      <h4>Convenience</h4>
+      <h2>Order Your Favorite Food with Ease</h2>
+      <p>
+        Choose from a wide variety of meals available at campus canteens and place your order online. Whether you're in a rush or just want to avoid the queue — your meal is a click away.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Real-Time Tracking -->
+<section class="feature feature-track">
+  <div class="feature-left">
+    <div class="feature-text">
+      <h4>Real-Time Tracking</h4>
+      <h2>Never Miss a Bus Again</h2>
+      <p>
+        With live updates on campus buses and transport, students can plan their movement better, stay punctual, and navigate the campus more confidently.
+      </p>
+    </div>
+  </div>
+  <div class="feature-right">
+    <div class="feature-image">
+      <img src="{% static 'images/track_bus.jpg' %}" alt="Transport tracking preview" width="500px">
+    </div>
+  </div>
+</section>
+
+<!-- Alerts & Assignments -->
+<section class="feature feature-alerts">
+  <div class="feature-left">
+    <div class="feature-image">
+      <img src="{% static 'images/assignments.jpg' %}" alt="Assignments and Alerts" width="500px">
+    </div>
+  </div>
+  <div class="feature-right">
+    <div class="feature-text">
+      <h4>Alerts & Assignments</h4>
+      <h2>Stay Notified</h2>
+      <p>
+        Be informed with timely alerts about classes, club meetings, events, and assignment deadlines. Everything you need is at your fingertips to stay on top of your academic and social life.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Campus Map -->
+<section class="feature feature-map">
+  <div class="feature-left">
+    <div class="feature-text">
+      <h4>Navigation</h4>
+      <h2>Explore Campus with Ease</h2>
+      <p>
+        Use our interactive campus map to explore departments, hostels, academic blocks, and other key landmarks around IIT Patna.
+      </p>
+    </div>
+  </div>
+  <div class="feature-right">
+    <div class="feature-image">
+      <img src="{% static 'images/map-placeholder.png' %}" alt="Campus map" width="500px">
+    </div>
+  </div>
+</section>
+
+<!-- Event Calendar -->
+<section class="feature feature-calendar">
+  <div class="feature-left">
+    <div class="feature-image">
+      <img src="{% static 'images/events-calender.jpg' %}" alt="Event calendar" width="500px">
+    </div>
+  </div>
+  <div class="feature-right">
+    <div class="feature-text">
+      <h4>Plan Ahead</h4>
+      <h2>Event Calendar</h2>
+      <p>
+        Stay updated with upcoming academic events, fests, and club activities using our dynamic event calendar built for students.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Student Clubs -->
+<section class="feature feature-clubs">
+  <div class="feature-left">
+    <div class="feature-text">
+      <h4>Community</h4>
+      <h2>Join IITP Clubs</h2>
+      <p>
+        Get involved with various student-run clubs focused on culture, coding, literature, robotics, and much more. A space to explore your passions and talents.
+      </p>
+    </div>
+  </div>
+  <div class="feature-right">
+    <div class="feature-image">
+      <img src="{% static 'images/1.jpg' %}" alt="Student clubs" width="500px">
+    </div>
+  </div>
+</section>
+
+<!-- Contact Us -->
+<section class="feature feature-contact">
+  <div class="feature-left">
+    <div class="feature-image">
+      <img src="{% static 'images/contact-us.jpg' %}" alt="Contact us" width="500px">
+    </div>
+  </div>
+  <div class="feature-right">
+    <div class="feature-text">
+      <h4>Support</h4>
+      <h2>Contact Us</h2>
+      <p>
+        Have questions or suggestions? Reach out to us through our contact page — we're here to support you.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="feature feature-privacy">
+  <div class="privacy-container">
+    <h2>Privacy Policy</h2>
+    <p>
+      At <strong>IITP Companion+</strong>, we prioritize your data security and privacy. We only collect essential information to personalize your experience and maintain a safe, reliable platform for all users.
+    </p>
+
+    <div class="privacy-cards">
+      <div class="privacy-point">
+        <h4>Secure Login</h4>
+        <p>Your login credentials and session data are encrypted using industry-standard protocols.</p>
+      </div>
+
+      <div class="privacy-point">
+        <h4>Minimal Data</h4>
+        <p>We collect only the information required to deliver core services and improve usability.</p>
+      </div>
+
+      <div class="privacy-point">
+        <h4>No Third-Party Sharing</h4>
+        <p>Your personal data is never sold or shared with advertisers or third-party services.</p>
+      </div>
+
+      <div class="privacy-point">
+        <h4>Cookie Control</h4>
+        <p>Cookies are used strictly for functional and performance optimization — not for tracking.</p>
+      </div>
+
+      <div class="privacy-point">
+        <h4>Feedback Anonymity</h4>
+        <p>All student feedback is anonymized and securely processed for service improvement.</p>
+      </div>
+
+      <div class="privacy-point">
+        <h4>Data Removal</h4>
+        <p>You may request data deletion or account removal at any time via our contact form.</p>
+      </div>
+
+      <div class="privacy-point">
+        <h4>Assignment Privacy</h4>
+        <p>Academic assignment data remains private and is never visible to anyone except you.</p>
+      </div>
+
+      <div class="privacy-point">
+        <h4>Location Privacy</h4>
+        <p>Transport tracking uses anonymous data and does not retain your personal movement history.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+    <div class="Rights-reserved" style="padding: 0; margin: 0;">
+        <p>&copy; 2025 IITP Companion+. All rights reserved.</p>
+    </div>
+</footer>
+<style>
+ .feature-privacy {
+  background-color: #f9fafb;
+  padding: 3rem 1.5rem;
+  border-top: 2px solid #e2e8f0;
+  margin-top: 4rem;
+}
+
+.privacy-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.privacy-container h2 {
+  font-family: "Playfair Display", serif;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #1e293b;
+}
+
+.privacy-container p {
+  font-size: 1rem;
+  color: #334155;
+  margin-bottom: 2rem;
+}
+
+.privacy-cards {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.privacy-point {
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 6px solid #334155;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  transition: box-shadow 0.3s ease;
+}
+
+.privacy-point:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.privacy-point h4 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.privacy-point p {
+  font-size: 0.95rem;
+  color: #475569;
+  margin: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .privacy-cards {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+</style>
+{% endblock %}

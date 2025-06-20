@@ -1,6 +1,8 @@
 from django.db import models
 from autoslug.fields import AutoSlugField
 
+from Webusers.models import Users
+
 
 class Canteen(models.Model):
     name = models.CharField(max_length=100, default=None)
@@ -32,3 +34,14 @@ class MenuItem(models.Model):
 
     def __str__(self):
         return f"{self.name} - ₹{self.price}"
+
+
+class Cart(models.Model):
+    cart_user = models.ForeignKey(Users, on_delete=models.CASCADE, related_name='cart_items')
+    item_title = models.CharField(max_length=50, null=True, blank=True)
+    item_price = models.IntegerField(null=True, blank=True)
+    item_quantity = models.PositiveIntegerField(default=1)
+    item_slug = models.SlugField(unique=True, null=False, default=None)
+
+    def __str__(self):
+        return self.item_title or "Cart Item"
