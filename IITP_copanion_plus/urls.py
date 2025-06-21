@@ -32,6 +32,9 @@ urlpatterns = [
     path('about/', views.about_us, name='about'),
     path('restaurant/', views.restaurant, name='restaurant'),
     path('tracker/', views.tracker_view, name='tracker'),
+    path('assignment/', views.assignment, name='assignment'),
+    path('subscribe/', views.subscribe, name='subscribe'),
+    path('toggle-status/', views.toggle_assignment_status, name='toggle_assignment_status'),
 
 ]
 

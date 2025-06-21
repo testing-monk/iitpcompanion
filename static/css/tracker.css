@@ -284,3 +284,13 @@
         font-size: 18px;
     }
 }
+
+.empty-message {
+    text-align: center;
+    padding: 40px;
+    color: #9ca3af;
+    font-size: 20px;
+    font-style: italic;
+    border-radius: 12px;
+    margin-top:70px;
+}

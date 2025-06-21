@@ -14,36 +14,45 @@
             </a>
         </div>
 
+        <div class="bus-container">
+    {% if buses %}
         {% for bus in buses %}
         <div class="card">
             <div class="left">
-                <h3>{{ bus.name }}</h3>
+                <h3 class="bus-name">{{ bus.name }}</h3>
                 <div class="location">
-                    <h3>{{ bus.from_location }} ↔ {{ bus.to_location }}</h3>
+                    <h4>{{ bus.from_location }} ↔ {{ bus.to_location }}</h4>
                 </div>
                 <div class="status">
-                    <h3><span>{{ bus.status }}</span></h3>
+                    <span class="status-text">{{ bus.status }}</span>
                 </div>
             </div>
             <div class="right">
                 <div class="live">
-                    <div class="dot"></div><h3>Live</h3>
+                    <div class="dot"></div>
+                    <h4>Live</h4>
                 </div>
                 <div class="time">{{ bus.departure_time }}</div>
             </div>
         </div>
         {% endfor %}
+    {% else %}
+        <div class="empty-message">
+            <h3>🚌 No buses available at this moment...</h3>
+        </div>
+    {% endif %}
+</div>
+
+    </div>
+<div class="train">
+    <div class="header-card">
+        <h2>Live Trains</h2>
+        <a href="{% url 'search' %}">
+            <img src="{% static '/tracking/search-svgrepo-com.svg' %}" alt="Search icon">
+        </a>
     </div>
 
-    <div class="train">
-        <div class="header-card">
-            <h2>Live Trains</h2>
-            <a href="{% url 'search' %}">
-                <img src="{% static '/tracking/search-svgrepo-com.svg' %}" alt="Search icon">
-            </a>
-        </div>
-
-        {% for train in trains %}
+    {% for train in trains %}
         <div class="card">
             <div class="left">
                 <h3>{{ train.name }}</h3>
@@ -61,8 +70,13 @@
                 <div class="time">{{ train.departure_time }} - {{ train.arrival_time }}</div>
             </div>
         </div>
-        {% endfor %}
-    </div>
+    {% empty %}
+        <div class="empty-message">
+            <h3>🚆 No trains available at this moment...</h3>
+        </div>
+    {% endfor %}
+</div>
+
 </section>
 
 <a href="{% url 'maps' %}" class="head-link">

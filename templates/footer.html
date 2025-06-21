@@ -7,7 +7,7 @@
 <footer class="footer">
         <div class="footer-logo">
             <a href="{% url 'home' %}">
-                <img src="{% static '/images/iitp_logo.png' %}" alt="IIT Patna Logo">
+                <img src="{% static '/images/iitpcomapanion1.png' %}" alt="IIT Patna Logo">
             </a>
         </div>
         <div class="footer-content">
@@ -16,9 +16,14 @@
                 <p>
                     Subscribe to our newsletter for the latest features and updates.
                 </p>
-                <div class="foot-input">
-                    <input type="email" placeholder="Your email here">
-                    <button><a href="">Join</a></button>
+                <div>
+                    <form method="POST" action="{% url 'subscribe' %}">
+                        {% csrf_token %}
+                        <div class="foot-input">
+                            <input type="email" name="email" placeholder="Your email here">
+                            <button type="submit">Join</button>
+                        </div>
+                    </form>
                 </div>
                 <p>By subscribing, you accept our Privacy Policy and consent to receive updates.</p>
             </div>

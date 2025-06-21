@@ -11,7 +11,7 @@ from datetime import datetime
 from django.shortcuts import render
 from django.core.mail import send_mail
 from django.conf import settings
-from contacts.models import ContactMessage
+from contacts.models import ContactMessage ,Subscription
 from datetime import date
 from notifications.models import Notification
 from django.views.decorators.csrf import csrf_exempt
@@ -22,6 +22,7 @@ from functools import wraps
 from django.views.decorators.http import require_POST
 from collections import defaultdict
 
+from Assignments.models import Assignment
 from datetime import datetime, timedelta
 
 
@@ -79,8 +80,39 @@ def logout(request):
     request.session.flush()
     return redirect('home')
 
+
 def assignment(request):
-    return render(request, 'Assignment.html')
+    user_id = request.session.get('user_id')
+    if not user_id:
+        return redirect('login')
+
+    assignments = Assignment.objects.all().order_by('due_start')
+
+    context = {
+        'assignments': assignments,
+        'total': assignments.count(),
+        'completed': assignments.filter(status='completed').count(),
+        'pending': assignments.filter(status='pending').count(),
+    }
+
+    return render(request, 'Assignment.html', context)
+
+
+@csrf_exempt
+def toggle_assignment_status(request):
+    if request.method == 'POST':
+        assignment_id = request.POST.get('assignment_id')
+        assignment = get_object_or_404(Assignment, id=assignment_id)
+
+        # Toggle the status
+        if assignment.status == 'pending':
+            assignment.status = 'completed'
+        else:
+            assignment.status = 'pending'
+
+        assignment.save()
+
+    return redirect('assignment')
 
 
 def search(request):
@@ -329,11 +361,11 @@ def tracker_view(request):
     now = datetime.now()
 
     # Time windows
-    bus_start_time = now - timedelta(minutes=10)
-    bus_end_time = now + timedelta(hours=2)
+    bus_start_time = now - timedelta(minutes=30)
+    bus_end_time = now + timedelta(hours=3)
 
     train_start_time = now - timedelta(hours=2)
-    train_end_time = now + timedelta(hours=24)
+    train_end_time = now + timedelta(hours=5)
 
     # Filter Buses
     buses = []
@@ -413,3 +445,17 @@ def search_view(request):
 
     return render(request, 'search.html', {'results': results})
 
+def subscribe(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+
+        user_id = request.session.get('user_id')
+        name = get_object_or_404(Users, id=user_id)
+        if name and email:
+            if not Subscription.objects.filter(email=email).exists():
+                Subscription.objects.create(name=name, email=email)
+                messages.success(request, "Subscribed successfully!")
+            else:
+                messages.info(request, "This email is already subscribed.")
+
+        return redirect(request.META.get('HTTP_REFERER', '/'))

@@ -13,7 +13,6 @@ body {
   line-height: 1.6;
 }
 
-/* --- Status Cards --- */
 .status {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -48,7 +47,6 @@ body {
   color: #6b7280;
 }
 
-/* --- Main Cards Section --- */
 .main-cards {
   margin-top: 3rem;
 }
@@ -94,7 +92,6 @@ body {
   color: white;
 }
 
-/* --- Utility Colors --- */
 .boldt {
   color: #10b981;
 }
@@ -105,4 +102,15 @@ body {
 
 .boldp {
   color: #ef4444;
+}
+
+.high-priority { color: #ef4444; }
+.medium-priority { color: #facc15; }
+.low-priority { color: #10b981; }
+
+button[type="submit"] {
+  transition: background-color 0.3s ease;
+}
+button[type="submit"]:hover {
+  opacity: 0.8;
 }
