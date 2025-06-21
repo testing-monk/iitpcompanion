@@ -79,8 +79,8 @@ def logout(request):
     request.session.flush()
     return redirect('home')
 
-def Assignment(request):
-    return render(request, 'Assigment.html')
+def assignment(request):
+    return render(request, 'Assignment.html')
 
 
 def search(request):
@@ -412,3 +412,4 @@ def search_view(request):
                 results.append(train)
 
     return render(request, 'search.html', {'results': results})
+

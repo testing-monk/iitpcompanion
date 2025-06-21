@@ -7,7 +7,7 @@ from IITP_copanion_plus import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
-    path('assignment/', views.Assignment, name='Assignment'),
+    path('assignment/', views.assignment, name='Assignment'),
     path('order/', views.canteen, name='order'),
     path('search/', views.search_view, name='search'),
     path('contact-us/', views.contact_view, name='contact'),

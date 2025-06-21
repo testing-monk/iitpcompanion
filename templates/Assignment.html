@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Your Assigments | IITP Companion+{% endblock %}
+{% block title %}Your Assigments | IITP Companion{% endblock %}
 
 {% block content %}
 <head>
@@ -11,7 +11,7 @@
     <div class="card">
       <div class="total">
         <p>total</p>
-        <p class="boldno">4</p>
+        <p class="boldno">{{ total }}</p>
       </div>
       <div class="icon">
         <svg xmlns="" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -31,7 +31,7 @@
     <div class="card">
       <div class="total">
         <p>Completed</p>
-        <p class="boldt boldno">1</p>
+        <p class="boldt boldno">{{ completed }}</p>
       </div>
       <div class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green"
@@ -48,7 +48,7 @@
     <div class="card">
       <div class="total">
         <p>Pending</p>
-        <p class="boldp boldno">3</p>
+        <p class="boldp boldno">{{ pending }}</p>
       </div>
       <div class="icon">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red"
@@ -73,34 +73,22 @@
     </div>
 
 
-    <div class="main-cards">
-
-
-      <div class="main-card">
-        <div class="mainc-head">
-          <div>
-
-            <button>
-
-            </button>
-          </div>
-          <div>
-
-            <h2>
-              104-Assigment
-            </h2>
-          </div>
-        </div>
-        <div class="main-data">
-
-          <div class="main-date">
-            <p>Due: 16jun-20jun</p>
-          </div>
-
-          <div class="priority">
-            <p class=".boldno boldp">High Priority</p>
-          </div>
-        </div>
+{% for a in assignments %}
+<div class="main-card">
+  <div class="mainc-head">
+    <div><button></button></div>
+    <div><h2>{{ a.title }}</h2></div>
+  </div>
+  <div class="main-data">
+    <div class="main-date">
+      <p>Due: {{ a.due_start|date:"d M" }} - {{ a.due_end|date:"d M" }}</p>
+    </div>
+    <div class="priority">
+      <p class="boldno bold{{ a.priority|lower }}">{{ a.priority|title }} Priority</p>
+    </div>
+  </div>
+</div>
+{% endfor %}
 
       </div>
 
