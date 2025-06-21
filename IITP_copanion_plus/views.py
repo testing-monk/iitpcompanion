@@ -445,6 +445,7 @@ def search_view(request):
 
     return render(request, 'search.html', {'results': results})
 
+@require_login
 def subscribe(request):
     if request.method == 'POST':
         email = request.POST.get('email')
