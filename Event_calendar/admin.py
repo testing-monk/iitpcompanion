@@ -3,5 +3,5 @@ from .models import Event
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'date', 'event_type', 'user', 'created_at')
+    list_display = ('title', 'date', 'event_type', 'created_at')
     list_filter = ('event_type', 'date')

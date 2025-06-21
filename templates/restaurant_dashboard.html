@@ -1,0 +1,99 @@
+{% extends 'base2.html' %}
+{% load static %}
+
+{% block title %}Restaurant Owner Dashboard | IITP Companion+{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/restaurant_dashboard.css' %}">
+
+<div class="dashboard-container">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2 class="logo">🍽️ Owner Panel</h2>
+      <div class="hamburger" onclick="toggleSidebar()">☰</div>
+    </div>
+    <ul class="menu">
+      <li class="menu-item active" onclick="showSection('profile')">Profile</li>
+      <li class="menu-item" onclick="showSection('menu')">Menu</li>
+      <li class="menu-item" onclick="showSection('orders')">Orders</li>
+      <li class="menu-item logout"><a href="{% url 'logout' %}">Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <!-- Profile Section -->
+    <section id="profile" class="section active-section">
+      <h2>👤 Profile Settings</h2>
+      <form class="profile-form">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Enter your name">
+        </div>
+        <div class="form-group">
+          <label>Restaurant Name</label>
+          <input type="text" placeholder="Restaurant name">
+        </div>
+        <div class="form-group">
+          <label>Your Photo</label>
+          <input type="file">
+        </div>
+        <div class="form-group">
+          <label>Restaurant Image</label>
+          <input type="file">
+        </div>
+        <button type="submit" class="btn-primary">Save Changes</button>
+      </form>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="section">
+      <h2>🍛 Manage Menu</h2>
+      <div class="menu-actions">
+        <button class="btn-secondary">+ Add New Item</button>
+      </div>
+      <div class="menu-list">
+        <div class="menu-item">
+          <h4>Paneer Roll</h4>
+          <p>₹60 - Soft paneer in crispy roll</p>
+        </div>
+        <div class="menu-item">
+          <h4>Maggie</h4>
+          <p>₹30 - Masala maggie with veggies</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Orders Section -->
+    <section id="orders" class="section">
+      <h2>📦 Order Management</h2>
+      <div class="order-card">
+        <h4>Order #1024</h4>
+        <p>Items: 2 x Maggie, 1 x Paneer Roll</p>
+        <div class="order-actions">
+          <button class="btn-accept">Accept</button>
+          <button class="btn-reject">Reject</button>
+          <button class="btn-ready">Ready</button>
+          <button class="btn-out">Out for Delivery</button>
+          <button class="btn-done">Delivered</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active-section'));
+    document.getElementById(id).classList.add('active-section');
+
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function toggleSidebar() {
+    document.getElementById('sidebar').classList.toggle('open');
+  }
+</script>
+{% endblock %}

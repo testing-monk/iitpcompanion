@@ -2,100 +2,97 @@
 <html lang="en">
 {% load static %}
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seach | IITP Companion+</title>
-    <link rel="stylesheet" href="{% static '/css/search.css' %}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search | IITP Companion+</title>
+  <link rel="stylesheet" href="{% static '/css/search.css' %}">
+  <link rel="icon" href="{% static 'images/iitp_logo.png' %}">
 </head>
 <body>
-    <header class="top-bar">
-        <div class="back-arrow">
-            <a href="{% url 'tracker' %}">
-                <svg xmlns="http://www.w3.org/2000/svg" shape-rendering="geometricPrecision" text-rendering="geometricPrecision" image-rendering="optimizeQuality" fill-rule="evenodd" clip-rule="evenodd" viewBox="0 0 512 404.43"><path fill-rule="nonzero" d="m68.69 184.48 443.31.55v34.98l-438.96-.54 173.67 159.15-23.6 25.79L0 199.94 218.6.02l23.6 25.79z"/></svg>
-            </a>
-        </div> <a href="{% url 'home' %}">
-            <img class="logo" src="{% static 'images/iitp_logo.png' %}" alt="Home logo ">
-        </a> 
+  <header class="top-bar">
+    <div class="back-arrow">
+      <a href="{% url 'tracker' %}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 404.43">
+          <path d="M68.69 184.48L512.00 185v34.98l-438.96-.54 173.67 159.15-23.6 25.79L0 199.94 218.6.02l23.6 25.79z"/>
+        </svg>
+      </a>
+    </div>
+    <a href="{% url 'search' %}">
+      <img class="logo" src="{% static 'images/iitp_logo.png' %}" alt="IITP logo">
+    </a>
+  </header>
 
-    </header>
+  <form method="get" class="search-box">
+    <h1>Search Transport</h1>
+    <input type="text" name="q" placeholder="Search by name..." value="{{ request.GET.q }}">
+    <input type="text" name="from_location" placeholder="From location..." value="{{ request.GET.from_location }}">
+    <input type="text" name="to_location" placeholder="To location..." value="{{ request.GET.to_location }}">
+    <button type="submit">Search</button>
+  </form>
 
-    <section class="search-box">
-        <h1>Search Transport</h1>
-        <input type="text" placeholder="Search by name, location...">
-    </section>
+  <section class="filters">
+    <div class="filter-group">
+      <label for="type">Type</label>
+      <select name="type" id="type">
+        <option value="">All</option>
+        <option value="Bus" {% if request.GET.type == 'Bus' %}selected{% endif %}>Bus</option>
+        <option value="Train" {% if request.GET.type == 'Train' %}selected{% endif %}>Train</option>
+      </select>
+    </div>
 
-    <section class="filters">
-        <div class="filter-group">
-            <label for="">Type</label>
-            <select>
-                <option>ALL</option>
-                <option>Bus</option>
-                <option>Train</option>
-            </select>
-        </div>
-        <div class="filter-group">
-            <label for="">Status</label>
-            <select name="" id="">
-                <option value="">ALL</option>
-                <option value="">On Time </option>
-                <option value="">Arriving</option>
-                <option value="">Delayed</option>
-            </select>
-        </div>
+    <div class="filter-group">
+      <label for="status">Status</label>
+      <select name="status" id="status">
+        <option value="">All</option>
+        <option value="On Time" {% if request.GET.status == 'On Time' %}selected{% endif %}>On Time</option>
+        <option value="Arriving" {% if request.GET.status == 'Arriving' %}selected{% endif %}>Arriving</option>
+        <option value="Delayed" {% if request.GET.status == 'Delayed' %}selected{% endif %}>Delayed</option>
+      </select>
+    </div>
 
-        <div class="filter-group">
-            <label for="">Departure in</label>
-            <select name="" id="">
-                <option value="">Any Time</option>
-                <option value="">15 mins</option>
-                <option value="">30 mins</option>
-                <option value="">1 hour</option>
-            </select>
+    <div class="filter-group">
+      <label for="departure_in">Departure In</label>
+      <select name="departure_in" id="departure_in">
+        <option value="">Any Time</option>
+        <option value="15" {% if request.GET.departure_in == '15' %}selected{% endif %}>15 mins</option>
+        <option value="30" {% if request.GET.departure_in == '30' %}selected{% endif %}>30 mins</option>
+        <option value="60" {% if request.GET.departure_in == '60' %}selected{% endif %}>1 hour</option>
+      </select>
+    </div>
+  </section>
 
-        </div>
-    </section>
+<section class="result">
+{% if request.GET %}
+  <h1>Results</h1>
+  <div class="result-cards">
+    {% for item in results %}
+    <div class="card {% if item.type == 'Bus' %}bus{% elif item.type == 'Train' %}train{% endif %}">
+      <h3>{{ item.name }}</h3>
+      <p><strong>Type:</strong> {{ item.type }}</p>
+      <p><strong>Status:</strong> {{ item.status }}</p>
+      <p><strong>Route:</strong> {{ item.from_location }} → {{ item.to_location }}</p>
+      <p><strong>Time:</strong> {{ item.departure_time }} - {{ item.arrival_time }}</p>
+    </div>
+    {% empty %}
+    <p>No results found.</p>
+    {% endfor %}
+  </div>
+{% endif %}
+</section>
 
-    <section class="result">
-        <h1>Result</h1>
-        <div class="result-cards">
-            <div class="bus card">
-                <h3>Campus shuttle A </h3>
-                <p><strong>Type:</strong> Bus</p>
-                <p><strong>
-                    Status:
-                </strong>Arriving</p>
-                <p><strong>
-                    Departure:
-                </strong>2min</p>
-            </div>
-            <div class="train card">
-                <h3>Rajdhani Express</h3>
-                <p><strong>
-                    Type:
-                </strong>Train</p>
-                <p><strong>
-                    Status:
-                </strong>On Time</p>
-                <p><strong>
-                    Departure:
-                </strong>32 mins</p>
-            </div>
+<div class="notice-container">
+    <span class="info-icon" onclick="toggleNotice()">?</span>
+    <div class="notice-text" id="notice-text">
+        This data may not be 100% accurate. Some timings might slightly vary due to real-world changes. We're constantly working to improve accuracy.
+    </div>
+</div>
 
-            <div class="bus card">
-                <h3>
-                    Patna Express
-                </h3>
-                <p><strong>
-                    Type:
-                </strong>Bus</p>
-                <p><strong>
-                    Status:
-                </strong>Delayed</p>
-                <p><strong>
-                    Departure:
-                </strong>12 mins</p>
-            </div>
-        </div>
-    </section>
+
 </body>
 </html>
+<script>
+function toggleNotice() {
+    const notice = document.getElementById("notice-text");
+    notice.style.display = notice.style.display === "block" ? "none" : "block";
+}
+</script>

@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
       .catch(err => {
         console.error("Error loading events:", err);
-        calendarGrid.innerHTML = `<p style="grid-column: span 7; color: black;">login first.</p>`;
+        calendarGrid.innerHTML = `<p style="grid-column: span 7; color: black;">Please login first...</p>`;
       });
   }
 

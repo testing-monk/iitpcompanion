@@ -17,10 +17,16 @@ from notifications.models import Notification
 from django.views.decorators.csrf import csrf_exempt
 from Maps.models import Map
 from Orderfood.models import Canteen, MenuItem, Cart
-
+from Transportation.models import Bus, Train, BusSchedule
 from functools import wraps
 from django.views.decorators.http import require_POST
 from collections import defaultdict
+
+from datetime import datetime, timedelta
+
+
+
+
 
 def require_login(view_func):
     @wraps(view_func)
@@ -79,10 +85,6 @@ def Assignment(request):
 
 def search(request):
     return render(request, 'search.html')
-
-def tracker(request):
-    return render(request, 'tracker.html')
-
 
 def progress(request):
     return render(request, 'page_in_progress.html')
@@ -317,3 +319,96 @@ def remove_from_cart(request, slug, item_id):
 
 def about_us(request):
     return render(request,'about_us.html')
+
+def restaurant(request):
+    return render(request,'restaurant_dashboard.html')
+
+
+
+def tracker_view(request):
+    now = datetime.now()
+
+    # Time windows
+    bus_start_time = now - timedelta(minutes=10)
+    bus_end_time = now + timedelta(hours=2)
+
+    train_start_time = now - timedelta(hours=2)
+    train_end_time = now + timedelta(hours=24)
+
+    # Filter Buses
+    buses = []
+    for bus in Bus.objects.all():
+        try:
+            dep_time = datetime.strptime(bus.departure_time, "%H:%M")
+            bus_time_today = now.replace(hour=dep_time.hour, minute=dep_time.minute, second=0, microsecond=0)
+            if bus_start_time <= bus_time_today <= bus_end_time:
+                buses.append(bus)
+        except Exception as e:
+            print(f"❌ Skipping bus '{bus.name}' due to error: {e}")
+            continue
+
+    # Filter Trains
+    trains = []
+    for train in Train.objects.all():
+        try:
+            dep_time = datetime.strptime(train.departure_time, "%H:%M")
+            train_time_today = now.replace(hour=dep_time.hour, minute=dep_time.minute, second=0, microsecond=0)
+            if train_start_time <= train_time_today <= train_end_time:
+                trains.append(train)
+        except Exception as e:
+            print(f"❌ Skipping train '{train.name}' due to error: {e}")
+            continue
+
+    schedules = BusSchedule.objects.all()
+
+    context = {
+        'buses': buses,
+        'trains': trains,
+        'schedules': schedules,
+    }
+    return render(request, 'tracker.html', context)
+
+
+
+def search_view(request):
+    query = request.GET.get('q', '')
+    transport_type = request.GET.get('type', '')
+    status = request.GET.get('status', '')
+    from_location = request.GET.get('from_location', '')
+    to_location = request.GET.get('to_location', '')
+    departure_in = request.GET.get('departure_in', '')  # in minutes
+
+    results = []
+
+    def matches_filters(obj, obj_type):
+        if query and query.lower() not in obj.name.lower():
+            return False
+        if status and obj.status != status:
+            return False
+        if from_location and (not obj.from_location or from_location.lower() not in obj.from_location.lower()):
+            return False
+        if to_location and (not obj.to_location or to_location.lower() not in obj.to_location.lower()):
+            return False
+        if departure_in:
+            try:
+                dep_time = datetime.strptime(obj.departure_time, "%H:%M")
+                now = datetime.now().replace(second=0, microsecond=0)
+                dep_datetime = now.replace(hour=dep_time.hour, minute=dep_time.minute)
+                if dep_datetime < now or (dep_datetime - now).total_seconds() / 60 > int(departure_in):
+                    return False
+            except:
+                return False
+        obj.type = obj_type  # add type info
+        return True
+
+    if transport_type in ['', 'Bus']:
+        for bus in Bus.objects.all():
+            if matches_filters(bus, 'Bus'):
+                results.append(bus)
+
+    if transport_type in ['', 'Train']:
+        for train in Train.objects.all():
+            if matches_filters(train, 'Train'):
+                results.append(train)
+
+    return render(request, 'search.html', {'results': results})

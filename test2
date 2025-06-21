@@ -1,0 +1,101 @@
+from Transportation.models import Train
+
+trains = [
+
+  {
+    "name": "Intercity Express",
+    "number": "13250",
+    "from_location": "Bihta",
+    "to_location": "Patna Jn",
+    "departure_time": "07:10",
+    "arrival_time": "07:45"
+  },
+  {
+    "name": "South Bihar Express",
+    "number": "13288",
+    "from_location": "Bihta",
+    "to_location": "Patna Jn",
+    "departure_time": "08:00",
+    "arrival_time": "08:35"
+  },
+  {
+    "name": "Shramjeevi Express",
+    "number": "12392",
+    "from_location": "Bihta",
+    "to_location": "Patna Jn",
+    "departure_time": "11:15",
+    "arrival_time": "11:50"
+  },
+  {
+    "name": "Magadh Express",
+    "number": "20802",
+    "from_location": "Bihta",
+    "to_location": "Patna Jn",
+    "departure_time": "18:20",
+    "arrival_time": "18:45"
+  },
+  {
+    "name": "Jan Shatabdi Express",
+    "number": "12024",
+    "from_location": "Bihta",
+    "to_location": "Patna Jn",
+    "departure_time": "19:10",
+    "arrival_time": "19:40"
+  },
+  {
+    "name": "Farakka Express",
+    "number": "15734",
+    "from_location": "Bihta",
+    "to_location": "Danapur",
+    "departure_time": "05:30",
+    "arrival_time": "05:50"
+  },
+  {
+    "name": "Vibhuti Express",
+    "number": "12334",
+    "from_location": "Bihta",
+    "to_location": "Danapur",
+    "departure_time": "04:35",
+    "arrival_time": "04:50"
+  },
+  {
+    "name": "PNBE-LTT Express",
+    "number": "13202",
+    "from_location": "Bihta",
+    "to_location": "Danapur",
+    "departure_time": "00:35",
+    "arrival_time": "00:50"
+  },
+  {
+    "name": "Digha Intercity",
+    "number": "13207",
+    "from_location": "Bihta",
+    "to_location": "Patliputra",
+    "departure_time": "06:30",
+    "arrival_time": "07:00"
+  },
+  {
+    "name": "Gaya–Patliputra MEMU",
+    "number": "63242",
+    "from_location": "Bihta",
+    "to_location": "Patliputra",
+    "departure_time": "09:25",
+    "arrival_time": "09:50"
+  }
+]
+
+
+
+for train in trains:
+    Train.objects.create(
+        name=train["name"],
+        number=train["number"],
+        from_location=train["from_location"],
+        to_location=train["to_location"],
+        platform=None,
+        status="On Time",
+        departure_time=train["departure_time"],
+        arrival_time=train["arrival_time"],
+        frequency="Daily",
+        days_running="All Days"
+    )
