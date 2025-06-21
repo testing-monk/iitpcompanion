@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-v0!twna&w!=k(4y7^&bt5wn(x#lc4o$p4tcjqfs$@j75iby)7)
 DEBUG = True
 
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['iitpcompanion.onrender.com/']
 
 
 # Application definition
@@ -61,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'IITP_copanion_plus.urls'
