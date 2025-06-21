@@ -17,7 +17,7 @@ body {
 .navbar {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding: 10px;
   background-color: #fff;
   border-bottom: 1px solid #e0e0e0;
 }
@@ -30,7 +30,7 @@ body {
 }
 
 .navbar-logo img {
-  height: 70px;
+  height: 100px;
   width: auto;
 }
 
@@ -144,6 +144,15 @@ body {
   text-decoration: underline;
 }
 
+
+.logo-text {
+    font-size: 1.2rem;
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    color: #000;
+    }
+
+
 /* Responsive */
 @media (max-width: 600px) {
   .navbar {
@@ -158,8 +167,15 @@ body {
   }
 
   .navbar-logo img {
-    height: 70px;
+    height: 100px;
   }
+
+.logo-text {
+    font-size: 1.2rem;
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    color: #000;
+    }
 
   .navbar-logo span {
     font-size: 18px;

@@ -23,7 +23,7 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
     background-color: #fff;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -36,7 +36,7 @@ h1 {
 }
 
 .navbar-logo img {
-    height: 70px;
+    height: 100px;
     width: auto;
 }
 
@@ -47,10 +47,18 @@ h1 {
     white-space: nowrap;
 }
 
+.logo-text {
+    font-size: 1.2rem;
+    font-family: "Playfair Display", serif;
+    font-weight: 600;
+    color: #000;
+    }
+
+
 /* Responsive Navbar */
 @media (max-width: 600px) {
     .navbar-logo img {
-        height: 70px;
+        height: 100px;
     }
 
     .navbar-logo span {
