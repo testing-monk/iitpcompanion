@@ -12,4 +12,4 @@ services:
       - key: SECRET_KEY
         value: django-insecure-v0!twna&w!=k(4y7^&bt5wn(x#lc4o$p4tcjqfs$@j75iby)7)
       - key: DEBUG
-        value: "True"
+        value: "False"
