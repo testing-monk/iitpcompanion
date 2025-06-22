@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
-from Webusers.models import Users
+from Webusers.models import Users, UserProfile
 from django.core.exceptions import ValidationError
 from Clubs.models import Club
 from django.contrib.auth.decorators import login_required
@@ -49,12 +49,15 @@ def login(request):
             user = Users.objects.get(email=email)
             if user.check_password(password):
                 request.session['user_id'] = user.id
+                from Webusers.models import UserProfile
+                UserProfile.objects.get_or_create(user=user)
                 return redirect('home')
             else:
                 messages.error(request, "Invalid password")
         except Users.DoesNotExist:
             messages.error(request, "User not found")
     return render(request, 'login.html')
+
 
 def register(request):
     if request.method == 'POST':
@@ -69,13 +72,16 @@ def register(request):
             user = Users(username=username, email=email)
             user.set_password(password)
             user.save()
-            return redirect('login')
-        except ValidationError as ve:
-            return render(request, 'sign-up.html', {'error': f'Validation error: {ve}'})
-        except Exception as e:
-            return render(request, 'sign-up.html', {'error': f'An error occurred: {e}'})
-    return render(request, 'sign-up.html')
+            UserProfile.objects.get_or_create(user=user)
 
+            request.session['user_id'] = user.id
+
+            return redirect('home')
+        except ValidationError as ve:
+            return render(request, 'sign-up.html', {'error': f'Validation error: {ve}'} )
+        except Exception as e:
+            return render(request, 'sign-up.html', {'error': f'An error occurred: {e}'} )
+    return render(request, 'sign-up.html')
 def logout(request):
     request.session.flush()
     return redirect('home')
@@ -460,3 +466,81 @@ def subscribe(request):
                 messages.info(request, "This email is already subscribed.")
 
         return redirect(request.META.get('HTTP_REFERER', '/'))
+
+
+
+@require_login
+def profile_view(request):
+    user_id = request.session.get('user_id')
+    user = get_object_or_404(Users, id=user_id)
+    profile, created = UserProfile.objects.get_or_create(user=user)
+
+    cart = []
+    total_price = 0
+    total_item = 0
+    all_items = []
+
+    cart = Cart.objects.filter(cart_user=user)
+
+    all_items = [item.item_title for item in cart]
+    if request.method == 'POST' and request.FILES.get('profile_image'):
+        profile.profile_image = request.FILES['profile_image']
+        profile.save()
+        return redirect('profile')
+
+
+
+    # joined_clubs = Club.objects.filter(president=user)
+    # registered_events = Event.objects.filter(participants=user)
+
+    return render(request, 'profile.html', {
+        'user': user,
+        'profile': profile,
+        'cart' : cart,
+        'all_items' : all_items,
+        # 'clubs': joined_clubs,
+        # 'events': registered_events,
+    })
+
+@require_login
+def edit_profile(request):
+    user_id = request.session.get('user_id')
+    user = get_object_or_404(Users, id=user_id)
+    profile, created = UserProfile.objects.get_or_create(user=user)
+
+    if request.method == "POST":
+        user.username = request.POST.get("username", user.username)
+        profile.roll_number = request.POST.get("roll_number", profile.roll_number)
+        profile.department = request.POST.get("department", profile.department)
+        profile.year = request.POST.get("year", profile.year)
+        profile.mobile_number = request.POST.get("mobile_number", profile.mobile_number)
+
+        if request.FILES.get("profile_image"):
+            profile.profile_image = request.FILES["profile_image"]
+
+        user.save()
+        profile.save()
+        # messages.success(request, "Profile updated successfully.")
+        return redirect('profile')
+
+    return render(request, 'edit_profile.html', {'user': user, 'profile': profile})
+
+@require_login
+def leave_club(request, club_id):
+    user_id = request.session.get('user_id')
+    user = get_object_or_404(Users, id=user_id)
+    club = get_object_or_404(Club, id=club_id)
+    if club.president == user:  # change if member logic is added
+        messages.error(request, "You cannot leave your own club.")
+    else:
+        club.members.remove(user)  # only if a many-to-many relationship exists
+    return redirect('profile')
+
+
+@require_login
+def register_event(request, event_id):
+    user_id = request.session.get('user_id')
+    user = get_object_or_404(Users, id=user_id)
+    event = get_object_or_404(Event, id=event_id)
+    event.participants.add(user)
+    return redirect('profile')

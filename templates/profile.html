@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <div class="profile-pic-section">
+
+        <img src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}"
+             alt="Profile Picture" class="profile-pic">
+
+<!--        <form method="POST" enctype="multipart/form-data">-->
+<!--          {% csrf_token %}-->
+<!--          <input type="file" name="profile_image" accept="image/*">-->
+<!--          <button type="submit">Change Photo</button>-->
+<!--        </form>-->
+      </div>
+
+      <div class="profile-info">
+        <h2> {{ user.username }}</h2>
+        <p>Roll Number: {{ profile.roll_number }}</p>
+        <p>Email: {{ user.email }}</p>
+        <p>Department: {{ profile.department }}</p>
+        <p>Year: {{ profile.get_year_display }}</p>
+        <a href="{% url 'edit_profile' %}" class="edit-btn">Edit Profile</a>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="account-actions">
+      <h3>⚙️ Account Actions</h3>
+      <ul>
+        <li><a href="">Change Password</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
+        <li><a href="#">Update Mobile Number</a></li>
+        <li><a href="#">Notification Preferences</a></li>
+      </ul>
+    </div>
+
+<!--    <div class="club-memberships">-->
+<!--      <h3>🎓 Joined Clubs</h3>-->
+<!--      <ul>-->
+<!--        {% if clubs %}-->
+<!--          {% for club in clubs %}-->
+<!--            <li>{{ club.name }} <a href="{% url 'leave_club' club.id %}">[Leave]</a></li>-->
+<!--          {% endfor %}-->
+<!--        {% else %}-->
+<!--          <li>No clubs joined yet.</li>-->
+<!--        {% endif %}-->
+<!--      </ul>-->
+<!--    </div>-->
+
+<!--    <div class="events-participation">-->
+<!--      <h3>Events Participation</h3>-->
+<!--      <ul>-->
+<!--        {% if events %}-->
+<!--          {% for event in events %}-->
+<!--            <li>{{ event.name }} — 📍{{ event.location }} — 📅{{ event.date }} — 📌 {{ event.status }}</li>-->
+<!--          {% endfor %}-->
+<!--        {% else %}-->
+<!--          <li>No event participation yet.</li>-->
+<!--        {% endif %}-->
+<!--      </ul>-->
+<!--    </div>-->
+
+    <div class="saved-items">
+      <h3>Saved Items</h3>
+      <ul>
+        <li> Food cart: {{ all_items |join:", " }}</li>
+        <li>Routes: {{ profile.saved_routes|join:", " }}</li>
+        <li>Assignments: {{ profile.saved_assignments|join:", " }}</li>
+      </ul>
+    </div>
+
+    <div class="academic-tools">
+      <h3>📘 Academic Tools</h3>
+      <ul>
+        <li><a href="{% url 'events' %}">📅 My Time Table</a></li>
+        <li><a href="{% url 'assignment' %}">📚 Assignments / Alerts</a></li>
+        <li><a href="#">📝 Attendance</a></li>
+      </ul>
+    </div>
+
+    {% if user.is_club_admin %}
+      <div class="admin-options">
+        <h3>🛠️ Admin Options</h3>
+        <ul>
+          <li><a href="">🔧 Manage Club</a></li>
+          <li><a href="">📢 Post Events</a></li>
+          <li><a href="">👥 Approve Members</a></li>
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

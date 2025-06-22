@@ -90,11 +90,11 @@ body {
 }
 
 .user-avatar {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ccc;
+  /*  border: 2px solid #ccc; */
     transition: transform 0.2s ease;
 }
 

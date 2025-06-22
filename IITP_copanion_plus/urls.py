@@ -35,6 +35,10 @@ urlpatterns = [
     path('assignment/', views.assignment, name='assignment'),
     path('subscribe/', views.subscribe, name='subscribe'),
     path('toggle-status/', views.toggle_assignment_status, name='toggle_assignment_status'),
+    path('profile/', views.profile_view, name='profile'),
+    path('leave-club/<int:club_id>/', views.leave_club, name='leave_club'),
+    path('register-event/<int:event_id>/', views.register_event, name='register_event'),
+    path('profile/edit/', views.edit_profile, name='edit_profile'),
 
 ]
 

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+<div class="edit-profile-container">
+  <h2>Edit Profile</h2>
+
+  <form method="POST" enctype="multipart/form-data" class="edit-profile-form">
+    {% csrf_token %}
+
+    <div class="form-group">
+      <label for="name">Full name</label>
+      <input type="text" name="username" id="username" value="{{ user.username }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="roll_number">Roll no.</label>
+      <input type="text" name="roll_number" id="roll_number" value="{{ profile.roll_number }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="department">Department</label>
+      <input type="text" name="department" id="department" value="{{ profile.department }}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="year">Year of Study</label>
+      <select name="year" id="year" required>
+        <option value="1" {% if profile.year == 1 %}selected{% endif %}>1st</option>
+        <option value="2" {% if profile.year == 2 %}selected{% endif %}>2nd</option>
+        <option value="3" {% if profile.year == 3 %}selected{% endif %}>3rd</option>
+        <option value="4" {% if profile.year == 4 %}selected{% endif %}>4th</option>
+      </select>
+    </div>
+
+
+
+    <div class="form-group">
+      <label for="mobile_number">Mobile Number</label>
+      <input type="text" name="mobile_number" id="mobile_number" value="{{ profile.mobile_number }}">
+    </div>
+
+    <div class="form-group">
+      <label for="profile_image">Profile Image</label><br>
+      {% if profile.profile_image %}
+        <img src="{{ profile.profile_image.url }}" alt="Current Image" class="profile-preview">
+      {% else %}
+        <img src="{% static 'images/default.png' %}" alt="Default Image" class="profile-preview">
+      {% endif %}
+      <input type="file" name="profile_image" id="profile_image">
+    </div>
+
+    <button type="submit" class="submit-btn">Save Profile</button>
+    <a href="{% url 'profile' %}" class="cancel-btn">Cancel</a>
+  </form>
+</div>
+{% endblock %}

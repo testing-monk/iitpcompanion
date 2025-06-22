@@ -59,15 +59,15 @@
             </div>
           </div>
 
-          <img src="{% static 'images/default.png' %}" alt="User Avatar" class="user-avatar">
+          <img class="user-avatar" src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}"
+             alt="Profile Picture">
           <span class="arrow-down">
             <img style="height:15px; width:15px;" src="{% static 'images/down.png' %}" alt="Arrow Down">
           </span>
 
           <ul class="account-dropdown" id="account-dropdown">
             <li class="username-item"><strong>{{ webuser.username }}</strong></li>
-            <li><a href="{% url 'home' %}">Profile</a></li>
-            <li><a href="{% url 'Assignment' %}">Assignments</a></li>
+            <li><a href="{% url 'profile' %}">Profile</a></li>
             <li><a href="{% url 'maps' %}">Campus Map</a></li>
             <li><a href="{% url 'student_clubs' %}">Students Club</a></li>
             <li><a href="{% url 'contact' %}">Feedback</a></li>
