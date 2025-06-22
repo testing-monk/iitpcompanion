@@ -40,31 +40,6 @@
       </ul>
     </div>
 
-<!--    <div class="club-memberships">-->
-<!--      <h3>🎓 Joined Clubs</h3>-->
-<!--      <ul>-->
-<!--        {% if clubs %}-->
-<!--          {% for club in clubs %}-->
-<!--            <li>{{ club.name }} <a href="{% url 'leave_club' club.id %}">[Leave]</a></li>-->
-<!--          {% endfor %}-->
-<!--        {% else %}-->
-<!--          <li>No clubs joined yet.</li>-->
-<!--        {% endif %}-->
-<!--      </ul>-->
-<!--    </div>-->
-
-<!--    <div class="events-participation">-->
-<!--      <h3>Events Participation</h3>-->
-<!--      <ul>-->
-<!--        {% if events %}-->
-<!--          {% for event in events %}-->
-<!--            <li>{{ event.name }} — 📍{{ event.location }} — 📅{{ event.date }} — 📌 {{ event.status }}</li>-->
-<!--          {% endfor %}-->
-<!--        {% else %}-->
-<!--          <li>No event participation yet.</li>-->
-<!--        {% endif %}-->
-<!--      </ul>-->
-<!--    </div>-->
 
     <div class="saved-items">
       <h3>⭐ Saved Items</h3>
@@ -94,5 +69,32 @@
         </ul>
       </div>
     {% endif %}
+
+        <div class="club-memberships">
+      <h3>🎓 Joined Clubs</h3>
+      <ul>
+        {% if clubs %}
+          {% for club in clubs %}
+            <li>{{ club.name }} <a href="{% url 'leave_club' club.id %}">[Leave]</a></li>
+          {% endfor %}
+        {% else %}
+          <li>No clubs joined yet.</li>
+        {% endif %}
+      </ul>
+    </div>
+
+    <div class="events-participation">
+      <h3>Events Participation</h3>
+      <ul>
+        {% if events %}
+          {% for event in events %}
+            <li>{{ event.name }} — 📍{{ event.location }} — 📅{{ event.date }} — 📌 {{ event.status }}</li>
+          {% endfor %}
+        {% else %}
+          <li>No event participation yet.</li>
+        {% endif %}
+      </ul>
+    </div>
+
   </div>
 {% endblock %}
