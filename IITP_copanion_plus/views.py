@@ -19,12 +19,11 @@ from Maps.models import Map
 from Orderfood.models import Canteen, MenuItem, Cart
 from Transportation.models import Bus, Train, BusSchedule
 from functools import wraps
-from django.views.decorators.http import require_POST
-from collections import defaultdict
-
 from Assignments.models import Assignment
 from datetime import datetime, timedelta
 
+from django.utils import timezone
+from datetime import timedelta
 
 
 
@@ -86,17 +85,43 @@ def logout(request):
     request.session.flush()
     return redirect('home')
 
-
 def assignment(request):
     user_id = request.session.get('user_id')
     if not user_id:
         return redirect('login')
 
+    now = timezone.now()
+
+
+    Assignment.objects.filter(due_end__lt=now - timedelta(days=2)).delete()
+
     assignments = Assignment.objects.all().order_by('due_start')
 
+    processed_assignments = []
+    for a in assignments:
+        time_remaining = a.due_end - now
+        days_remaining = time_remaining.days
+
+        if days_remaining < 0:
+            priority = 'overdue'
+            status_text = 'Date Over'
+        elif days_remaining <= 2:
+            priority = 'high'
+            status_text = f'Due in {days_remaining} day{"s" if days_remaining != 1 else ""}'
+        elif days_remaining <= 4:
+            priority = 'medium'
+            status_text = f'Due in {days_remaining} days'
+        else:
+            priority = 'low'
+            status_text = f'Due in {days_remaining} days'
+
+        a.priority_status = priority
+        a.status_text = status_text
+        processed_assignments.append(a)
+
     context = {
-        'assignments': assignments,
-        'total': assignments.count(),
+        'assignments': processed_assignments,
+        'total': len(assignments),
         'completed': assignments.filter(status='completed').count(),
         'pending': assignments.filter(status='pending').count(),
     }
@@ -110,7 +135,7 @@ def toggle_assignment_status(request):
         assignment_id = request.POST.get('assignment_id')
         assignment = get_object_or_404(Assignment, id=assignment_id)
 
-        # Toggle the status
+
         if assignment.status == 'pending':
             assignment.status = 'completed'
         else:
@@ -121,8 +146,6 @@ def toggle_assignment_status(request):
     return redirect('assignment')
 
 
-def search(request):
-    return render(request, 'search.html')
 
 def progress(request):
     return render(request, 'page_in_progress.html')
@@ -366,14 +389,13 @@ def restaurant(request):
 def tracker_view(request):
     now = datetime.now()
 
-    # Time windows
+
     bus_start_time = now - timedelta(minutes=30)
     bus_end_time = now + timedelta(hours=3)
 
     train_start_time = now - timedelta(hours=2)
     train_end_time = now + timedelta(hours=5)
 
-    # Filter Buses
     buses = []
     for bus in Bus.objects.all():
         try:
@@ -436,7 +458,7 @@ def search_view(request):
                     return False
             except:
                 return False
-        obj.type = obj_type  # add type info
+        obj.type = obj_type
         return True
 
     if transport_type in ['', 'Bus']:

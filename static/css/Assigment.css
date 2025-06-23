@@ -64,7 +64,7 @@ body {
   border-radius: 10px;
   padding: 1rem;
   margin: 1rem auto;
-  width: 100%;
+  width: 95%;
   max-width: 700px;
   display: flex;
   flex-direction: column;
@@ -107,10 +107,103 @@ body {
 .high-priority { color: #ef4444; }
 .medium-priority { color: #facc15; }
 .low-priority { color: #10b981; }
+.end-priority { color: #10b981; }
 
 button[type="submit"] {
   transition: background-color 0.3s ease;
 }
 button[type="submit"]:hover {
   opacity: 0.8;
+}
+
+.overdue-priority {
+  color: #8b0000;
+}
+
+.circle-button {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #3b82f6;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.circle-button.completed {
+  background-color: #3b82f6;
+}
+
+.priority-text.high-priority {
+  color: #ef4444;
+}
+
+.priority-text.medium-priority {
+  color: #facc15;
+}
+
+.priority-text.low-priority {
+  color: #10b981;
+}
+
+form.assignment-form {
+  display: inline-block;
+  margin-right: 12px;
+}
+
+a .main-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 14px;
+}
+
+a .main-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+@media (max-width: 600px) {
+  .status {
+    grid-template-columns: 1fr;
+    margin: 1rem;
+    gap: 1rem;
+  }
+
+  .main-card {
+  /*  margin: 1rem 0.5rem; */
+    padding: 1rem;
+  }
+
+  .main-h h2 {
+    font-size: 1.4rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .main-card h2 {
+    font-size: 1rem;
+  }
+
+  .main-data {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .card {
+    padding: 1rem;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .card svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .boldno {
+    font-size: 1.2rem;
+  }
+
+  .main-cards {
+    margin-top: 2rem;
+  }
 }
