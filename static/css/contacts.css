@@ -1,11 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background-color: #f0f4f8;
-}
-
-.contact-section {
+.contact-page .contact-section {
   padding: 80px 20px;
   background: linear-gradient(to right, #eef2f3, #ffffff);
   display: flex;
@@ -13,7 +8,7 @@ body {
   align-items: center;
 }
 
-.contact-container {
+.contact-page .contact-container {
   max-width: 700px;
   width: 100%;
   background: #fff;
@@ -22,27 +17,27 @@ body {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
-.contact-container h1 {
+.contact-page .contact-container h1 {
   font-size: 2.4rem;
   margin-bottom: 10px;
   color: #222;
   text-align: center;
 }
 
-.contact-container p {
+.contact-page .contact-container p {
   color: #666;
   text-align: center;
   margin-bottom: 30px;
 }
 
-form {
+.contact-page form {
   display: flex;
   flex-direction: column;
   gap: 18px;
 }
 
-form input,
-form textarea {
+.contact-page form input,
+.contact-page form textarea {
   padding: 14px 16px;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -51,20 +46,20 @@ form textarea {
   background: #fafafa;
 }
 
-form input:focus,
-form textarea:focus {
+.contact-page form input:focus,
+.contact-page form textarea:focus {
   outline: none;
   border-color: #007bff;
   background: #fff;
   box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
 }
 
-form textarea {
+.contact-page form textarea {
   resize: vertical;
   min-height: 140px;
 }
 
-form button {
+.contact-page form button {
   padding: 14px;
   background: #007bff;
   color: white;
@@ -76,11 +71,11 @@ form button {
   transition: 0.3s ease;
 }
 
-form button:hover {
+.contact-page form button:hover {
   background: #0056b3;
 }
 
-.success-message {
+.contact-page .success-message {
   background-color: #e7f9ed;
   color: #2c662d;
   padding: 12px 16px;
@@ -91,13 +86,12 @@ form button:hover {
   border: 1px solid #bde5ce;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
-  .contact-container {
+  .contact-page .contact-container {
     padding: 30px 20px;
   }
 
-  .contact-container h1 {
+  .contact-page .contact-container h1 {
     font-size: 2rem;
   }
 }

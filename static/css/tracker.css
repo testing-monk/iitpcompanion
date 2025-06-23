@@ -57,7 +57,7 @@
   border: 2px solid #e5e5e5;
   /* margin: 20px;
   padding: 20px; */
-  width: 100%;
+  width: 95%;
   padding: 10px;
   margin-top: 20px;
 }
@@ -253,14 +253,14 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
-/* SVG Icon Styling */
+
 .map-icon {
     width: 32px;
     height: 32px;
     flex-shrink: 0;
 }
 
-/* Heading Styling */
+
 .head h2 {
     font-size: 24px;
     font-weight: 600;
@@ -269,28 +269,72 @@
     font-family: 'Poppins', sans-serif;
 }
 
-@media (max-width: 600px) {
-    .head {
-        padding: 0px 55px;
-        gap: 8px;
-    }
+@media (max-width: 992px) {
+  .Schedule-index,
+  .schedule-bus {
+    grid-template-columns: repeat(2, 1fr);
+  }
 
-    .map-icon {
-        width: 24px;
-        height: 24px;
-    }
+  .right {
+    width: 100%;
+  }
 
-    .head h2 {
-        font-size: 18px;
-    }
+  .card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
 }
 
-.empty-message {
-    text-align: center;
-    padding: 40px;
-    color: #9ca3af;
-    font-size: 20px;
-    font-style: italic;
-    border-radius: 12px;
-    margin-top:70px;
+@media (max-width: 768px) {
+  .tracker {
+    flex-direction: column;
+    padding: 30px 20px;
+  }
+
+  .Map {
+    display: block;
+    padding: 30px 20px;
+  }
+
+  .bus-map,
+  .train-map {
+    width: 100%;
+    padding: 16px;
+    margin-bottom: 30px;
+  }
+
+  .Schedule {
+    padding: 40px 20px;
+    margin: 60px 20px 0;
+  }
+
+  .Schedule-index,
+  .schedule-bus {
+    grid-template-columns: 1fr;
+    padding: 30px 10px;
+  }
+
+  .head {
+    padding: 0 20px;
+  }
+
+  .map-icon {
+    width: 24px;
+    height: 24px;
+  }
+
+  .head h2 {
+    font-size: 18px;
+  }
+
+  .right {
+    margin: 0;
+    padding: 0;
+    gap: 5px;
+  }
+
+  .left {
+    width: 100%;
+  }
 }

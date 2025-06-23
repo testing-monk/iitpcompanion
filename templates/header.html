@@ -23,13 +23,14 @@
         </a>
       </div>
 
-      <ul class="nav-links" id="nav-links">
-        <li><a href="{% url 'home' %}">Home</a></li>
-        <li><a href="{% url 'order' %}">Order Food</a></li>
-        <li><a href="{% url 'tracker' %}">Tracker</a></li>
-        <li><a href="{% url 'Assignment' %}">Assignments</a></li>
-        <li><a href="{% url 'events' %}">Events Calender</a></li>
-      </ul>
+<ul class="nav-links" id="nav-links">
+  <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
+  <li><a href="{% url 'order' %}" class="{% if request.resolver_match.url_name == 'order' %}active{% endif %}">Order Food</a></li>
+  <li><a href="{% url 'tracker' %}" class="{% if request.resolver_match.url_name == 'tracker' %}active{% endif %}">Tracker</a></li>
+  <li><a href="{% url 'Assignment' %}" class="{% if request.resolver_match.url_name == 'Assignment' %}active{% endif %}">Assignments</a></li>
+  <li><a href="{% url 'events' %}" class="{% if request.resolver_match.url_name == 'events' %}active{% endif %}">Events Calender</a></li>
+</ul>
+
 
       <div class="user-account" id="user-account">
         {% if webuser %}
