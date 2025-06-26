@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: #f4f5f7;
+  color: #333;
+  padding: 20px;
+}
+
+p {
+  font-weight: 500;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #777;
+}
+
+h1 {
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
+  font-size: 2rem;
+  line-height: 1.4;
+  color: #222;
+}
+
+main {
+  margin: 80px auto;
+  max-width: 640px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0px 10px 50px rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  padding: 50px 30px;
+  background-color: white;
+}
+
+/* =================== BUTTON =================== */
+main button {
+  background-color: #007aff;
+  padding: 1rem 2.5rem;
+  border-radius: 14px;
+  border: none;
+  color: white;
+  font-size: 1.05rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3);
+}
+
+main button:hover {
+  background-color: #005edc;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 122, 255, 0.4);
+}
+
+/* =================== HEADER SECTION =================== */
+.order-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 50px;
+}
+
+.order-htext {
+  text-align: center;
+}
+
+.order-htext h1 {
+  margin-bottom: 0.5rem;
+}
+
+/* =================== ORDER DETAILS =================== */
+.order-details {
+  background-color: #e8f4fd;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 40px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #333;
+}
+
+/* ✅ Auto-hover Check Mark Style */
+.check-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #4cd964;
+  color: white;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: pulseCheck 1.2s infinite ease-in-out;
+  box-shadow: 0 4px 12px rgba(76, 217, 100, 0.3);
+}
+
+@keyframes pulseCheck {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.15); opacity: 0.85; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* =================== ORDER SUMMARY =================== */
+.order-summary {
+  display: flex;
+  flex-direction: column;
+  margin: 50px auto;
+  padding: 30px 24px;
+  background-color: #f9fafb;
+  border-radius: 14px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.order-summary h1 {
+  margin-bottom: 30px;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 1.75rem;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 30px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.95rem;
+  color: #444;
+  font-weight: 500;
+}
+
+/* =================== RESPONSIVE =================== */
+@media (max-width: 600px) {
+  main {
+    padding: 30px 20px;
+  }
+
+  .details {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px 0;
+    text-align: center;
+  }
+
+  .summary {
+    padding: 10px 12px;
+  }
+
+  .order-summary h1 {
+    font-size: 1.4rem;
+  }
+
+  main button {
+    width: 100%;
+  }
+}
