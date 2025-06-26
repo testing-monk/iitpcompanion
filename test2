@@ -99,3 +99,20 @@ for train in trains:
         frequency="Daily",
         days_running="All Days"
     )
+
+
+CREATE TABLE Orderfood_orderdetails (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    mobile_number VARCHAR(15),
+    items TEXT NOT NULL,
+    total_price DECIMAL(8, 2) NOT NULL,
+    quantity INTEGER NOT NULL,
+    address TEXT NOT NULL,
+    order_type VARCHAR(20) NOT NULL,
+    payment_type VARCHAR(20) NOT NULL,
+    order_status VARCHAR(30) NOT NULL DEFAULT 'Pending',
+    ordered_at DATETIME NOT NULL,
+    order_number VARCHAR(20) UNIQUE,
+    FOREIGN KEY(user_id) REFERENCES Webusers_users(id) DEFERRABLE INITIALLY DEFERRED
+);

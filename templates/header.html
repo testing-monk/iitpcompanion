@@ -90,7 +90,7 @@
       const notificationIcon = document.getElementById('notificationIcon');
       const notificationWrapper = document.getElementById('notificationWrapper');
 
-      // Toggle mobile menu
+      
       if (menuToggle && navLinks) {
         menuToggle.addEventListener('click', (event) => {
           event.stopPropagation();
@@ -99,7 +99,7 @@
         });
       }
 
-      // Toggle user dropdown
+
       if (userAccount) {
         userAccount.addEventListener('click', function (event) {
           event.stopPropagation();
@@ -107,7 +107,6 @@
         });
       }
 
-      // Toggle notifications
       if (notificationIcon && notificationWrapper) {
         notificationIcon.addEventListener('click', function (event) {
           event.stopPropagation();
@@ -115,7 +114,7 @@
         });
       }
 
-      // Close dropdowns if clicked outside
+
       document.addEventListener('click', function (e) {
         if (!navLinks.contains(e.target) && !menuToggle.contains(e.target)) {
           navLinks.classList.remove('active');

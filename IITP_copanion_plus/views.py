@@ -16,11 +16,12 @@ from datetime import date
 from notifications.models import Notification
 from django.views.decorators.csrf import csrf_exempt
 from Maps.models import Map
-from Orderfood.models import Canteen, MenuItem, Cart
+from Orderfood.models import Canteen, MenuItem, Cart, OrderDetails
 from Transportation.models import Bus, Train, BusSchedule
 from functools import wraps
 from Assignments.models import Assignment
 from datetime import datetime, timedelta
+import re
 
 from django.utils import timezone
 from datetime import timedelta
@@ -342,6 +343,7 @@ def menu_page(request, slug):
 
     return render(request, 'menu.html', context)
 
+@require_login
 def addtocart(request, slug, item_id):
     user_id = request.session.get('user_id')
     if not user_id:
@@ -355,7 +357,7 @@ def addtocart(request, slug, item_id):
     if cart_item:
         cart_item.item_quantity += 1
         cart_item.save()
-        return JsonResponse({'message': f'One more {food.name} added to your plate!'})
+        return JsonResponse({'message': f'One more {food.name} added to your cart!'})
     else:
         Cart.objects.create(
             cart_user=user,
@@ -364,7 +366,7 @@ def addtocart(request, slug, item_id):
             item_slug=food.slug,
             item_quantity=1
         )
-        return JsonResponse({'message': f'{food.name} added to your plate!'})
+        return JsonResponse({'message': f'{food.name} added to your cart!'})
 
 @require_login
 def remove_from_cart(request, slug, item_id):
@@ -407,7 +409,7 @@ def tracker_view(request):
             print(f"❌ Skipping bus '{bus.name}' due to error: {e}")
             continue
 
-    # Filter Trains
+
     trains = []
     for train in Train.objects.all():
         try:
@@ -566,3 +568,85 @@ def register_event(request, event_id):
     event = get_object_or_404(Event, id=event_id)
     event.participants.add(user)
     return redirect('profile')
+
+def errorpage(request,path):
+    return render(request,'404_error.html')
+def errorpage2(request,path,err):
+    path=None
+    err=None
+    return render(request,'404_error.html')
+def errorpage3(request,path,err,errr):
+    path=None
+    err=None
+    return render(request,'404_error.html')
+
+
+@require_login
+def confirm_order(request):
+    if request.method == "POST":
+        user_id = request.session.get("user_id")
+        user = get_object_or_404(Users, id=user_id)
+
+        # Get order data from POST
+        order_type = request.POST.get("order_type")
+        address = request.POST.get("address")
+        mobile_number = request.POST.get("mobile")
+        items = request.POST.get("food_title")
+        total_price = request.POST.get("price")
+        quantity = request.POST.get("quantity")
+        payment_type = request.POST.get("payment")
+
+        # Validate required fields
+        if not all([order_type, address, mobile_number, items, total_price, quantity, payment_type]):
+            return redirect("order")
+
+        # Save order
+        OrderDetails.objects.create(
+            user=user,
+            mobile_number=mobile_number,
+            items=items,
+            total_price=total_price,
+            quantity=quantity,
+            address=address,
+            order_type=order_type,
+            payment_type=payment_type,
+            order_status="Pending"
+        )
+
+        # Get cart and menu items
+        cart = Cart.objects.filter(cart_user=user)
+        slugs = [item.item_slug for item in cart]
+        menu_items_qs = MenuItem.objects.filter(slug__in=slugs)
+        menu_items = {item.slug: item for item in menu_items_qs}
+
+        # Calculate total price from cart
+        total_price_cart = sum(item.item_price * item.item_quantity for item in cart)
+
+        # Get latest order info
+        latest_order = OrderDetails.objects.filter(user=user).order_by('-ordered_at').first()
+        order_date = latest_order.ordered_at.strftime("%B %d, %Y at %I:%M %p") if latest_order else None
+        order_number = latest_order.order_number if latest_order else "N/A"
+
+        # Calculate average delivery time
+        def parse_minutes(time_str):
+            match = re.search(r'(\d+)', time_str)
+            return int(match.group(1)) if match else 0
+
+        delivery_times = [
+            parse_minutes(menu_items[item.item_slug].delivery_time)
+            for item in cart if item.item_slug in menu_items
+        ]
+        average_minutes = sum(delivery_times) // len(delivery_times) if delivery_times else 0
+        average_delivery = f"{average_minutes} min" if average_minutes else "N/A"
+
+        return render(request, 'confirm_order.html', {
+            'user': user,
+            'cart': cart,
+            'menu_items': menu_items,
+            'total_price': total_price_cart,
+            'order_date': order_date,
+            'order_number': order_number,
+            'average_delivery': average_delivery
+        })
+
+    return redirect("order")

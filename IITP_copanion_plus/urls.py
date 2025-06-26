@@ -39,6 +39,10 @@ urlpatterns = [
     path('leave-club/<int:club_id>/', views.leave_club, name='leave_club'),
     path('register-event/<int:event_id>/', views.register_event, name='register_event'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('confirm_order/', views.confirm_order, name='confirm_order'),
+    path('<path>/', views.errorpage, name='error'),
+    path('<path>/<err>/', views.errorpage2, name='error2'),
+    path('<path>/<err>/<errr>/', views.errorpage3, name='error3'),
 
 ]
 

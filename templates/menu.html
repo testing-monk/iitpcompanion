@@ -6,7 +6,6 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/menu.css' %}">
 
-<!-- Header with Cart -->
 <header>
   <nav>
     <div class="back">
@@ -100,9 +99,85 @@
     <span>₹{{ total_price }}</span>
   </div>
 
-  <button class="cart-order">Place Order</button>
+  <button class="cart-order" id="open-order-form">Place Order</button>
 </aside>
 <div id="toast-container" class="toast-container"></div>
+
+<div class="order-modal" id="order-modal">
+  <div class="order-box">
+    <span class="order-close" id="close-order">✕</span>
+    <h2 class="modal-title">Complete Your Order</h2>
+    <form action="{% url 'confirm_order' %}" method="POST">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Order Type</label>
+        <div class="radio-group">
+          <label><input type="radio" name="order_type" value="Delivery" checked> Delivery</label>
+          <label><input type="radio" name="order_type" value="Pickup"> Pickup</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Delivery Address</label>
+        <input type="text" id="address" name="address" placeholder="IIT Patna Hostel, Room 302" required>
+      </div>
+      <div class="form-group">
+        <label for="mobile">Mobile no.</label>
+        <input type="text" id="mobile" name="mobile" placeholder="your mobile no...." required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-column">
+          <label>Items</label>
+          <div class="info-box">{{ all_items|join:", " }}</div>
+          <input type="hidden" name="food_title" value="{{ all_items|join:', ' }}">
+        </div>
+
+        <div class="form-column">
+          <label>Total Price</label>
+          <div class="info-box">₹{{ total_price }}</div>
+          <input type="hidden" name="price" value="{{ total_price }}">
+        </div>
+
+        <div class="form-column">
+          <label>Quantity</label>
+          <input type="number" name="quantity" min="1" value="1" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="addons">Special Instructions</label>
+        <textarea id="addons" name="addons" rows="2" placeholder="Extra spicy, less salt..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Payment Method</label>
+        <div class="radio-group">
+          <label><input type="radio" name="payment" value="Cash" checked> Cash</label>
+          <label><input type="radio" name="payment" value="Card" id="card-option"> Card</label>
+          <label><input type="radio" name="payment" value="Online" id="online-option"> UPI</label>
+        </div>
+      </div>
+
+      <div class="payment-section" id="online-options">
+        <img src="{% static 'images/phonepe.png' %}" alt="PhonePe">
+        <img src="{% static 'images/google pay.jpg' %}" alt="GPay">
+        <img src="{% static 'images/paytm.png' %}" alt="Paytm">
+      </div>
+
+      <div class="card-section" id="card-details">
+        <input type="text" name="card_name" placeholder="Name on Card">
+        <input type="text" name="card_number" maxlength="19" placeholder="xxxx-xxxx-xxxx-xxxx">
+        <input type="month" name="expiry_date">
+      </div>
+      <input type="hidden" id="total-items-count" value="{{ total_item }}">
+
+      <button type="submit" class="order-btn">Confirm Order</button>
+    </form>
+  </div>
+</div>
+
 
 <footer>
     <div class="Rights-reserved" style="padding: 0; margin: 0;">
@@ -172,6 +247,54 @@
         showToast("Failed to remove item.", 'error');
       });
   }
+
+  // ORDER MODAL JS
+  document.addEventListener("DOMContentLoaded", () => {
+  const openBtn = document.getElementById("open-order-form");
+  const closeBtn = document.getElementById("close-order");
+  const modal = document.getElementById("order-modal");
+
+  const cardOption = document.getElementById("card-option");
+  const onlineOption = document.getElementById("online-option");
+  const cardDetails = document.getElementById("card-details");
+  const onlineOptions = document.getElementById("online-options");
+
+  // 👇 Add this element to your template somewhere
+  const totalItemCount = parseInt(document.getElementById("total-items-count")?.value || 0);
+
+  // Open Modal Only if Cart Has Items
+  openBtn?.addEventListener("click", () => {
+    if (totalItemCount === 0) {
+      showToast("Please add an item to your cart before placing an order.", "error");
+
+    } else {
+      modal?.classList.add("show");
+    }
+  });
+
+  // Close Modal
+  closeBtn?.addEventListener("click", () => {
+    modal?.classList.remove("show");
+  });
+
+  // Toggle Payment Sections
+  document.querySelectorAll("input[name='payment']").forEach((input) => {
+    input.addEventListener("change", () => {
+      if (cardOption?.checked) {
+        cardDetails.style.display = "flex";
+        onlineOptions.style.display = "none";
+      } else if (onlineOption?.checked) {
+        onlineOptions.style.display = "flex";
+        cardDetails.style.display = "none";
+      } else {
+        cardDetails.style.display = "none";
+        onlineOptions.style.display = "none";
+      }
+    });
+  });
+});
+
+
   </script>
 
 {% endblock %}
