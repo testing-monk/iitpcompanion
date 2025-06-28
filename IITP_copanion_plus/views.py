@@ -537,6 +537,8 @@ def profile_view(request):
     all_items = []
 
     cart = Cart.objects.filter(cart_user=user)
+    asgm = Assignment.objects.filter()
+    assignments = [item.subject for item in asgm]
 
     all_items = [item.item_title for item in cart]
     if request.method == 'POST' and request.FILES.get('profile_image'):
@@ -554,6 +556,7 @@ def profile_view(request):
         'profile': profile,
         'cart' : cart,
         'all_items' : all_items,
+        'assignments': assignments
         # 'clubs': joined_clubs,
         # 'events': registered_events,
     })
