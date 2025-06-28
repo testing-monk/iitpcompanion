@@ -12,6 +12,126 @@
     <p>Fresh meals delivered to your dorm or ready for pickup at your favorite campus spots</p>
   </div>
 
+      <div class="nav-logo">
+      <div style="cursor: pointer;  position: absolute; top: 18%; right: 5%;" class="cart-icon" id="cart-icon">
+        <!-- Cart SVG -->
+        <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 -960 960 960"
+          width="34px" fill="grey">
+          <path
+            d="M280-80q-33 0-56.5-23.5T200-160q0-33 23.5-56.5T280-240q33 0 56.5 23.5T360-160q0 33-23.5 56.5T280-80Zm400 0q-33 0-56.5-23.5T600-160q0-33 23.5-56.5T680-240q33 0 56.5 23.5T760-160q0 33-23.5 56.5T680-80ZM246-720l96 200h280l110-200H246Zm-38-80h590q23 0 35 20.5t1 41.5L692-482q-11 20-29.5 31T622-440H324l-44 80h480v80H280q-45 0-68-39.5t-2-78.5l54-98-144-304H40v-80h130l38 80Zm134 280h280-280Z" />
+        </svg>
+      </div>
+    </div>
+
+
+<div class="cart-backdrop" id="cart-backdrop"></div>
+
+<aside class="cart" id="cart">
+  <div class="cart-head">
+    <h2>Your Order</h2>
+    <span style="cursor: pointer;" class="close-cart" id="close-cart">✕</span>
+  </div>
+
+
+
+  <ul class="cart-items">
+    {% for item in cart %}
+      <li>
+        <div class="item-name">{{ item.item_title }}</div>
+        <div class="item-price">₹{{ item.item_price }} x {{ item.item_quantity }}</div>
+        <button class="remove-btn" onclick="remove_from_cart('{{ item.id }}')">✕</button>
+      </li>
+    {% endfor %}
+  </ul>
+  <div class="total-items">
+    <strong>Items</strong>
+    <span>{{ total_item }}</span>
+  </div>
+  <div class="cart-total">
+    <strong>Total</strong>
+    <span>₹{{ total_price }}</span>
+  </div>
+
+  <button class="cart-order" id="open-order-form">Place Order</button>
+</aside>
+<div id="toast-container" class="toast-container"></div>
+
+<div class="order-modal" id="order-modal">
+  <div class="order-box">
+    <span class="order-close" id="close-order">✕</span>
+    <h2 class="modal-title">Complete Your Order</h2>
+    <form action="{% url 'confirm_order' %}" method="POST">
+      {% csrf_token %}
+
+      <div class="form-group">
+        <label>Order Type</label>
+        <div class="radio-group">
+          <label><input type="radio" name="order_type" value="Delivery" checked> Delivery</label>
+          <label><input type="radio" name="order_type" value="Pickup"> Pickup</label>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="address">Delivery Address</label>
+        <input type="text" id="address" name="address" placeholder="IIT Patna Hostel, Room 302" required>
+      </div>
+      <div class="form-group">
+        <label for="mobile">Mobile no.</label>
+        <input type="text" id="mobile" name="mobile" placeholder="your mobile no...." required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-column">
+          <label>Items</label>
+          <div class="info-box">{{ all_items|join:", " }}</div>
+          <input type="hidden" name="food_title" value="{{ all_items|join:', ' }}">
+        </div>
+
+        <div class="form-column">
+          <label>Total Price</label>
+          <div class="info-box">₹{{ total_price }}</div>
+          <input type="hidden" name="price" value="{{ total_price }}">
+        </div>
+
+        <div class="form-column">
+          <label>Quantity</label>
+          <input type="number" name="quantity" min="1" value="1" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="addons">Special Instructions</label>
+        <textarea id="addons" name="addons" rows="2" placeholder="Extra spicy, less salt..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>Payment Method</label>
+        <div class="radio-group">
+          <label><input type="radio" name="payment" value="Cash" checked> Cash</label>
+          <label><input type="radio" name="payment" value="Card" id="card-option"> Card</label>
+          <label><input type="radio" name="payment" value="Online" id="online-option"> UPI</label>
+        </div>
+      </div>
+
+      <div class="payment-section" id="online-options">
+        <img src="{% static 'images/phonepe.png' %}" alt="PhonePe">
+        <img src="{% static 'images/google pay.jpg' %}" alt="GPay">
+        <img src="{% static 'images/paytm.png' %}" alt="Paytm">
+      </div>
+
+      <div class="card-section" id="card-details">
+        <input type="text" name="card_name" placeholder="Name on Card">
+        <input type="text" name="card_number" maxlength="19" placeholder="xxxx-xxxx-xxxx-xxxx">
+        <input type="month" name="expiry_date">
+      </div>
+      <input type="hidden" id="total-items-count" value="{{ total_item }}">
+
+      <button type="submit" class="order-btn">Confirm Order</button>
+    </form>
+  </div>
+</div>
+
+
   <div class="restaurants-cards">
 
     <!-- Dynamic Canteen Cards -->
@@ -39,4 +159,116 @@
 
   </div>
 </section>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cart = document.getElementById("cart");
+    const backdrop = document.getElementById("cart-backdrop");
+    const openCartBtn = document.getElementById("cart-icon");
+    const closeCartBtn = document.getElementById("close-cart");
+
+    if (!cart || !openCartBtn || !backdrop || !closeCartBtn) {
+      console.error("Cart elements not found in DOM.");
+      return;
+    }
+
+    openCartBtn.addEventListener("click", () => {
+      cart.classList.add("open");
+      backdrop.classList.add("show");
+    });
+
+    function closeCart() {
+      cart.classList.remove("open");
+      backdrop.classList.remove("show");
+    }
+
+    closeCartBtn.addEventListener("click", closeCart);
+    backdrop.addEventListener("click", closeCart);
+  });
+
+  function showToast(message, type = 'success') {
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.innerText = message;
+
+    const container = document.getElementById("toast-container");
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.remove();
+    }, 2500);
+  }
+
+  function add_to_cart(itemId) {
+    fetch(`/order/{{ canteen.slug }}/add-to-cart/${itemId}/`)
+      .then(response => response.json())
+      .then(data => {
+        showToast(data.message, 'success');
+        setTimeout(() => location.reload(), 1500);
+      })
+      .catch(() => {
+        showToast("please login first", 'error');
+      });
+  }
+
+  function remove_from_cart(itemId) {
+    fetch(`/order/{{ canteen.slug }}/remove-from-cart/${itemId}/`)
+      .then(response => response.json())
+      .then(data => {
+        showToast(data.message, 'success');
+        setTimeout(() => location.reload(), 1500);
+      })
+      .catch(() => {
+        showToast("Failed to remove item.", 'error');
+      });
+  }
+
+  // ORDER MODAL JS
+  document.addEventListener("DOMContentLoaded", () => {
+  const openBtn = document.getElementById("open-order-form");
+  const closeBtn = document.getElementById("close-order");
+  const modal = document.getElementById("order-modal");
+
+  const cardOption = document.getElementById("card-option");
+  const onlineOption = document.getElementById("online-option");
+  const cardDetails = document.getElementById("card-details");
+  const onlineOptions = document.getElementById("online-options");
+
+  // 👇 Add this element to your template somewhere
+  const totalItemCount = parseInt(document.getElementById("total-items-count")?.value || 0);
+
+  // Open Modal Only if Cart Has Items
+  openBtn?.addEventListener("click", () => {
+    if (totalItemCount === 0) {
+      showToast("Please add an item to your cart before placing an order.", "error");
+
+    } else {
+      modal?.classList.add("show");
+    }
+  });
+
+  // Close Modal
+  closeBtn?.addEventListener("click", () => {
+    modal?.classList.remove("show");
+  });
+
+  // Toggle Payment Sections
+  document.querySelectorAll("input[name='payment']").forEach((input) => {
+    input.addEventListener("change", () => {
+      if (cardOption?.checked) {
+        cardDetails.style.display = "flex";
+        onlineOptions.style.display = "none";
+      } else if (onlineOption?.checked) {
+        onlineOptions.style.display = "flex";
+        cardDetails.style.display = "none";
+      } else {
+        cardDetails.style.display = "none";
+        onlineOptions.style.display = "none";
+      }
+    });
+  });
+});
+
+
+  </script>
 {% endblock %}

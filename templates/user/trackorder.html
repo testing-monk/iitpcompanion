@@ -1,0 +1,311 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Order Tracking Page</title>
+    <link rel="icon" href="{% static '/images/iitp_logo.png' %}">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .note {
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    .info-bar {
+      display: flex;
+      justify-content: space-between;
+      background-color: #f5f5f5;
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .info-item {
+      flex: 1;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .status-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .status-section h2 {
+      color: #2b8a3e;
+      margin-bottom: 5px;
+    }
+
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      margin-top: 20px;
+      padding: 0 10px;
+    }
+
+    .progress-step {
+      text-align: center;
+      width: 20%;
+    }
+
+    .progress-step .circle {
+      width: 18px;
+      height: 18px;
+      background-color: #2b8a3e;
+      border-radius: 50%;
+      margin: 0 auto;
+    }
+
+    .progress-step.inactive .circle {
+      background-color: #ccc;
+    }
+
+    .progress-step p {
+      margin-top: 10px;
+      font-size: 12px;
+    }
+
+    .progress-line {
+      position: absolute;
+      top: 9px;
+      left: 9%;
+      width: 82%;
+      height: 2px;
+      background-color: #2b8a3e;
+      z-index: -1;
+    }
+
+    .map-section {
+      margin-top: 40px;
+    }
+
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: none;
+      border-radius: 8px;
+    }
+
+    .shipping-info {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+    .rider-info {
+        margin-top: 20px ;
+        margin-left: 150px;
+        font-size:14px;
+        color:#555;
+    }
+    @media (max-width: 768px) {
+  .container {
+    padding: 10px;
+    margin: 20px auto;
+  }
+
+  .info-bar {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .info-item {
+    font-size: 13px;
+  }
+
+  .progress-bar {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .progress-step {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .progress-line {
+    display: none; /* Hide line on small screens to avoid layout issues */
+  }
+
+  iframe {
+    height: 250px;
+  }
+
+  .rider-info {
+    margin-left: 0;
+    text-align: center;
+  }
+
+  .shipping-info {
+    text-align: center;
+  }
+}
+    .circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin: 0 auto;
+  background-color: #ccc; /* default */
+}
+
+.progress-step.active .circle {
+  background-color: #2b8a3e; /* green */
+}
+
+.progress-step.rejected .circle {
+  background-color: #d93025; /* red */
+}
+
+.progress-step.inactive .circle {
+  background-color: #ccc;
+}
+  .text-green {
+    color: #2b8a3e; /* or any green you prefer */
+  }
+
+  .text-red {
+    color: #d93025; /* or any red you prefer */
+  }
+
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>ORDER TRACKING PAGE</h1>
+    <p class="note">Please note that these are accurate but not guaranteed estimates. Delivery time is subject to change without advanced notice.</p>
+
+    <div class="info-bar">
+      <div class="info-item">
+        <strong>ORDER PLACED</strong><br>{{ order_date }}
+      </div>
+      <div class="info-item">
+        <strong>TOTAL</strong><br>rupees {{ total_price }}
+      </div>
+      <div class="info-item">
+        <strong>SHIP TO</strong><br>patna,bihar
+      </div>
+      <div class="info-item">
+        <strong>ORDER</strong><br>{{ order_number }}
+      </div>
+    </div>
+
+    <div class="status-section">
+      <h2
+        class="{% if order_status == 'Cancelled' or order_status == 'Rejected' %}text-red{% else %}text-green{% endif %}">
+        Order Status: {{ order_status|title }}
+      </h2>
+
+
+      <p>Estimated Delivery time: {{ average_delivery }}</p>
+
+      <div class="progress-bar">
+        <div class="progress-line"></div>
+  <!-- Step 1: Order Placed -->
+  <div class="progress-step {% if order_status in 'Rejected,Cancelled' %}inactive{% endif %}">
+    <div class="circle"></div>
+    <p>Order Placed<br><small>{{ order_date }}</small></p>
+  </div>
+
+  <!-- Step 2: Preparing your Order -->
+  <div class="progress-step
+      {% if order_status == 'Rejected' %}
+        rejected
+      {% elif order_status in 'Confirmed,Ready,Out for Delivery,Delivered' %}
+        active
+      {% else %}
+        inactive
+      {% endif %}">
+    <div class="circle"></div>
+    <p>Preparing your Order<br><small>—</small></p>
+  </div>
+
+  <!-- Step 3: Order is Dispatched -->
+  <div class="progress-step
+      {% if order_status in 'Ready,Out for Delivery,Delivered' %}
+        active
+      {% elif order_status == 'Rejected' %}
+        rejected
+      {% else %}
+        inactive
+      {% endif %}">
+    <div class="circle"></div>
+    <p>Order is Ready<br><small>—</small></p>
+  </div>
+
+  <!-- Step 4: Your Order is On The Way -->
+  <div class="progress-step
+      {% if order_status == 'Out for Delivery' or order_status == 'Delivered' %}
+        active
+      {% elif order_status == 'Rejected' %}
+        rejected
+      {% else %}
+        inactive
+      {% endif %}">
+    <div class="circle"></div>
+    <p>Your order is on the way<br><small>—</small></p>
+  </div>
+
+  <!-- Step 5: Delivered -->
+  <div class="progress-step
+      {% if order_status == 'Delivered' %}
+        active
+      {% elif order_status == 'Rejected' %}
+        rejected
+      {% else %}
+        inactive
+      {% endif %}">
+    <div class="circle"></div>
+    <p>Delivered<br><small>{% if order_status == 'Delivered' %}{{ delivered_date }}{% else %}—{% endif %}</small></p>
+  </div>
+</div>
+    </div>
+
+    <div class="order-info">
+      <strong>Order Information:</strong><br>
+      [Customer Name]<br>
+      [Hostel Number]<br>
+      bihita, patna,bihar
+    </div>
+    <div class="Rider-info">
+      <strong>Rider Information:</strong><br>
+      [Rider Name]<br>
+      [Rider Number]<br>
+
+    </div>
+
+    <div class="map-section">
+      <iframe src="https://maps.google.com/maps?q=patna,%20NE&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+    </div>
+  </div>
+
+</body>
+</html>
+{% endblock %}

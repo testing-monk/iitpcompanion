@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="Mr.h4cker.me">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static '/images/iitp_logo.png' %}">
+  <link rel="stylesheet" href="{% static 'css/order_admin.css' %}">
+</head>
+
+
+
+<body>
+  <header>
+    <nav>
+      <div class="nav-logo">
+        <svg width="50" height="50" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="grad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#6a85f1" />
+              <stop offset="100%" stop-color="#8657c3" />
+            </linearGradient>
+          </defs>
+          <rect width="64" height="64" rx="16" fill="url(#grad)" />
+          <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="24"
+            font-family="Poppins, sans-serif" font-weight="600">CO</text>
+        </svg>
+        <div>
+          <h2>Restaurant Dashboard</h2>
+          <small>{{ canteen.canteen_name }}</small>
+        </div>
+      </div>
+
+      <!-- Profile Dropdown -->
+        <div class="dropdown">
+          <button class="dropdown-btn" onclick="toggleDropdown()">
+            <img src="{% static 'images/default.png' %}" alt="User Icon" />
+          </button>
+          <div id="userDropdown" class="dropdown-content">
+            <a href="#">{{ owner }}</a>
+            <a href="{% url 'owner_profile' %}">Profile</a>
+            <a href="">Register Canteen</a>
+            <a href="{% url 'owner_dashboard' %}">Add Menu</a>
+            <a href="{% url 'owner_dashboard' %}">Orders</a>
+            <a href="{% url 'logout_owner' %}">Logout</a>
+          </div>
+        </div>
+
+    </nav>
+  </header>
+
+    {% block content %}
+    <!--contant-->
+
+    {% endblock %}
+</body>
+</html>

@@ -39,7 +39,6 @@ main {
   background-color: white;
 }
 
-/* =================== BUTTON =================== */
 main button {
   background-color: #007aff;
   padding: 1rem 2.5rem;
@@ -51,6 +50,7 @@ main button {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(0, 122, 255, 0.3);
+  margin: 10px;
 }
 
 main button:hover {
@@ -59,7 +59,7 @@ main button:hover {
   box-shadow: 0 8px 20px rgba(0, 122, 255, 0.4);
 }
 
-/* =================== HEADER SECTION =================== */
+
 .order-head {
   display: flex;
   flex-direction: column;
@@ -76,7 +76,7 @@ main button:hover {
   margin-bottom: 0.5rem;
 }
 
-/* =================== ORDER DETAILS =================== */
+
 .order-details {
   background-color: #e8f4fd;
   border-radius: 14px;
@@ -95,7 +95,6 @@ main button:hover {
   color: #333;
 }
 
-/* ✅ Auto-hover Check Mark Style */
 .check-icon {
   width: 42px;
   height: 42px;
@@ -116,7 +115,7 @@ main button:hover {
   100% { transform: scale(1); opacity: 1; }
 }
 
-/* =================== ORDER SUMMARY =================== */
+
 .order-summary {
   display: flex;
   flex-direction: column;
@@ -145,7 +144,7 @@ main button:hover {
   font-weight: 500;
 }
 
-/* =================== RESPONSIVE =================== */
+
 @media (max-width: 600px) {
   main {
     padding: 30px 20px;

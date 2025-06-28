@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
@@ -6,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirm</title>
     <link rel="stylesheet" href="/static/css/confirm.css">
+    <link rel="icon" href="{% static '/images/iitp_logo.png' %}">
 </head>
 
 <body>
@@ -74,6 +76,9 @@
 
         <a href="{% url 'order' %}">
             <button> Continue Shopping</button>
+        </a>
+        <a href="{% url 'track-order' %}">
+            <button>Track order</button>
         </a>
 
 

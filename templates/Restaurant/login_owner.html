@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static '/css/login.css' %}">
+  <link rel="icon" href="{% static '/images/iitp_logo.png' %}">
+  <title>Restaurant Owner Login | IITP Companion+</title>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <div class="navbar">
+    <div class="navbar-logo">
+      <a href="{% url 'home' %}">
+        <img src="{% static 'images/iitpcomapanion1.png' %}" alt="IITP Logo">
+      </a>
+      <span class="logo-text">IITP Companion+</span>
+    </div>
+  </div>
+
+  <!-- Login Card -->
+  <div class="card">
+    <h1>Owner Login</h1>
+
+    <div class="c-body">
+      {% if messages %}
+        {% for message in messages %}
+          <p style="color: red; text-align: center;">{{ message }}</p>
+        {% endfor %}
+      {% endif %}
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="email">
+          <label for="ownername">Username</label>
+          <input name="ownername" type="text" placeholder="Enter your username" required>
+        </div>
+
+        <div class="pass">
+          <label for="password">Password</label>
+          <input name="password" type="password" placeholder="Enter password" required>
+        </div>
+
+        <div class="card-btn">
+          <button type="submit">Log In</button>
+        </div>
+      </form>
+
+      <div class="or-separator">or</div>
+
+      <div class="sign-up">
+        <p><a href="{% url 'register_owner' %}">Don't have an owner account? Register</a></p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

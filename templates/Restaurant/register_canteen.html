@@ -1,0 +1,14 @@
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="name" placeholder="Canteen Name" required><br>
+    <textarea name="description" placeholder="Description"></textarea><br>
+    <input type="text" name="mobile_number" placeholder="Mobile Number" required><br>
+    <input type="text" name="address" placeholder="Address" required><br>
+    <input type="text" name="canteen_id" placeholder="Unique Canteen ID" required><br>
+    <input type="email" name="email" placeholder="Email" required><br>
+    <input type="time" name="opening_time" required><br>
+    <input type="time" name="closing_time" required><br>
+    <input type="text" name="delivery_time" placeholder="Avg. Delivery Time"><br>
+    <input type="file" name="image" required><br>
+    <button type="submit">Register Canteen</button>
+</form>

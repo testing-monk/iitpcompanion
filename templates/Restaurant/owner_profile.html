@@ -1,0 +1,127 @@
+{% extends 'Restaurant/base.html' %}
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <link rel="stylesheet" href="{% static 'css/order_admin.css' %}">
+
+<div class="profile-container">
+  <div class="profile-header">
+    <div class="profile-pic-section">
+      <img src="{% if owner.profile_image %}{{ owner.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}"
+           alt="Owner Photo" class="profile-pic">
+    </div>
+
+    <div class="profile-info">
+      <h2>{{ owner }}</h2>
+      <p>Email: {{ user.email }}</p>
+      <p>Phone: {{ owner.mobile_number }}</p>
+      <p>Role: Restaurant Owner</p>
+      <a href="{% url 'edit_owner_profile' %}" class="edit-btn">Edit Profile</a>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="restaurant-info">
+    <h3>🏪 Restaurant Details</h3>
+    <ul>
+      <li><strong>Name:</strong> {{ canteen.canteen_name }}</li>
+      <li><strong>Slug:</strong> {{ canteen.slug }}</li>
+      <li><strong>Address:</strong> {{ canteen.address }}</li>
+    </ul>
+  </div>
+
+  <div class="account-actions">
+    <h3>⚙️ Account Actions</h3>
+    <ul>
+      <li><a href="{% url 'owner_change_password' %}">🔑 Change Password</a></li>
+      <li><a href="{% url 'logout_owner' %}">🚪 Logout</a></li>
+    </ul>
+  </div>
+
+  <div class="menu-section">
+    <h3>🍽️ Menu Items</h3>
+    {% if menu_items %}
+    <ul>
+      {% for item in menu_items %}
+        <li>{{ item.name }} – ₹{{ item.price }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>No items in menu.</p>
+    {% endif %}
+    <a href="{% url 'owner_dashboard' %}" class="action-btn">+ Add New Item</a>
+  </div>
+
+  <div class="order-section">
+    <h3>🧾 Recent Orders</h3>
+    {% if orders %}
+      <ul>
+        {% for order in orders %}
+          <li>
+            #{{ order.order_number }} — ₹{{ order.total_price }} —
+            <strong>Status:</strong> {{ order.order_status }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p>No orders yet.</p>
+    {% endif %}
+  </div>
+
+  <div class="admin-options">
+    <h3>🛠️ Admin Tools</h3>
+    <ul>
+      <li><a href="{% url 'owner_dashboard' %}">📊 View Dashboard</a></li>
+      <li><a href="{% url 'owner_dashboard' %}">📋 Add Menu Item</a></li>
+      <li><a href="{% url 'edit_owner_profile' %}">📝 Edit Restaurant Info</a></li>
+    </ul>
+  </div>
+</div>
+    <script>
+  function toggleDropdown() {
+    document.getElementById("userDropdown").classList.toggle("show");
+  }
+  window.onclick = function (event) {
+    if (!event.target.matches('.dropdown-btn') && !event.target.closest('.dropdown')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  };
+      function openDeleteModal(actionUrl) {
+    const modal = document.getElementById("deleteModal");
+    const form = document.getElementById("deleteForm");
+    form.action = actionUrl;
+    modal.style.display = "flex";
+  }
+
+  function closeDeleteModal() {
+    document.getElementById("deleteModal").style.display = "none";
+  }
+
+  // Optional: close modal when clicking outside
+  window.onclick = function(event) {
+    const modal = document.getElementById("deleteModal");
+    if (event.target === modal) {
+      closeDeleteModal();
+    }
+  };
+      window.addEventListener('DOMContentLoaded', () => {
+    const message = document.querySelector('.message');
+    if (message) {
+      setTimeout(() => {
+        message.style.opacity = '0';
+        message.style.transform = 'translateY(-10px)';
+        setTimeout(() => {
+          message.remove();
+        }, 500); // after fade-out
+      }, 2000); // delay before auto-close
+    }
+  });
+</script>
+{% endblock %}

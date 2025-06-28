@@ -337,4 +337,44 @@
   .left {
     width: 100%;
   }
+  .schedule-body {
+  display: none;
+  flex-direction: column;
+  justify-content: space-between;
+
+    }
+}
+.empty-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background: #f9f9fb;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 30px;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+.empty-message h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  line-height: 1.6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Optional fade-in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

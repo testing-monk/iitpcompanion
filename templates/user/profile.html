@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
+	<title>{% block title %} Profile | IITP Companion {% endblock %}</title>
 {% block content %}
   <link rel="stylesheet" href="{% static 'css/profile.css' %}">
 
@@ -11,11 +12,6 @@
         <img src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}{% static 'images/default.png' %}{% endif %}"
              alt="Profile Picture" class="profile-pic">
 
-<!--        <form method="POST" enctype="multipart/form-data">-->
-<!--          {% csrf_token %}-->
-<!--          <input type="file" name="profile_image" accept="image/*">-->
-<!--          <button type="submit">Change Photo</button>-->
-<!--        </form>-->
       </div>
 
       <div class="profile-info">
@@ -33,7 +29,7 @@
     <div class="account-actions">
       <h3>⚙️ Account Actions</h3>
       <ul>
-        <li><a href="">Change Password</a></li>
+        <li><a href="{% url 'change_password' %}">Change Password</a></li>
         <li><a href="{% url 'logout' %}">Logout</a></li>
         <li><a href="#">Update Mobile Number</a></li>
         <li><a href="#">Notification Preferences</a></li>

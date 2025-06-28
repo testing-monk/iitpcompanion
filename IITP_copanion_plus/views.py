@@ -26,6 +26,7 @@ import re
 from django.utils import timezone
 from datetime import timedelta
 
+from django.contrib.auth.hashers import check_password, make_password
 
 
 
@@ -56,7 +57,7 @@ def login(request):
                 messages.error(request, "Invalid password")
         except Users.DoesNotExist:
             messages.error(request, "User not found")
-    return render(request, 'login.html')
+    return render(request, 'user/login.html')
 
 
 def register(request):
@@ -66,7 +67,7 @@ def register(request):
         email = request.POST.get('email')
 
         if Users.objects.filter(email=email).exists():
-            return render(request, 'sign-up.html', {'error': 'Email already exists.'})
+            return render(request, 'user/sign-up.html', {'error': 'Email already exists.'})
 
         try:
             user = Users(username=username, email=email)
@@ -78,10 +79,10 @@ def register(request):
 
             return redirect('home')
         except ValidationError as ve:
-            return render(request, 'sign-up.html', {'error': f'Validation error: {ve}'} )
+            return render(request, 'user/sign-up.html', {'error': f'Validation error: {ve}'} )
         except Exception as e:
-            return render(request, 'sign-up.html', {'error': f'An error occurred: {e}'} )
-    return render(request, 'sign-up.html')
+            return render(request, 'user/sign-up.html', {'error': f'An error occurred: {e}'} )
+    return render(request, 'user/sign-up.html')
 def logout(request):
     request.session.flush()
     return redirect('home')
@@ -268,7 +269,7 @@ def admin_dashboard(request):
     user = Users.objects.get(id=request.session['user_id'])  # fetch actual instance
     notifications = Notification.objects.filter(user=user).order_by('-created_at')
 
-    return render(request, 'admin_page.html', {
+    return render(request, 'user/admin_page.html', {
         'webuser': user,
         'notifications': notifications,
     })
@@ -300,7 +301,40 @@ def delete_event(request, event_id):
 
 def canteen(request):
     canteens = Canteen.objects.all()
-    return render(request, 'order.html', {'canteens': canteens})
+    user_id = request.session.get('user_id')
+
+    cart = []
+    total_price = 0
+    total_item = 0
+    all_items = []
+
+    if user_id:
+        try:
+            user = Users.objects.get(id=user_id)
+            cart = Cart.objects.filter(cart_user=user)
+
+            total_price = sum(item.item_price * item.item_quantity for item in cart)
+            total_item = sum(item.item_quantity for item in cart)
+            all_items = [item.item_title for item in cart]
+
+        except Users.DoesNotExist:
+            user = None
+        except Exception as e:
+            print(f"Cart fetch error: {e}")
+
+
+
+
+    context = {
+        'cart': cart,
+        'all_items': all_items,
+        'total_price': total_price,
+        'total_item': total_item,
+        'canteen': canteen,
+        'canteens': canteens,
+    }
+
+    return render(request, 'order.html', context)
 
 def menu_page(request, slug):
     user_id = request.session.get('user_id')
@@ -383,8 +417,6 @@ def remove_from_cart(request, slug, item_id):
 def about_us(request):
     return render(request,'about_us.html')
 
-def restaurant(request):
-    return render(request,'restaurant_dashboard.html')
 
 
 
@@ -517,7 +549,7 @@ def profile_view(request):
     # joined_clubs = Club.objects.filter(president=user)
     # registered_events = Event.objects.filter(participants=user)
 
-    return render(request, 'profile.html', {
+    return render(request, 'user/profile.html', {
         'user': user,
         'profile': profile,
         'cart' : cart,
@@ -540,14 +572,14 @@ def edit_profile(request):
         profile.mobile_number = request.POST.get("mobile_number", profile.mobile_number)
 
         if request.FILES.get("profile_image"):
-            profile.profile_image = request.FILES["profile_image"]
+            profile.profile_image = request.FILES["user/profile_image"]
 
         user.save()
         profile.save()
         # messages.success(request, "Profile updated successfully.")
         return redirect('profile')
 
-    return render(request, 'edit_profile.html', {'user': user, 'profile': profile})
+    return render(request, 'user/edit_profile.html', {'user': user, 'profile': profile})
 
 @require_login
 def leave_club(request, club_id):
@@ -587,7 +619,6 @@ def confirm_order(request):
         user_id = request.session.get("user_id")
         user = get_object_or_404(Users, id=user_id)
 
-        # Get order data from POST
         order_type = request.POST.get("order_type")
         address = request.POST.get("address")
         mobile_number = request.POST.get("mobile")
@@ -596,11 +627,10 @@ def confirm_order(request):
         quantity = request.POST.get("quantity")
         payment_type = request.POST.get("payment")
 
-        # Validate required fields
+
         if not all([order_type, address, mobile_number, items, total_price, quantity, payment_type]):
             return redirect("order")
 
-        # Save order
         OrderDetails.objects.create(
             user=user,
             mobile_number=mobile_number,
@@ -613,21 +643,19 @@ def confirm_order(request):
             order_status="Pending"
         )
 
-        # Get cart and menu items
         cart = Cart.objects.filter(cart_user=user)
         slugs = [item.item_slug for item in cart]
         menu_items_qs = MenuItem.objects.filter(slug__in=slugs)
         menu_items = {item.slug: item for item in menu_items_qs}
 
-        # Calculate total price from cart
+
         total_price_cart = sum(item.item_price * item.item_quantity for item in cart)
 
-        # Get latest order info
         latest_order = OrderDetails.objects.filter(user=user).order_by('-ordered_at').first()
         order_date = latest_order.ordered_at.strftime("%B %d, %Y at %I:%M %p") if latest_order else None
         order_number = latest_order.order_number if latest_order else "N/A"
 
-        # Calculate average delivery time
+
         def parse_minutes(time_str):
             match = re.search(r'(\d+)', time_str)
             return int(match.group(1)) if match else 0
@@ -650,3 +678,80 @@ def confirm_order(request):
         })
 
     return redirect("order")
+
+@require_login
+def track_order(request):
+    user_id = request.session.get("user_id")
+    user = get_object_or_404(Users, id=user_id)
+
+    cart = Cart.objects.filter(cart_user=user)
+    slugs = [item.item_slug for item in cart]
+    menu_items_qs = MenuItem.objects.filter(slug__in=slugs)
+    menu_items = {item.slug: item for item in menu_items_qs}
+
+    total_price_cart = sum(item.item_price * item.item_quantity for item in cart)
+
+    latest_order = OrderDetails.objects.filter(user=user).order_by('-ordered_at').first()
+
+    order_date = latest_order.ordered_at.strftime("%B %d, %Y at %I:%M %p") if latest_order else None
+    order_number = latest_order.order_number if latest_order else "N/A"
+    order_status = latest_order.order_status if latest_order else "Pending"
+
+    def parse_minutes(time_str):
+        match = re.search(r'(\d+)', time_str)
+        return int(match.group(1)) if match else 0
+
+    delivery_times = [
+        parse_minutes(menu_items[item.item_slug].delivery_time)
+        for item in cart if item.item_slug in menu_items
+    ]
+    average_minutes = sum(delivery_times) // len(delivery_times) if delivery_times else 0
+    average_delivery = f"{average_minutes} min" if average_minutes else "N/A"
+
+    context = {
+        'user': user,
+        'cart': cart,
+        'menu_items': menu_items,
+        'total_price': total_price_cart,
+        'order_date': order_date,
+        'order_number': order_number,
+        'average_delivery': average_delivery,
+        'order_status': order_status,
+    }
+
+    return render(request, 'user/trackorder.html', context)
+
+def restaurant(request):
+    return render(request, 'Restaurant/order_admin.html')
+
+@require_login
+def change_password(request):
+    user_id = request.session.get('user_id')
+    if not user_id:
+        messages.error(request, "You must be logged in to change your password.")
+        return redirect('login')
+
+    user = get_object_or_404(Users, id=user_id)
+
+    if request.method == 'POST':
+        current_password = request.POST.get('old_password')
+        new_password = request.POST.get('new_password1')
+        confirm_password = request.POST.get('new_password2')
+
+
+        if not check_password(current_password, user.password):
+            messages.error(request, "❌ Current password is incorrect.")
+            return redirect('change_password')
+
+
+        if new_password != confirm_password:
+            messages.error(request, "❌ New passwords do not match.")
+            return redirect('change_password')
+
+
+        user.password = make_password(new_password)
+        user.save()
+        messages.success(request, "✅ Password updated successfully.")
+        return redirect('profile')
+
+    return render(request, 'user/change_password.html')

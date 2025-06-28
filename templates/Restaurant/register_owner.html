@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/css/sign-up.css' %}">
+    <link rel="icon" href="{% static '/images/iitp_logo.png' %}">
+    <title>Register | Restaurant Owner</title>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="navbar-logo">
+            <a href="{% url 'home' %}">
+                <img src="{% static 'images/iitpcomapanion1.png' %}" alt="IITP Logo">
+            </a>
+            <span class="logo-text">IITP Companion+</span>
+        </div>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+        <h1>Register as Restaurant Owner</h1>
+
+        <div class="c-body">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="email">
+                    <label for="ownername">Owner Name</label>
+                    <input name="ownername" type="text" placeholder="Enter your full name" required>
+                </div>
+
+                <div class="email">
+                    <label for="email">Email</label>
+                    <input name="email" type="email" placeholder="Enter email address" required>
+                </div>
+
+                <div class="pass">
+                    <label for="password">Password</label>
+                    <input name="password" type="password" placeholder="Enter password" required>
+                </div>
+
+                <div class="card-btn">
+                    <button type="submit">Create Account</button>
+                </div>
+            </form>
+
+            <div class="sign-up">
+                <p><a href="{% url 'login_owner' %}">Already have an account? Log in</a></p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
