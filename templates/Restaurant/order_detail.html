@@ -1,0 +1,159 @@
+{% extends 'Restaurant/base.html' %}
+{% load static %}
+{% block content %}
+<style>
+  .order-detail-container {
+  padding: 50px 5%;
+  background-color: #f7f9fc;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.order-detail-card {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+  border: 1px solid #e0e0e0;
+}
+
+.order-title {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.order-meta p {
+  font-size: 1rem;
+  margin: 8px 0;
+  color: #444;
+}
+
+.order-items {
+  margin: 20px 0;
+}
+
+.order-items ul {
+  list-style: disc;
+  padding-left: 20px;
+  color: #555;
+}
+
+.order-items li {
+  margin-bottom: 8px;
+}
+
+.order-total {
+  text-align: right;
+  margin-top: 20px;
+  font-size: 1.3rem;
+  color: #222;
+}
+
+.status-update-form {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.status-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-weight: 500;
+}
+
+.btn-status-update {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-status-update:hover {
+  background-color: #0056b3;
+}
+
+/* Badge Styles */
+.badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: white;
+}
+
+.badge-placed { background-color: #6c757d; }
+.badge-accepted { background-color: #17a2b8; }
+.badge-ready { background-color: #ffc107; color: #333; }
+.badge-out-for-delivery { background-color: #fd7e14; }
+.badge-delivered { background-color: #28a745; }
+.badge-confirmed { background-color: #2f855a; }
+.badge-pending { background-color: #718096; }
+.badge-rejected, .badge-cancelled { background-color: #dc3545; }
+
+@media screen and (max-width: 480px) {
+  .status-update-form {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .order-total {
+    text-align: left;
+  }
+}
+
+</style>
+<section class="order-detail-container">
+  <div class="order-detail-card">
+    <h1 class="order-title">Order #{{ order.order_number }}</h1>
+
+    <div class="order-meta">
+      <p><strong>Status:</strong> 
+        <span class="badge badge-{{ order.order_status|lower|slugify }}">
+          {{ order.get_order_status_display }}
+        </span>
+      </p>
+      <p><strong>Ordered by:</strong> {{ order.user }}</p>
+      <p><strong>Order Date:</strong> {{ order.ordered_at }}</p>
+      <p><strong>Address:</strong> {{ order.address }}</p>
+    </div>
+
+    <hr>
+
+    <div class="order-items">
+      <h3>Items Ordered:</h3>
+      <ul>
+        <li>
+          <div class="items-list">{{ order.items }}</div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="order-total">
+      <h2>Total Amount: ₹{{ order.total_price }}</h2>
+    </div>
+
+    <form method="post" action="{% url 'update_order_status' order.id %}" class="status-update-form">
+      {% csrf_token %}
+      <label for="status">Update Status:</label>
+      <select name="status" class="status-select">
+        {% for status_value, status_label in order.ORDER_STATUS_CHOICES %}
+        <option value="{{ status_value }}" {% if order.order_status == status_value %}selected{% endif %}>
+          {{ status_label }}
+        </option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn-status-update">Update</button>
+    </form>
+  </div>
+</section>
+
+{% endblock %}

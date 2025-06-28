@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
+
+from Restaurant.models import RegisterCanteen,MenuItem
 from Webusers.models import Users, UserProfile
 from django.core.exceptions import ValidationError
 from Clubs.models import Club
@@ -16,7 +18,7 @@ from datetime import date
 from notifications.models import Notification
 from django.views.decorators.csrf import csrf_exempt
 from Maps.models import Map
-from Orderfood.models import Canteen, MenuItem, Cart, OrderDetails
+from Orderfood.models import Canteen, Cart, OrderDetails
 from Transportation.models import Bus, Train, BusSchedule
 from functools import wraps
 from Assignments.models import Assignment
@@ -40,9 +42,14 @@ def require_login(view_func):
     return _wrapped_view
 
 def home(request):
-    return render(request, 'index.html')
+    return render(request, 'general/index.html')
 
 def login(request):
+    # user = request.session.get('user_id')
+    # if user:
+    #     messages.error(request, "You are already loggin")
+    #     return redirect('home')
+
     if request.method == 'POST':
         email = request.POST['email']
         password = request.POST['password']
@@ -83,6 +90,7 @@ def register(request):
         except Exception as e:
             return render(request, 'user/sign-up.html', {'error': f'An error occurred: {e}'} )
     return render(request, 'user/sign-up.html')
+
 def logout(request):
     request.session.flush()
     return redirect('home')
@@ -128,7 +136,7 @@ def assignment(request):
         'pending': assignments.filter(status='pending').count(),
     }
 
-    return render(request, 'Assignment.html', context)
+    return render(request, 'general/Assignment.html', context)
 
 
 @csrf_exempt
@@ -150,29 +158,29 @@ def toggle_assignment_status(request):
 
 
 def progress(request):
-    return render(request, 'page_in_progress.html')
+    return render(request, 'general/page_in_progress.html')
 
 def test(request):
-    return render(request, 'test.html')
+    return render(request, 'general/test.html')
 
 @require_login
 def feedback(request):
-    return render(request, 'feedback.html')
+    return render(request, 'general/feedback.html')
 
 def maps(request):
     maps = Map.objects.all()
-    return render(request, 'maps.html',{'maps': maps})
+    return render(request, 'general/maps.html',{'maps': maps})
 
 def events(request):
-    return render(request, 'event_calendar.html')
+    return render(request, 'general/event_calendar.html')
 
 def student_clubs(request):
     clubs = Club.objects.all()
-    return render(request, 'student_clubs.html', {'clubs': clubs})
+    return render(request, 'general/student_clubs.html', {'clubs': clubs})
 
 def club_detail(request, slug):
     club = get_object_or_404(Club, slug=slug)
-    return render(request, 'club-detail.html', {'club': club})
+    return render(request, 'general/club-detail.html', {'club': club})
 
 @require_login
 @csrf_exempt  # Only if CSRF token is an issue in testing (not recommended in production)
@@ -258,7 +266,7 @@ def contact_view(request):
         messages.success(request, 'Your message has been sent successfully!')
         return redirect('contact')
     messages.success(request, 'something went wrong')
-    return render(request, 'contacts.html')
+    return render(request, 'general/contacts.html')
 
 
 @require_login
@@ -297,126 +305,6 @@ def delete_event(request, event_id):
         except Exception as e:
             return JsonResponse({'status': 'error', 'message': str(e)})
     return JsonResponse({'status': 'error', 'message': 'Invalid request method'})
-
-
-def canteen(request):
-    canteens = Canteen.objects.all()
-    user_id = request.session.get('user_id')
-
-    cart = []
-    total_price = 0
-    total_item = 0
-    all_items = []
-
-    if user_id:
-        try:
-            user = Users.objects.get(id=user_id)
-            cart = Cart.objects.filter(cart_user=user)
-
-            total_price = sum(item.item_price * item.item_quantity for item in cart)
-            total_item = sum(item.item_quantity for item in cart)
-            all_items = [item.item_title for item in cart]
-
-        except Users.DoesNotExist:
-            user = None
-        except Exception as e:
-            print(f"Cart fetch error: {e}")
-
-
-
-
-    context = {
-        'cart': cart,
-        'all_items': all_items,
-        'total_price': total_price,
-        'total_item': total_item,
-        'canteen': canteen,
-        'canteens': canteens,
-    }
-
-    return render(request, 'order.html', context)
-
-def menu_page(request, slug):
-    user_id = request.session.get('user_id')
-    canteen = get_object_or_404(Canteen, slug=slug)
-    items = MenuItem.objects.filter(canteen=canteen)
-
-    cart = []
-    total_price = 0
-    total_item = 0
-    all_items = []
-
-    if user_id:
-        try:
-            user = Users.objects.get(id=user_id)
-            cart = Cart.objects.filter(cart_user=user)
-
-            total_price = sum(item.item_price * item.item_quantity for item in cart)
-            total_item = sum(item.item_quantity for item in cart)
-            all_items = [item.item_title for item in cart]
-
-        except Users.DoesNotExist:
-            user = None
-        except Exception as e:
-            print(f"Cart fetch error: {e}")
-
-
-    categorized_items = {}
-    for item in items:
-        category = item.category or "Others"
-        categorized_items.setdefault(category, []).append(item)
-
-    context = {
-        'cart': cart,
-        'all_items': all_items,
-        'total_price': total_price,
-        'total_item': total_item,
-        'canteen': canteen,
-        'categorized_items': categorized_items
-    }
-
-    return render(request, 'menu.html', context)
-
-@require_login
-def addtocart(request, slug, item_id):
-    user_id = request.session.get('user_id')
-    if not user_id:
-        return redirect('login')
-
-    user = get_object_or_404(Users, id=user_id)
-    food = get_object_or_404(MenuItem, id=item_id)
-
-    cart_item = Cart.objects.filter(cart_user=user, item_slug=food.slug).first()
-
-    if cart_item:
-        cart_item.item_quantity += 1
-        cart_item.save()
-        return JsonResponse({'message': f'One more {food.name} added to your cart!'})
-    else:
-        Cart.objects.create(
-            cart_user=user,
-            item_title=food.name,
-            item_price=food.price,
-            item_slug=food.slug,
-            item_quantity=1
-        )
-        return JsonResponse({'message': f'{food.name} added to your cart!'})
-
-@require_login
-def remove_from_cart(request, slug, item_id):
-    user_id = request.session.get('user_id')
-    if not user_id:
-        return JsonResponse({'error': 'User not logged in'}, status=403)
-
-    user = get_object_or_404(Users, id=user_id)
-    cart_item = get_object_or_404(Cart, id=item_id, cart_user=user)
-
-    cart_item.delete()
-    return JsonResponse({'message': f"{cart_item.item_title} removed from your plate."})
-
-def about_us(request):
-    return render(request,'about_us.html')
-
 
 
 
@@ -460,7 +348,7 @@ def tracker_view(request):
         'trains': trains,
         'schedules': schedules,
     }
-    return render(request, 'tracker.html', context)
+    return render(request, 'general/tracker.html', context)
 
 
 
@@ -505,7 +393,7 @@ def search_view(request):
             if matches_filters(train, 'Train'):
                 results.append(train)
 
-    return render(request, 'search.html', {'results': results})
+    return render(request, 'general/search.html', {'results': results})
 
 @require_login
 def subscribe(request):
@@ -605,127 +493,21 @@ def register_event(request, event_id):
     return redirect('profile')
 
 def errorpage(request,path):
-    return render(request,'404_error.html')
+    return render(request,'general/404_error.html')
 def errorpage2(request,path,err):
     path=None
     err=None
-    return render(request,'404_error.html')
+    return render(request,'general/404_error.html')
 def errorpage3(request,path,err,errr):
     path=None
     err=None
-    return render(request,'404_error.html')
+    return render(request,'general/404_error.html')
 
 
-@require_login
-def confirm_order(request):
-    if request.method == "POST":
-        user_id = request.session.get("user_id")
-        user = get_object_or_404(Users, id=user_id)
 
-        order_type = request.POST.get("order_type")
-        address = request.POST.get("address")
-        mobile_number = request.POST.get("mobile")
-        items = request.POST.get("food_title")
-        total_price = request.POST.get("price")
-        quantity = request.POST.get("quantity")
-        payment_type = request.POST.get("payment")
-
-
-        if not all([order_type, address, mobile_number, items, total_price, quantity, payment_type]):
-            return redirect("order")
-
-        OrderDetails.objects.create(
-            user=user,
-            mobile_number=mobile_number,
-            items=items,
-            total_price=total_price,
-            quantity=quantity,
-            address=address,
-            order_type=order_type,
-            payment_type=payment_type,
-            order_status="Pending"
-        )
-
-        cart = Cart.objects.filter(cart_user=user)
-        slugs = [item.item_slug for item in cart]
-        menu_items_qs = MenuItem.objects.filter(slug__in=slugs)
-        menu_items = {item.slug: item for item in menu_items_qs}
-
-
-        total_price_cart = sum(item.item_price * item.item_quantity for item in cart)
-
-        latest_order = OrderDetails.objects.filter(user=user).order_by('-ordered_at').first()
-        order_date = latest_order.ordered_at.strftime("%B %d, %Y at %I:%M %p") if latest_order else None
-        order_number = latest_order.order_number if latest_order else "N/A"
-
-
-        def parse_minutes(time_str):
-            match = re.search(r'(\d+)', time_str)
-            return int(match.group(1)) if match else 0
-
-        delivery_times = [
-            parse_minutes(menu_items[item.item_slug].delivery_time)
-            for item in cart if item.item_slug in menu_items
-        ]
-        average_minutes = sum(delivery_times) // len(delivery_times) if delivery_times else 0
-        average_delivery = f"{average_minutes} min" if average_minutes else "N/A"
-
-        return render(request, 'confirm_order.html', {
-            'user': user,
-            'cart': cart,
-            'menu_items': menu_items,
-            'total_price': total_price_cart,
-            'order_date': order_date,
-            'order_number': order_number,
-            'average_delivery': average_delivery
-        })
-
-    return redirect("order")
-
-@require_login
-def track_order(request):
-    user_id = request.session.get("user_id")
-    user = get_object_or_404(Users, id=user_id)
-
-    cart = Cart.objects.filter(cart_user=user)
-    slugs = [item.item_slug for item in cart]
-    menu_items_qs = MenuItem.objects.filter(slug__in=slugs)
-    menu_items = {item.slug: item for item in menu_items_qs}
-
-    total_price_cart = sum(item.item_price * item.item_quantity for item in cart)
-
-    latest_order = OrderDetails.objects.filter(user=user).order_by('-ordered_at').first()
-
-    order_date = latest_order.ordered_at.strftime("%B %d, %Y at %I:%M %p") if latest_order else None
-    order_number = latest_order.order_number if latest_order else "N/A"
-    order_status = latest_order.order_status if latest_order else "Pending"
-
-    def parse_minutes(time_str):
-        match = re.search(r'(\d+)', time_str)
-        return int(match.group(1)) if match else 0
-
-    delivery_times = [
-        parse_minutes(menu_items[item.item_slug].delivery_time)
-        for item in cart if item.item_slug in menu_items
-    ]
-    average_minutes = sum(delivery_times) // len(delivery_times) if delivery_times else 0
-    average_delivery = f"{average_minutes} min" if average_minutes else "N/A"
-
-    context = {
-        'user': user,
-        'cart': cart,
-        'menu_items': menu_items,
-        'total_price': total_price_cart,
-        'order_date': order_date,
-        'order_number': order_number,
-        'average_delivery': average_delivery,
-        'order_status': order_status,
-    }
-
-    return render(request, 'user/trackorder.html', context)
 
 def restaurant(request):
-    return render(request, 'Restaurant/order_admin.html')
+    return render(request, 'Restaurant/restaurant_admin.html')
 
 @require_login
 def change_password(request):
@@ -758,3 +540,6 @@ def change_password(request):
         return redirect('profile')
 
     return render(request, 'user/change_password.html')
+
+def about_us(request):
+    return render(request,'general/about_us.html')

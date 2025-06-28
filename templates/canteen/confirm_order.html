@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirm</title>
     <link rel="stylesheet" href="/static/css/confirm.css">
-    <link rel="icon" href="{% static '/images/iitp_logo.png' %}">
+    <link rel="icon" href="{% static '/images/favicon.png' %}">
 </head>
 
 <body>
@@ -62,8 +62,8 @@
 
     {% for item in cart %}
             <div class="summary">
-                <span>{{ item.item_title }}</span>
-                <span>₹{{ item.item_price }}</span>
+                <span>{{ item.name }}</span>
+                <span>₹{{ item.price }}</span>
             </div>
     {% endfor %}
             <div class="summary">

@@ -13,4 +13,7 @@ urlpatterns = [
     path('dashboard/profile/', views.owner_profile, name='owner_profile'),
     path('dashboard/profile/edit/', views.edit_owner_profile, name='edit_owner_profile'),
     path('dashboard/profile/change-password/', views.owner_change_password, name='owner_change_password'),
+    path("order/<int:order_id>/update-status/", views.update_order_status, name="update_order_status"),
+    path("orders/<int:order_id>/", views.order_detail, name="order_detail"),
+
 ]

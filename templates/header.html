@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IITP Companion+ Header</title>
   <link rel="stylesheet" href="{% static 'css/header.css' %}">
-  <link rel="icon" href="{% static '/images/iitp_logo.png' %}">
+  <link rel="icon" href="{% static '/images/favicon.png' %}">
 </head>
 <body>
   <header>
@@ -26,7 +26,7 @@
 <ul class="nav-links" id="nav-links">
   <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a></li>
   <li><a href="{% url 'order' %}" class="{% if request.resolver_match.url_name == 'order' %}active{% endif %}">Order Food</a></li>
-  <li><a href="{% url 'tracker' %}" class="{% if request.resolver_match.url_name == 'tracker' %}active{% endif %}">Tracker</a></li>
+  <li><a href="{% url 'tracker' %}" class="{% if request.resolver_match.url_name == 'tracker' %}active{% endif %}">Track</a></li>
   <li><a href="{% url 'Assignment' %}" class="{% if request.resolver_match.url_name == 'Assignment' %}active{% endif %}">Assignments</a></li>
   <li><a href="{% url 'events' %}" class="{% if request.resolver_match.url_name == 'events' %}active{% endif %}">Events Calender</a></li>
 </ul>
@@ -69,7 +69,7 @@
           <ul class="account-dropdown" id="account-dropdown">
             <li class="username-item"><strong>{{ webuser.username }}</strong></li>
             <li><a href="{% url 'profile' %}">Profile</a></li>
-            <li><a href="{% url 'track-order' %}">Track order</a></li>
+            <li><a href="{% url 'view_order' %}">My Order</a></li>
             <li><a href="{% url 'maps' %}">Campus Map</a></li>
             <li><a href="{% url 'student_clubs' %}">Students Club</a></li>
             <li><a href="{% url 'contact' %}">Feedback</a></li>

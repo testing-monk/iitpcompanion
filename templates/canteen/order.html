@@ -1,33 +1,19 @@
-{% extends "base2.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ canteen.name }} | Menu{% endblock %}
+{% block title %}Order Food | IITP Companion{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'css/menu.css' %}">
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
 
-<header>
-  <nav>
-    <div class="back">
-      <a href="{% url 'order' %}">
-        <button>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            class="lucide lucide-arrow-left">
-            <path d="m12 19-7-7 7-7"></path>
-            <path d="M19 12H5"></path>
-          </svg>
-        </button>
-      </a>
-      <p class="hide-mobile">Back to Cafes</p>
-    </div>
+<section class="order">
+  <div class="order-head">
+    <h1>Order from Campus</h1>
+    <p>Fresh meals delivered to your dorm or ready for pickup at your favorite campus spots</p>
+  </div>
 
-    <div class="text-center">
-      <h2>{{ canteen.name|default:"Cafe Name" }}</h2>
-    </div>
-
-    <div class="nav-logo">
-      <div style="cursor: pointer;" class="cart-icon" id="cart-icon">
+      <div class="nav-logo">
+      <div style="cursor: pointer;  position: absolute; top: 18%; right: 5%;" class="cart-icon" id="cart-icon">
         <!-- Cart SVG -->
         <svg xmlns="http://www.w3.org/2000/svg" height="34px" viewBox="0 -960 960 960"
           width="34px" fill="grey">
@@ -36,39 +22,6 @@
         </svg>
       </div>
     </div>
-  </nav>
-</header>
-
-<section class="menu">
-  <h1>MENU</h1>
-
-  {% for category, items in categorized_items.items %}
-    <div class="cards">
-      <div class="cards-head">
-        <h2>{{ category }}</h2>
-      </div>
-      <div class="cards-grid">
-        {% for item in items %}
-        <div class="card">
-          <img src="{{ item.image.url }}" alt="{{ item.name }}" class="item-img">
-          <div class="dish-info">
-            <h2>{{ item.name }}</h2>
-            <div class="details-row">
-              <span class="price">₹{{ item.price }}</span>
-              <span class="delivery">15 min</span>
-            </div>
-             <button style="cursor: pointer;" class="add-btn" onclick="add_to_cart({{ item.id }})">
-              Add
-            </button>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-  {% empty %}
-    <p>No menu items available.</p>
-  {% endfor %}
-</section>
 
 
 <div class="cart-backdrop" id="cart-backdrop"></div>
@@ -179,11 +132,33 @@
 </div>
 
 
-<footer>
-    <div class="Rights-reserved" style="padding: 0; margin: 0;">
-        <p>&copy; 2025 IITP Companion+. All rights reserved.</p>
+  <div class="restaurants-cards">
+
+    <!-- Dynamic Canteen Cards -->
+    {% for canteen in canteens %}
+    <div class="card">
+      <a href="{% url 'menu_page' slug=canteen.slug %}">
+        <img src="{{ canteen.image.url }}" alt="{{ canteen.name }}">
+        <div class="main-card">
+          <h2>{{ canteen.canteen_name }}</h2>
+          <div class="info">
+            <div class="meal-info">
+              <p>{{ canteen.description }}</p>
+              <p class="p-card">Open: {{ canteen.opening_time|time:"g:i A" }} - {{ canteen.closing_time|time:"g:i A" }}</p>
+            </div>
+            <div class="dilevery-time">
+              <p>20 mins</p>
+            </div>
+          </div>
+        </div>
+      </a>
     </div>
-</footer>
+    {% empty %}
+    <p>No canteens available at the moment.</p>
+    {% endfor %}
+
+  </div>
+</section>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -296,5 +271,4 @@
 
 
   </script>
-
 {% endblock %}

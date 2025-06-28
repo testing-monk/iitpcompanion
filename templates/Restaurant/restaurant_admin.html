@@ -23,35 +23,48 @@
   </div>
 {% endif %}
 
-  <!-- Orders Section -->
-  <section class="order-sec" id="orders">
-    <h1>Current Orders</h1>
-    <div class="order-cards">
-      {% for order in orders %}
-      <div class="order">
-        <div class="order-head">
-          <p><strong>Order #{{ order.order_number }}</strong></p>
-          <span class="{{ order.order_status|lower|slugify }}">{{ order.order_status }}</span>
-        </div>
+<!-- Orders Section -->
+<section class="order-sec" id="orders">
+  <h1 class="section-title">Current Orders</h1>
+  <div class="order-cards">
+    {% for order in orders %}
+    <div class="order-card">
+      <div class="order-header">
+        <p class="order-id">
+          <strong>
+            <a href="{% url 'order_detail' order.id %}" class="order-link">
+              Order #{{ order.order_number }}
+            </a>
+          </strong>
+        </p>
 
-        <div class="order-card">
-          {% for item in order.items %}
-          <div class="item {% if forloop.last %}bottom{% endif %}">
-            <span>{{ item.qty }}x {{ item.name }}</span>
-            <span>₹{{ item.price }}</span>
-          </div>
-          {% endfor %}
-        </div>
-
-        <div class="total">
-          <h3><strong>Total: ₹{{ order.total_price }}</strong></h3>
-        </div>
+        <form method="post" action="{% url 'update_order_status' order.id %}">
+          {% csrf_token %}
+          <select name="status" class="status-select {{ order.order_status|lower|slugify }}">
+            {% for status_value, status_label in order.ORDER_STATUS_CHOICES %}
+            <option value="{{ status_value }}" {% if order.order_status == status_value %}selected{% endif %}>
+              {{ status_label }}
+            </option>
+            {% endfor %}
+          </select>
+          <button type="submit" class="btn-status-update">Update</button>
+        </form>
       </div>
-      {% empty %}
-      <p>No current orders.</p>
-      {% endfor %}
+
+      <div class="order-body">
+<!--        <p>{{ order.ordered_at }}</p>-->
+        <div class="ordered-by">👤 Ordered by <b>{{ order.user }}</b></div>
+        <div class="items-list">{{ order.items }}</div>
+        <div class="total-price"><strong>Total: ₹{{ order.total_price }}</strong></div>
+      </div>
     </div>
-  </section>
+    {% empty %}
+    <div class="no-orders">🛒 No current orders available.</div>
+    {% endfor %}
+  </div>
+</section>
+
+
 
   <!-- Menu Section -->
   <section class="menu-sec" id="menu">

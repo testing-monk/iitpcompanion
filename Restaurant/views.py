@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from Restaurant.models import RegisterOwner, RegisterCanteen, MenuItem, OrderDetails
 from django.contrib import messages
+from django.views.decorators.http import require_POST
+from django.contrib import messages
 
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import RegisterOwner, RegisterCanteen
@@ -42,6 +44,10 @@ def register_owner(request):
 
 
 def login_owner(request):
+    owner_id = request.session.get('owner_id')
+    if owner_id:
+        messages.error(request, "You are already loggin")
+        return redirect('owner_dashboard')
     if request.method == "POST":
         name = request.POST.get("ownername")
         password = request.POST.get("password")
@@ -74,14 +80,18 @@ def owner_dashboard(request):
         return redirect("login_owner")
 
     owner = get_object_or_404(RegisterOwner, id=owner_id)
+    canteen = RegisterCanteen.objects.filter(owner=owner).first()
 
-
-    canteen = RegisterCanteen.objects.filter(owner_id=owner_id).first()
-
-
-    orders = OrderDetails.objects.filter(canteen=canteen).order_by("-ordered_at") if canteen else []
-    menu_items = MenuItem.objects.filter(canteen=canteen) if canteen else []
-
+    if canteen:
+        orders = (
+            OrderDetails.objects
+            .filter(canteen=canteen)
+            .order_by("-ordered_at")
+        )
+        menu_items = MenuItem.objects.filter(canteen=canteen)
+    else:
+        orders = []
+        menu_items = []
 
     context = {
         "owner": owner,
@@ -90,7 +100,8 @@ def owner_dashboard(request):
         "menu_items": menu_items,
     }
 
-    return render(request, "Restaurant/order_admin.html", context)
+    return render(request, "Restaurant/restaurant_admin.html", context)
+
 
 @require_login
 def delete_menu_item(request, slug):
@@ -112,7 +123,7 @@ def update_menu_item(request, item_id):
         messages.success(request, "Menu item updated.")
         return redirect("owner_dashboard")
 
-    return render(request, "Restaurant/order_admin.html", {"item": item})
+    return render(request, "Restaurant/restaurant_admin.html", {"item": item})
 
 
 @require_login
@@ -135,7 +146,7 @@ def add_menu_item(request):
         messages.success(request, "Menu item added.")
         return redirect("owner_dashboard")
 
-    return render(request, "Restaurant/order_admin.html")
+    return render(request, "Restaurant/restaurant_admin.html")
 
 @require_login
 def owner_profile(request):
@@ -214,7 +225,7 @@ def owner_change_password(request):
             messages.error(request, "❌ New passwords do not match.")
             return redirect('change_password')
 
-        # i add password strength check here
+        # I add password strength check here
 
 
         user.password = make_password(new_password)
@@ -223,3 +234,30 @@ def owner_change_password(request):
         return redirect('owner_profile')
 
     return render(request, 'Restaurant/owner_change_password.html')
+
+
+@require_POST
+def update_order_status(request, order_id):
+    owner_id = request.session.get("owner_id")
+    if not owner_id:
+        return redirect("login_owner")
+
+    order = get_object_or_404(OrderDetails, id=order_id)
+    new_status = request.POST.get("status")
+
+    if new_status in dict(OrderDetails.ORDER_STATUS_CHOICES):
+        order.order_status = new_status
+        order.save()
+        messages.success(request, f"Order #{order.order_number} updated to {new_status}.")
+    else:
+        messages.error(request, "Invalid order status.")
+
+    # 🔁 Redirect back to the previous page
+    return redirect(request.META.get("HTTP_REFERER", "owner_dashboard"))
+
+# View: Order Detail
+def order_detail(request, order_id):
+    order = get_object_or_404(OrderDetails, id=order_id)
+    return render(request, "Restaurant/order_detail.html", {"order": order})
+
+

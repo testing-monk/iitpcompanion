@@ -1,12 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
+
+	<title>{% block title %} Track order | IITP Companion {% endblock %}</title>
 {% block content %}
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <title>Order Tracking Page</title>
-    <link rel="icon" href="{% static '/images/iitp_logo.png' %}">
+    <link rel="icon" href="{% static '/images/favicon.png' %}">
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -290,9 +292,9 @@
 
     <div class="order-info">
       <strong>Order Information:</strong><br>
-      [Customer Name]<br>
-      [Hostel Number]<br>
-      bihita, patna,bihar
+      {{ user.username|default:"Customer" }}<br>
+      {{ order.mobile_number|default:"Not provided" }}<br>
+      {{ order.address|linebreaksbr }}
     </div>
     <div class="Rider-info">
       <strong>Rider Information:</strong><br>

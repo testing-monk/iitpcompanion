@@ -79,7 +79,6 @@ nav button {
 
 
 .order-sec {
-  margin: 100px auto;
   text-align: center;
 }
 
@@ -706,4 +705,155 @@ nav button {
 
 .close-msg:hover {
   color: #000;
+}
+
+/* Example status badge styling */
+.status-select.confirmed { background-color: #c6f6d5; color: #2f855a; }
+.status-select.rejected { background-color: #fed7d7; color: #c53030; }
+.status-select.ready { background-color: #faf089; color: #b7791f; }
+.status-select.out-for-delivery { background-color: #bee3f8; color: #2b6cb0; }
+.status-select.delivered { background-color: #e6fffa; color: #319795; }
+.status-select.cancelled { background-color: #fbb6ce; color: #9b2c2c; }
+.status-select.pending { background-color: #edf2f7; color: #718096; }
+
+.btn-status-update {
+  padding: 4px 10px;
+  background-color: #333;
+  color: white;
+  border: none;
+  margin-left: 8px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Order Section Styling */
+.order-sec {
+  padding: 50px 5%;
+  background: #f9f9fb;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.order-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 25px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  transition: transform 0.2s ease;
+}
+
+.order-card:hover {
+  transform: translateY(-4px);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.order-id {
+  font-size: 1.2rem;
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.status-select {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-weight: 500;
+  margin-right: 10px;
+}
+
+.btn-status-update {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-status-update:hover {
+  background-color: #3e8e41;
+}
+
+.order-body {
+  margin-top: 15px;
+}
+
+.ordered-by {
+  font-size: 1rem;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.items-list {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.total-price {
+  font-size: 1.2rem;
+  color: #222;
+}
+
+.no-orders {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #999;
+  padding: 20px;
+}
+
+/* Status Colors (optional) */
+.status-select.rejected,
+.status-select.cancelled {
+  background-color: #ffe6e6;
+  border-color: #ff4d4f;
+  color: #c0392b;
+}
+
+.status-select.ready,
+.status-select.delivered,
+.status-select.out-for-delivery {
+  background-color: #e6ffe6;
+  border-color: #2ecc71;
+  color: #2e7d32;
+}
+
+/* Responsive */
+@media screen and (max-width: 480px) {
+  .order-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+.order-link {
+  color: #007bff;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.order-link:hover {
+  color: #0056b3;
+  text-decoration: underline;
 }
